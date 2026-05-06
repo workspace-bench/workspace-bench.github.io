@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">Workspace-Bench logo</title>
+  <desc id="desc">Layered workspace files connected by dependency edges.</desc>
+  <defs>
+    <linearGradient id="g" x1="14" x2="82" y1="16" y2="80" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="#0f172a"/>
+  <path d="M21 25h34l8 8h12v13H21V25Z" fill="url(#g)"/>
+  <path d="M21 43h54v28H21V43Z" fill="#f8fafc"/>
+  <path d="M31 54h12m10 0h12M31 63h27" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="31" cy="54" r="3" fill="#14b8a6"/>
+  <circle cx="53" cy="54" r="3" fill="#14b8a6"/>
+  <circle cx="65" cy="54" r="3" fill="#14b8a6"/>
+  <path d="M34 54h16m6 0h6" stroke="#14b8a6" stroke-width="2" stroke-linecap="round"/>
+</svg>

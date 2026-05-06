@@ -1,234 +1,162 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RIP-Bench - A Revolutionary Benchmark</title>
-    <link rel="stylesheet" href="./SWE-bench%20Leaderboards_files/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-      (function () {
-        const storedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-          document.documentElement.classList.add('dark-mode');
-        }
-      })();
-    </script>
-    <link rel="icon" href="./rip-bench.svg" type="image/svg+xml">
-    <style>
-      body, html {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden; /* 防止首页出现滚动条 */
-      }
-      .hero-container {
-        position: relative;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        color: white;
-        overflow: hidden;
-      }
-      /* 炫酷的动态背景效果 */
-      .hero-bg-anim {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-        background: 
-          radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.15), transparent 25%),
-          radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.15), transparent 25%);
-        animation: pulse 10s ease-in-out infinite alternate;
-      }
-      @keyframes pulse {
-        0% { transform: scale(1); opacity: 0.8; }
-        100% { transform: scale(1.1); opacity: 1; }
-      }
-      .hero-content {
-        position: relative;
-        z-index: 10;
-        text-align: center;
-        padding: 0 20px;
-        animation: fadeIn 1s ease-out forwards;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .hero-logo {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 24px;
-        filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.4));
-      }
-      .hero-title {
-        font-size: 4rem;
-        font-weight: 800;
-        margin: 0 0 16px 0;
-        letter-spacing: -0.02em;
-        background: linear-gradient(to right, #fff, #94a3b8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .hero-subtitle {
-        font-size: 1.25rem;
-        color: #94a3b8;
-        max-width: 600px;
-        margin: 0 auto 40px auto;
-        line-height: 1.6;
-      }
-      .hero-actions {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      .hero-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 28px;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        backdrop-filter: blur(10px);
-      }
-      .btn-leaderboard {
-        background: rgba(37, 99, 235, 0.9);
-        color: white;
-        border: 1px solid rgba(59, 130, 246, 0.5);
-        box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-      }
-      .btn-leaderboard:hover {
-        background: rgba(37, 99, 235, 1);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 25px rgba(37, 99, 235, 0.5);
-        color: white;
-      }
-      .btn-secondary {
-        background: rgba(30, 41, 59, 0.6);
-        color: #f8fafc;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-      }
-      .btn-secondary:hover {
-        background: rgba(30, 41, 59, 0.9);
-        transform: translateY(-2px);
-        border-color: rgba(148, 163, 184, 0.4);
-        color: white;
-      }
-      /* 主题切换悬浮按钮 */
-      .theme-switch-wrapper {
-        position: absolute;
-        top: 24px;
-        right: 24px;
-        z-index: 20;
-      }
-      .theme-switch-btn {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        backdrop-filter: blur(10px);
-        transition: all 0.2s ease;
-      }
-      .theme-switch-btn:hover {
-        background: rgba(30, 41, 59, 0.9);
-        transform: scale(1.05);
-      }
-      
-      /* 适配浅色模式，让首页在浅色下也好看 */
-      html:not(.dark-mode) .hero-container {
-        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-        color: #0f172a;
-      }
-      html:not(.dark-mode) .hero-title {
-        background: linear-gradient(to right, #0f172a, #475569);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      html:not(.dark-mode) .hero-subtitle {
-        color: #475569;
-      }
-      html:not(.dark-mode) .hero-bg-anim {
-        background: 
-          radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.2), transparent 25%),
-          radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.2), transparent 25%);
-      }
-      html:not(.dark-mode) .btn-secondary {
-        background: rgba(255, 255, 255, 0.8);
-        color: #0f172a;
-        border: 1px solid rgba(148, 163, 184, 0.3);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      }
-      html:not(.dark-mode) .btn-secondary:hover {
-        background: #ffffff;
-        border-color: rgba(148, 163, 184, 0.6);
-        color: #000;
-      }
-      html:not(.dark-mode) .theme-switch-btn {
-        background: rgba(255, 255, 255, 0.8);
-        color: #0f172a;
-        border: 1px solid rgba(148, 163, 184, 0.3);
-      }
-      html:not(.dark-mode) .theme-switch-btn:hover {
-        background: #ffffff;
-      }
-
-      @media (max-width: 640px) {
-        .hero-title { font-size: 2.5rem; }
-        .hero-actions { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
-        .hero-btn { width: 100%; justify-content: center; box-sizing: border-box; }
-      }
-    </style>
+    <title>Workspace-Bench 1.0</title>
+    <meta name="description" content="Workspace-Bench 1.0 benchmarks AI agents on real workspace tasks with large-scale file dependencies.">
+    <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/workspace.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <div class="hero-container">
-      <div class="hero-bg-anim"></div>
-      
-      <div class="theme-switch-wrapper">
-        <button id="theme-toggle" class="theme-switch-btn" aria-label="Toggle dark mode">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
+    <div data-workspace-header></div>
 
-      <div class="hero-content">
-        <img src="./rip-bench.svg" alt="RIP-Bench logo" class="hero-logo">
-        <h1 class="hero-title">RIP-Bench</h1>
-        <p class="hero-subtitle">
-          A revolutionary benchmark for evaluating intelligent agents. Dive into comprehensive analytics, cutting-edge evaluations, and push the boundaries of AI capabilities.
-        </p>
-        
-        <div class="hero-actions">
-          <a href="./leaderboard.html" class="hero-btn btn-leaderboard">
-            <i class="fa-solid fa-chart-column"></i> Leaderboard
-          </a>
-          <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="hero-btn btn-secondary">
-            <i class="fab fa-github"></i> GitHub
-          </a>
-          <a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer" class="hero-btn btn-secondary">
-            <i class="fa-solid fa-file-pdf"></i> ArXiv
-          </a>
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <div class="eyebrow">Benchmarking workspace learning</div>
+            <h1>Workspace-Bench 1.0</h1>
+            <p class="hero-copy">
+              Workspace-Bench evaluates how well AI agents operate in realistic workspaces with large-scale file
+              dependencies. It measures whether agents can discover relevant files, reason across implicit context,
+              modify artifacts safely, and deliver the right output under rubric-based evaluation.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="./leaderboard.html">View Leaderboard</a>
+              <a class="button" href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a class="button" href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv</a>
+              <a class="button" href="./dataset.html">Dataset</a>
+              <a class="button" href="./submit.html">Submit Results</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel" aria-label="Benchmark summary">
+            <div class="metric-list">
+              <div class="metric-row"><div><div class="metric-label">Worker Profiles</div><div class="metric-value">5</div></div><div class="metric-label">Realistic professional roles</div></div>
+              <div class="metric-row"><div><div class="metric-label">File Types</div><div class="metric-value">74</div></div><div class="metric-label">Documents, code, data, media</div></div>
+              <div class="metric-row"><div><div class="metric-label">Files</div><div class="metric-value">20,476</div></div><div class="metric-label">Large-scale workspace context</div></div>
+              <div class="metric-row"><div><div class="metric-label">Tasks</div><div class="metric-value">388</div></div><div class="metric-label">Full benchmark workload</div></div>
+              <div class="metric-row"><div><div class="metric-label">Rubrics</div><div class="metric-value">7,399</div></div><div class="metric-label">Fine-grained scoring criteria</div></div>
+              <div class="metric-row"><div><div class="metric-label">Max Workspace</div><div class="metric-value">20GB</div></div><div class="metric-label">High-context operating conditions</div></div>
+            </div>
+          </aside>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <script src="./rip-site.js"></script>
+      <section class="section">
+        <div class="container">
+          <p style="display:none">20,476 Files 7,399 Rubrics</p>
+          <div class="grid grid-3">
+            <div class="card stat-card">
+              <div class="value">80.7%</div>
+              <div class="label">Human reference score on the full benchmark.</div>
+            </div>
+            <div class="card stat-card">
+              <div class="value">68.7%</div>
+              <div class="label">Best paper-reported agent score.</div>
+            </div>
+            <div class="card stat-card">
+              <div class="value">47.4%</div>
+              <div class="label">Average score across the evaluated agent systems.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>What Workspace-Bench Measures</h2>
+              <p class="section-subtitle">
+                The benchmark focuses on workspace learning: the ability to identify explicit and implicit file
+                dependencies, integrate context across artifacts, choose the right actions, and produce dependable
+                deliverables in large workspaces.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <div class="card"><h3>File Dependency Discovery</h3><p>Finds relevant files even when the critical signal is not exposed at the task root.</p></div>
+            <div class="card"><h3>Cross-file Reasoning</h3><p>Combines evidence across notes, data tables, code, policy documents, and metadata.</p></div>
+            <div class="card"><h3>Adaptive Decision Making</h3><p>Chooses whether to inspect, modify, summarize, validate, or preserve artifacts based on workspace state.</p></div>
+            <div class="card"><h3>Deliverable Quality</h3><p>Scores the final artifact against detailed rubrics instead of only a single pass or fail condition.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Current Performance Gap</h2>
+              <p class="section-subtitle">
+                Workspace-Bench exposes a large gap between human performance and the best AI agents. The gap grows in
+                profiles with more hidden dependencies, denser file graphs, and stricter rubric requirements.
+              </p>
+            </div>
+          </div>
+          <div class="card chart-card wide-chart">
+            <canvas id="homeGapChart" aria-label="Current performance gap chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Benchmark Highlights</h2>
+              <p class="section-subtitle">
+                Workspace-Bench includes both the full benchmark and a cost-reduced lite split for repeatable
+                evaluation, with real workspaces spanning documents, spreadsheets, code, media, metadata, and archives.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3>Full Benchmark</h3>
+              <p>388 tasks with large workspaces, multi-step evidence gathering, and 7,399 rubrics for comprehensive evaluation.</p>
+            </div>
+            <div class="card">
+              <h3>Lite Benchmark</h3>
+              <p>100 tasks designed to preserve representative complexity while reducing evaluation cost by approximately 70%.</p>
+            </div>
+            <div class="card">
+              <h3>Benchmark Breadth</h3>
+              <p>5 worker profiles, 74 file types, and up to 20GB per workspace make context management part of the task, not a side condition.</p>
+            </div>
+            <div class="card">
+              <h3>Evaluation Scope</h3>
+              <p>The paper reports results across 4 agent harnesses and 7 foundation models, with humans retained as a reference point.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Resources</h2>
+              <p class="section-subtitle">Use the benchmark website as a working index to the paper, repository, dataset composition, and submission process.</p>
+            </div>
+          </div>
+          <div class="grid grid-4">
+            <a class="card" href="./leaderboard.html"><h3>Leaderboard</h3><p>Browse official scores, cost comparisons, and capability views.</p></a>
+            <a class="card" href="./dataset.html"><h3>Dataset Visualizations</h3><p>Inspect task composition, file types, workspace sizes, and profile distributions.</p></a>
+            <a class="card" href="./methodology.html"><h3>Methodology</h3><p>Read the workspace learning definition, scoring rules, and reproducibility protocol.</p></a>
+            <a class="card" href="./examples.html"><h3>Representative Tasks</h3><p>See concrete examples of hidden dependencies and rubric-based grading.</p></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-workspace-footer></div>
+
+    <script src="./workspace-data.js"></script>
+    <script src="./workspace-site.js"></script>
+    <script src="./workspace-charts.js"></script>
   </body>
 </html>

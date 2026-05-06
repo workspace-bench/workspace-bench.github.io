@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Workspace-Bench Methodology</title>
+    <meta name="description" content="Methodology and evaluation protocol for Workspace-Bench.">
+    <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/workspace.css">
+  </head>
+  <body>
+    <div data-workspace-header></div>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <div class="page-title-row">
+            <img src="./workspace-bench.svg" alt="">
+            <div><h1 style="font-size:2.5rem">Methodology</h1></div>
+          </div>
+          <p class="page-lead">
+            Workspace-Bench defines workspace learning as the ability to identify, reason over, update, and validate
+            dependencies among large collections of files while producing task-correct deliverables.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-2">
+            <div class="card">
+              <h2 style="font-size:1.35rem">Workspace Learning</h2>
+              <p>
+                Agents must understand explicit and implicit file relationships. The correct answer is often distributed
+                across notes, comments, metadata, configuration files, archive contents, or historical versions.
+              </p>
+            </div>
+            <div class="card">
+              <h2 style="font-size:1.35rem">Task Construction</h2>
+              <p>
+                Tasks are built from realistic workspaces and worker profiles. Each task requires the agent to interpret
+                instructions, identify the relevant context, and produce a final output that satisfies detailed rubrics.
+              </p>
+            </div>
+            <div class="card">
+              <h2 style="font-size:1.35rem">Rubric-based Scoring</h2>
+              <p>
+                Workspace-Bench does not reduce evaluation to a single unit test. Deliverables are graded against
+                rubric criteria that capture evidence use, correctness, policy adherence, completeness, and consistency.
+              </p>
+            </div>
+            <div class="card">
+              <h2 style="font-size:1.35rem">Full vs Lite Benchmark</h2>
+              <p>
+                The full benchmark contains 388 tasks. The lite split contains 100 tasks and is intended for faster
+                repeated evaluation with lower cost while preserving representative difficulty.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Evaluation Protocol</h2>
+              <p class="section-subtitle">A complete run should make the agent behavior, environment, and final outputs reproducible.</p>
+            </div>
+          </div>
+          <div class="grid grid-3">
+            <div class="card"><h3>1. Workspace Setup</h3><p>Initialize the benchmark workspace, selected split, and task-specific files in a controlled environment.</p></div>
+            <div class="card"><h3>2. Agent Execution</h3><p>Run the agent with the declared harness, model, context limits, tools, and budget constraints.</p></div>
+            <div class="card"><h3>3. Output Collection</h3><p>Capture logs, modified files, final deliverables, and task metadata for downstream grading.</p></div>
+            <div class="card"><h3>4. Rubric Evaluation</h3><p>Score deliverables against rubric criteria and aggregate into task success and overall benchmark metrics.</p></div>
+            <div class="card"><h3>5. Verification</h3><p>Maintain a reproducible record of runtime, cost, versioning, and the exact evaluation configuration used.</p></div>
+            <div class="card"><h3>6. Release</h3><p>Publish verified results with a report link and sufficient reproduction material for maintainers to inspect.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Capability Dimensions</h2>
+              <p class="section-subtitle">The benchmark is designed so each dimension can fail independently.</p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card"><h3>File Dependency Discovery</h3><p>Locating the right files, versions, and references under incomplete or misleading top-level cues.</p></div>
+            <div class="card"><h3>Cross-file Reasoning</h3><p>Combining evidence across heterogeneous artifacts to resolve ambiguity and conflicts.</p></div>
+            <div class="card"><h3>Context Integration</h3><p>Keeping the relevant context active while ignoring irrelevant noise in large workspaces.</p></div>
+            <div class="card"><h3>Adaptive Decision Making</h3><p>Choosing safe, effective actions based on workspace state, policy constraints, and deliverable requirements.</p></div>
+            <div class="card"><h3>Workspace Modification</h3><p>Editing or preserving files correctly without breaking dependencies or violating retention constraints.</p></div>
+            <div class="card"><h3>Final Deliverable Quality</h3><p>Producing outputs that satisfy rubric criteria for correctness, traceability, completeness, and consistency.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="callout">
+            <strong>Reproducibility Requirements.</strong> Verified submissions should include the benchmark split,
+            harness name, model identifier, runtime configuration, workspace constraints, logs, final outputs, cost and
+            latency summary, and a stable report link that lets maintainers replay or inspect the run.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-workspace-footer></div>
+
+    <script src="./workspace-site.js"></script>
+  </body>
+</html>

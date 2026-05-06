@@ -1,0 +1,46 @@
+{
+  "summary": [
+    { "label": "Worker Profiles", "value": "5", "description": "Professional roles represented by realistic workspace tasks." },
+    { "label": "File Types", "value": "74", "description": "Documents, spreadsheets, code, configuration, media, and structured data." },
+    { "label": "Files", "value": "20,476", "description": "Files distributed across large real-world workspaces." },
+    { "label": "Tasks", "value": "388", "description": "Full benchmark tasks requiring workspace-level context." },
+    { "label": "Rubrics", "value": "7,399", "description": "Fine-grained evaluation criteria for scoring final deliverables." },
+    { "label": "Max Workspace", "value": "20GB", "description": "Maximum workspace size in the benchmark." }
+  ],
+  "fileTypeGroups": [
+    { "group": "Documents", "count": 31 },
+    { "group": "Spreadsheets", "count": 9 },
+    { "group": "Code", "count": 11 },
+    { "group": "Structured Data", "count": 8 },
+    { "group": "Media", "count": 6 },
+    { "group": "Config and Metadata", "count": 5 },
+    { "group": "Archives", "count": 2 },
+    { "group": "Other", "count": 2 }
+  ],
+  "complexity": [
+    { "bucket": "1-5 files", "tasks": 52 },
+    { "bucket": "6-15 files", "tasks": 91 },
+    { "bucket": "16-30 files", "tasks": 105 },
+    { "bucket": "31-60 files", "tasks": 86 },
+    { "bucket": "61+ files", "tasks": 54 }
+  ],
+  "workspaceSizes": [
+    { "bucket": "<100MB", "tasks": 48 },
+    { "bucket": "100MB-1GB", "tasks": 112 },
+    { "bucket": "1GB-5GB", "tasks": 121 },
+    { "bucket": "5GB-10GB", "tasks": 67 },
+    { "bucket": "10GB-20GB", "tasks": 40 }
+  ],
+  "rubricCounts": [
+    { "bucket": "1-10", "tasks": 44 },
+    { "bucket": "11-20", "tasks": 132 },
+    { "bucket": "21-30", "tasks": 128 },
+    { "bucket": "31-40", "tasks": 61 },
+    { "bucket": "41+", "tasks": 23 }
+  ],
+  "liteSplit": {
+    "tasks": 100,
+    "costReduction": "70%",
+    "description": "Workspace-Bench-Lite keeps representative file-dependency patterns while reducing repeated evaluation cost."
+  }
+}

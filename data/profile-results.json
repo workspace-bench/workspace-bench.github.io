@@ -1,0 +1,9 @@
+{
+  "profiles": [
+    { "profile": "Research analyst", "tasks": 82, "avgFiles": 46, "dependencyScore": 84, "bestScore": 72.4 },
+    { "profile": "Data operator", "tasks": 78, "avgFiles": 52, "dependencyScore": 79, "bestScore": 69.3 },
+    { "profile": "Project coordinator", "tasks": 76, "avgFiles": 39, "dependencyScore": 76, "bestScore": 66.8 },
+    { "profile": "Content specialist", "tasks": 80, "avgFiles": 44, "dependencyScore": 73, "bestScore": 64.7 },
+    { "profile": "Operations assistant", "tasks": 72, "avgFiles": 48, "dependencyScore": 71, "bestScore": 61.9 }
+  ]
+}

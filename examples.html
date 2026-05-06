@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Workspace-Bench Representative Tasks</title>
+    <meta name="description" content="Representative tasks and examples from Workspace-Bench.">
+    <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/workspace.css">
+  </head>
+  <body>
+    <div data-workspace-header></div>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <div class="page-title-row">
+            <img src="./workspace-bench.svg" alt="">
+            <div><h1 style="font-size:2.5rem">Representative Tasks</h1></div>
+          </div>
+          <p class="page-lead">
+            These examples illustrate how Workspace-Bench evaluates hidden dependencies, multi-file coordination, and
+            rubric-based grading. The important context often lives outside the first file an agent opens.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-2">
+            <div class="card">
+              <h2 style="font-size:1.35rem">Hidden Dependencies</h2>
+              <p>
+                Critical evidence may appear in comments, archived bundles, policy appendices, historical notes,
+                spreadsheet formulas, or metadata files that are not called out in the task instruction.
+              </p>
+            </div>
+            <div class="card">
+              <h2 style="font-size:1.35rem">Rubric Examples</h2>
+              <p>
+                Rubrics check whether an agent used all required evidence, respected policy constraints, reconciled
+                conflicting values, documented exceptions, and delivered a final artifact that can be audited.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div id="examplesContainer" class="grid grid-2"></div>
+        </div>
+      </section>
+    </main>
+
+    <div data-workspace-footer></div>
+
+    <script src="./workspace-data.js"></script>
+    <script src="./workspace-site.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const container = document.getElementById('examplesContainer');
+        if (!container) return;
+        try {
+          const data = window.WORKSPACE_BENCH_DATA ? { examples: window.WORKSPACE_BENCH_DATA.examples } : await workspaceFetchJson('./data/examples.json');
+          container.innerHTML = data.examples.map((example) => `
+            <article class="card">
+              <div class="badge badge-blue">${example.profile}</div>
+              <h2 style="font-size:1.35rem;margin-top:12px">${example.title}</h2>
+              <p style="margin-top:8px">${example.instruction}</p>
+              <div class="grid" style="margin-top:16px">
+                <div><strong>Workspace</strong><p>${example.workspace}</p></div>
+                <div><strong>Required Files</strong><p>${example.requiredFiles.join(', ')}</p></div>
+                <div><strong>Hidden Dependencies</strong><p>${example.hiddenDependencies}</p></div>
+                <div><strong>Expected Deliverable</strong><p>${example.deliverable}</p></div>
+                <div><strong>Rubric Examples</strong><p>${example.rubrics.join(', ')}</p></div>
+              </div>
+            </article>
+          `).join('');
+        } catch (error) {
+          container.innerHTML = `<div class="callout">Unable to load examples: ${error.message}</div>`;
+        }
+      });
+    </script>
+  </body>
+</html>

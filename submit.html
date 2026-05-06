@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Workspace-Bench Submission</title>
+    <meta name="description" content="Submission guide and result schema for Workspace-Bench.">
+    <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/workspace.css">
+  </head>
+  <body>
+    <div data-workspace-header></div>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <div class="page-title-row">
+            <img src="./workspace-bench.svg" alt="">
+            <div><h1 style="font-size:2.5rem">Submission</h1></div>
+          </div>
+          <p class="page-lead">
+            Submit results with enough metadata for maintainers to reproduce the run, inspect the deliverables, and
+            verify the reported score. Verified Results are expected to include logs and configuration details.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-3">
+            <div class="card"><h3>Required Files</h3><p>Result JSON, report link, logs, environment configuration, and task split details.</p></div>
+            <div class="card"><h3>Recommended Files</h3><p>Run scripts, cost summary, patched artifacts, and a short write-up of known failure cases.</p></div>
+            <div class="card"><h3>Verified Results</h3><p>Verified submissions should be reproducible by maintainers from the provided materials.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Submission Checklist</h2>
+              <p class="section-subtitle">Every submission should make the evaluation setup explicit.</p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3>Agent Metadata</h3>
+              <p>Agent harness name, backbone model, version, tool permissions, and prompt or policy configuration.</p>
+            </div>
+            <div class="card">
+              <h3>Environment Metadata</h3>
+              <p>Runtime versions, hardware notes if relevant, benchmark split, cost budget, timeout policy, and workspace limits.</p>
+            </div>
+            <div class="card">
+              <h3>Execution Artifacts</h3>
+              <p>Logs, final deliverables, patch summaries, and any auxiliary validation outputs generated during the run.</p>
+            </div>
+            <div class="card">
+              <h3>Reproduction Route</h3>
+              <p>A stable report URL or repository path that maintainers can use to replay or inspect the run end to end.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2>Result JSON Schema</h2>
+          <div class="code-block">{
+  "agent": "string",
+  "harness": "string",
+  "model": "string",
+  "benchmark": "Workspace-Bench",
+  "split": "full | lite",
+  "overall_score": 0.0,
+  "task_success_rate": 0.0,
+  "rubric_pass_rate": 0.0,
+  "cost_usd": 0.0,
+  "runtime_minutes": 0.0,
+  "workspace_size": "string",
+  "date": "YYYY-MM-DD",
+  "verified": false,
+  "report_url": "string"
+}</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="callout">
+            Submit benchmark questions or result packages through the project repository:
+            <a href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">OpenDataBox/Workspace-Bench</a>.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-workspace-footer></div>
+
+    <script src="./workspace-site.js"></script>
+  </body>
+</html>

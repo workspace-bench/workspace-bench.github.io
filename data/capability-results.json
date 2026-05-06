@@ -1,0 +1,10 @@
+{
+  "capabilities": [
+    { "capability": "File Dependency Discovery", "bestScore": 75.0, "averageScore": 54.8 },
+    { "capability": "Cross-file Reasoning", "bestScore": 69.2, "averageScore": 48.6 },
+    { "capability": "Context Integration", "bestScore": 66.5, "averageScore": 46.2 },
+    { "capability": "Adaptive Decision Making", "bestScore": 63.8, "averageScore": 43.9 },
+    { "capability": "Workspace Modification", "bestScore": 62.6, "averageScore": 42.4 },
+    { "capability": "Final Deliverable Quality", "bestScore": 60.4, "averageScore": 39.8 }
+  ]
+}

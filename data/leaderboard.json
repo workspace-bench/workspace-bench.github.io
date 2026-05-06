@@ -1,0 +1,165 @@
+{
+  "note": "Leaderboard entries are structured for the Workspace-Bench website. Aggregate values marked paper-reported come from the Workspace-Bench 1.0 paper summary; detailed per-system rows should be replaced with verified submissions as maintainers publish them.",
+  "leaderboards": [
+    {
+      "name": "Overall",
+      "description": "Full Workspace-Bench setting with large-scale workspaces, rubric-based scoring, and realistic file dependencies.",
+      "results": [
+        {
+          "rank": 1,
+          "agent": "Best Paper-Reported Agent",
+          "harness": "Agent harness from paper evaluation",
+          "model": "Best of evaluated foundation models",
+          "overall_score": 68.7,
+          "task_success_rate": 61.9,
+          "rubric_pass_rate": 68.7,
+          "cost_usd": 19.6,
+          "runtime_minutes": 72,
+          "workspace_size": "Full",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": true,
+          "source": "paper-reported",
+          "report_url": "https://arxiv.org/abs/2605.03596"
+        },
+        {
+          "rank": 2,
+          "agent": "Planner-Executor Agent",
+          "harness": "Planner executor",
+          "model": "Frontier model",
+          "overall_score": 63.4,
+          "task_success_rate": 56.8,
+          "rubric_pass_rate": 63.4,
+          "cost_usd": 15.2,
+          "runtime_minutes": 64,
+          "workspace_size": "Full",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": false,
+          "source": "illustrative breakdown",
+          "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+        },
+        {
+          "rank": 3,
+          "agent": "Tool-Use Agent",
+          "harness": "Tool-use scaffold",
+          "model": "Frontier model",
+          "overall_score": 58.9,
+          "task_success_rate": 51.7,
+          "rubric_pass_rate": 58.9,
+          "cost_usd": 11.4,
+          "runtime_minutes": 58,
+          "workspace_size": "Full",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": false,
+          "source": "illustrative breakdown",
+          "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+        },
+        {
+          "rank": 4,
+          "agent": "Average Paper-Reported Agent",
+          "harness": "Mean across evaluated systems",
+          "model": "7 foundation models",
+          "overall_score": 47.4,
+          "task_success_rate": 41.8,
+          "rubric_pass_rate": 47.4,
+          "cost_usd": 8.8,
+          "runtime_minutes": 46,
+          "workspace_size": "Full",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": true,
+          "source": "paper-reported",
+          "report_url": "https://arxiv.org/abs/2605.03596"
+        },
+        {
+          "rank": 5,
+          "agent": "Human Reference",
+          "harness": "Human worker",
+          "model": "Human",
+          "overall_score": 80.7,
+          "task_success_rate": 78.4,
+          "rubric_pass_rate": 80.7,
+          "cost_usd": null,
+          "runtime_minutes": null,
+          "workspace_size": "Full",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": true,
+          "source": "paper-reported",
+          "report_url": "https://arxiv.org/abs/2605.03596"
+        }
+      ]
+    },
+    {
+      "name": "Workspace-Bench-Lite",
+      "description": "A 100-task subset designed to reduce evaluation cost by approximately 70% while retaining representative workspace complexity.",
+      "results": [
+        {
+          "rank": 1,
+          "agent": "Best Paper-Reported Agent",
+          "harness": "Agent harness from paper evaluation",
+          "model": "Best of evaluated foundation models",
+          "overall_score": 70.1,
+          "task_success_rate": 63.0,
+          "rubric_pass_rate": 70.1,
+          "cost_usd": 5.9,
+          "runtime_minutes": 24,
+          "workspace_size": "Lite",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": true,
+          "source": "paper-reported",
+          "report_url": "https://arxiv.org/abs/2605.03596"
+        },
+        {
+          "rank": 2,
+          "agent": "Average Paper-Reported Agent",
+          "harness": "Mean across evaluated systems",
+          "model": "7 foundation models",
+          "overall_score": 49.0,
+          "task_success_rate": 43.5,
+          "rubric_pass_rate": 49.0,
+          "cost_usd": 2.7,
+          "runtime_minutes": 18,
+          "workspace_size": "Lite",
+          "profile": "All profiles",
+          "capability": "Overall",
+          "date": "2026-05-05",
+          "verified": true,
+          "source": "paper-reported",
+          "report_url": "https://arxiv.org/abs/2605.03596"
+        }
+      ]
+    },
+    {
+      "name": "By Worker Profile",
+      "description": "Performance by professional workspace profile. Values are prepared for visualization and should be updated with official per-profile releases.",
+      "results": [
+        { "rank": 1, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 72.4, "task_success_rate": 65.2, "rubric_pass_rate": 72.4, "cost_usd": 16.8, "runtime_minutes": 60, "workspace_size": "Full", "profile": "Research analyst", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 2, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 69.3, "task_success_rate": 62.0, "rubric_pass_rate": 69.3, "cost_usd": 18.4, "runtime_minutes": 67, "workspace_size": "Full", "profile": "Data operator", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 3, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 66.8, "task_success_rate": 59.6, "rubric_pass_rate": 66.8, "cost_usd": 20.1, "runtime_minutes": 73, "workspace_size": "Full", "profile": "Project coordinator", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 4, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 64.7, "task_success_rate": 56.5, "rubric_pass_rate": 64.7, "cost_usd": 21.5, "runtime_minutes": 78, "workspace_size": "Full", "profile": "Content specialist", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 5, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 61.9, "task_success_rate": 54.1, "rubric_pass_rate": 61.9, "cost_usd": 19.9, "runtime_minutes": 75, "workspace_size": "Full", "profile": "Operations assistant", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" }
+      ]
+    },
+    {
+      "name": "By Capability",
+      "description": "Capability-oriented view of workspace learning behaviors.",
+      "results": [
+        { "rank": 1, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 75.0, "task_success_rate": 68.0, "rubric_pass_rate": 75.0, "cost_usd": 18.2, "runtime_minutes": 62, "workspace_size": "Full", "profile": "All profiles", "capability": "File Dependency Discovery", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 2, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 69.2, "task_success_rate": 62.1, "rubric_pass_rate": 69.2, "cost_usd": 19.1, "runtime_minutes": 68, "workspace_size": "Full", "profile": "All profiles", "capability": "Cross-file Reasoning", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 3, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 66.5, "task_success_rate": 58.9, "rubric_pass_rate": 66.5, "cost_usd": 20.3, "runtime_minutes": 74, "workspace_size": "Full", "profile": "All profiles", "capability": "Context Integration", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 4, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 63.8, "task_success_rate": 56.0, "rubric_pass_rate": 63.8, "cost_usd": 22.0, "runtime_minutes": 80, "workspace_size": "Full", "profile": "All profiles", "capability": "Adaptive Decision Making", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
+        { "rank": 5, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 60.4, "task_success_rate": 52.8, "rubric_pass_rate": 60.4, "cost_usd": 21.2, "runtime_minutes": 77, "workspace_size": "Full", "profile": "All profiles", "capability": "Final Deliverable Quality", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" }
+      ]
+    }
+  ]
+}

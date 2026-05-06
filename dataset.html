@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Workspace-Bench Dataset Visualizations</title>
+    <meta name="description" content="Dataset visualizations and composition for Workspace-Bench.">
+    <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles/workspace.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div data-workspace-header></div>
+
+    <main>
+      <section class="page-header">
+        <div class="container">
+          <div class="page-title-row">
+            <img src="./workspace-bench.svg" alt="">
+            <div><h1 style="font-size:2.5rem">Dataset Visualizations</h1></div>
+          </div>
+          <p class="page-lead">
+            Workspace-Bench 1.0 contains 5 worker profiles, 74 file types, 20,476 files, 388 tasks, and 7,399 rubrics.
+            This page summarizes the structure of the benchmark and the workload characteristics that drive evaluation difficulty.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-3">
+            <div class="card stat-card"><div class="value">20,476</div><div class="label">Files distributed across full benchmark workspaces.</div></div>
+            <div class="card stat-card"><div class="value">7,399</div><div class="label">Rubrics used to grade deliverables.</div></div>
+            <div class="card stat-card"><div class="value">20GB</div><div class="label">Largest workspace size represented in the benchmark.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Dataset Overview</h2>
+              <p class="section-subtitle">
+                The benchmark is organized around realistic professional workspaces. Each task requires reasoning over
+                files, metadata, and dependencies that may not be explicit in the initial instruction.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card chart-card"><canvas id="fileTypeChart" aria-label="File type distribution chart"></canvas></div>
+            <div class="card chart-card"><canvas id="profileTaskChart" aria-label="Tasks by profile chart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Official Workspace-Bench Figures</h2>
+              <p class="section-subtitle">
+                These figures are pulled from the public Workspace-Bench repository assets and shown directly in the site.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card">
+              <h3>Framework</h3>
+              <img src="./assets/Framework.png" alt="Workspace-Bench framework figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
+            </div>
+            <div class="card">
+              <h3>Distribution</h3>
+              <img src="./assets/Distribution.png" alt="Workspace-Bench distribution figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Task Complexity</h2>
+              <p class="section-subtitle">
+                Complexity comes from both the number of required files and the structure of the dependency graph.
+                Workspace-Bench makes context search part of the benchmark rather than an implementation detail.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card chart-card"><canvas id="taskComplexityChart" aria-label="Required files per task chart"></canvas></div>
+            <div class="card chart-card"><canvas id="workspaceSizeChart" aria-label="Workspace size distribution chart"></canvas></div>
+            <div class="card chart-card"><canvas id="rubricCountChart" aria-label="Rubric count per task chart"></canvas></div>
+            <div class="card chart-card"><canvas id="capabilityChart" aria-label="Best score by capability chart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-1">
+            <div class="card">
+              <h3>Rubrics and Success</h3>
+              <img src="./assets/rubrics_success.png" alt="Workspace-Bench rubrics and success figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="grid grid-2">
+            <div class="card">
+              <h2 style="font-size:1.35rem">Lite Split</h2>
+              <p>
+                Workspace-Bench-Lite contains 100 tasks and reduces evaluation cost by approximately 70% while retaining
+                representative patterns of hidden file dependencies, multi-step context integration, and rubric-heavy grading.
+              </p>
+            </div>
+            <div class="card">
+              <h2 style="font-size:1.35rem">File Type Distribution</h2>
+              <p>
+                The 74 file types span documents, spreadsheets, code, structured data, media, metadata, configuration,
+                and archived bundles. This diversity pushes agents beyond narrow code-only or document-only settings.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div data-workspace-footer></div>
+
+    <script src="./workspace-data.js"></script>
+    <script src="./workspace-site.js"></script>
+    <script src="./workspace-charts.js"></script>
+  </body>
+</html>
