@@ -16,7 +16,7 @@
       <section class="hero">
         <div class="container hero-inner">
           <div>
-            <div class="eyebrow">Benchmarking workspace learning</div>
+            <div class="eyebrow">Independent analysis of workspace agents</div>
             <h1>Workspace-Bench 1.0</h1>
             <p class="hero-copy">
               Workspace-Bench evaluates how well AI agents operate in realistic workspaces with large-scale file
@@ -33,14 +33,45 @@
             </div>
           </div>
 
-          <aside class="hero-panel" aria-label="Benchmark summary">
-            <div class="metric-list">
-              <div class="metric-row"><div><div class="metric-label">Worker Profiles</div><div class="metric-value">5</div></div><div class="metric-label">Realistic professional roles</div></div>
-              <div class="metric-row"><div><div class="metric-label">File Types</div><div class="metric-value">74</div></div><div class="metric-label">Documents, code, data, media</div></div>
-              <div class="metric-row"><div><div class="metric-label">Files</div><div class="metric-value">20,476</div></div><div class="metric-label">Large-scale workspace context</div></div>
-              <div class="metric-row"><div><div class="metric-label">Tasks</div><div class="metric-value">388</div></div><div class="metric-label">Full benchmark workload</div></div>
-              <div class="metric-row"><div><div class="metric-label">Rubrics</div><div class="metric-value">7,399</div></div><div class="metric-label">Fine-grained scoring criteria</div></div>
-              <div class="metric-row"><div><div class="metric-label">Max Workspace</div><div class="metric-value">20GB</div></div><div class="metric-label">High-context operating conditions</div></div>
+          <aside class="hero-panel analysis-shell" aria-label="Benchmark analysis preview">
+            <div class="analysis-shell-header">
+              <div class="analysis-shell-title"><span class="status-dot"></span>Workspace-Bench-Lite public ranking</div>
+              <span class="badge badge-green">Repository figure</span>
+            </div>
+            <div class="analysis-shell-body">
+              <div class="analysis-table-preview">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Harness</th>
+                      <th>Model</th>
+                      <th class="numeric">Rubric Pass</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td class="rank">#1</td><td><strong>OpenClaw</strong></td><td>Opus-4.7</td><td class="numeric score">66.6%</td></tr>
+                    <tr><td class="rank">#2</td><td><strong>ClaudeCode</strong></td><td>Opus-4.7</td><td class="numeric score">64.4%</td></tr>
+                    <tr><td class="rank">#3</td><td><strong>Hermes</strong></td><td>Opus-4.7</td><td class="numeric score">64.3%</td></tr>
+                    <tr><td class="rank">#4</td><td><strong>DeepAgent</strong></td><td>GLM-5.1</td><td class="numeric score">60.8%</td></tr>
+                    <tr><td class="rank">#5</td><td><strong>Hermes</strong></td><td>GLM-5.1</td><td class="numeric score">57.7%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="analysis-side">
+                <div class="analysis-note">
+                  <strong>What this site tracks</strong>
+                  <p>Workspace learning, file dependency discovery, rubric success, split composition, and public Lite results.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Current public data</strong>
+                  <p>Full benchmark aggregate scores plus Lite per harness/model rows from official public assets.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Submission ready</strong>
+                  <p>The table structure already supports verified future runs with cost, runtime, logs, and reports.</p>
+                </div>
+              </div>
             </div>
           </aside>
         </div>
@@ -49,18 +80,35 @@
       <section class="section">
         <div class="container">
           <p style="display:none">20,476 Files 7,399 Rubrics</p>
-          <div class="grid grid-3">
-            <div class="card stat-card">
-              <div class="value">80.7%</div>
-              <div class="label">Human reference score on the full benchmark.</div>
+          <div class="aa-metric-strip" aria-label="Workspace-Bench metrics">
+            <div class="aa-metric"><div class="aa-metric-value">80.7%</div><div class="aa-metric-label">Human reference</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">68.7%</div><div class="aa-metric-label">Best public agent</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">47.4%</div><div class="aa-metric-label">Average public agent</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">388</div><div class="aa-metric-label">Full benchmark tasks</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">20,476</div><div class="aa-metric-label">Workspace files</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">7,399</div><div class="aa-metric-label">Rubric criteria</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Latest Public Lite Leaders</h2>
+              <p class="section-subtitle">
+                The top public combinations are read from the official Workspace-Bench repository figure and displayed
+                as an analysis-first ranking, similar to model intelligence dashboards.
+              </p>
             </div>
-            <div class="card stat-card">
-              <div class="value">68.7%</div>
-              <div class="label">Best paper-reported agent score.</div>
-            </div>
-            <div class="card stat-card">
-              <div class="value">47.4%</div>
-              <div class="label">Average score across the evaluated agent systems.</div>
+            <a class="button" href="./leaderboard.html">Open Full Leaderboard</a>
+          </div>
+          <div class="card">
+            <div class="rank-list">
+              <div class="rank-row"><span class="rank">#1</span><strong>OpenClaw + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:66.6%"></span></div><span class="score">66.6%</span></div>
+              <div class="rank-row"><span class="rank">#2</span><strong>ClaudeCode + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:64.4%"></span></div><span class="score">64.4%</span></div>
+              <div class="rank-row"><span class="rank">#3</span><strong>Hermes + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:64.3%"></span></div><span class="score">64.3%</span></div>
+              <div class="rank-row"><span class="rank">#4</span><strong>DeepAgent + GLM-5.1</strong><div class="rank-bar-track"><span class="rank-bar" style="width:60.8%"></span></div><span class="score">60.8%</span></div>
             </div>
           </div>
         </div>

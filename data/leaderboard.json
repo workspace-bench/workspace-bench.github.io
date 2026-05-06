@@ -1,165 +1,351 @@
 {
-  "note": "Leaderboard entries are structured for the Workspace-Bench website. Aggregate values marked paper-reported come from the Workspace-Bench 1.0 paper summary; detailed per-system rows should be replaced with verified submissions as maintainers publish them.",
+  "note": "Workspace-Bench-Lite public leaderboard rows are transcribed from the official rubrics_success figure in the public repository. Full-benchmark public rows come from the paper summary.",
+  "litePublicResults": [
+    {
+      "rank": 1,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "Opus-4.7",
+      "rubric_pass_rate": 66.6,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 2,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "Opus-4.7",
+      "rubric_pass_rate": 64.4,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 3,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "Opus-4.7",
+      "rubric_pass_rate": 64.3,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 4,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "GLM-5.1",
+      "rubric_pass_rate": 60.8,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 5,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "GLM-5.1",
+      "rubric_pass_rate": 57.7,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 6,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "GLM-5.1",
+      "rubric_pass_rate": 57.5,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 7,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "MiniMax-M2.7",
+      "rubric_pass_rate": 54.6,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 8,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "Opus-4.7",
+      "rubric_pass_rate": 54.3,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 9,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "GLM-5.1",
+      "rubric_pass_rate": 52.4,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 10,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "MiniMax-M2.7",
+      "rubric_pass_rate": 52.3,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 11,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "GPT-5.4",
+      "rubric_pass_rate": 51.7,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 12,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "Kimi-2.5",
+      "rubric_pass_rate": 49,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 13,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "Kimi-2.5",
+      "rubric_pass_rate": 48.4,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 14,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "GPT-5.4",
+      "rubric_pass_rate": 47,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 15,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "MiniMax-M2.7",
+      "rubric_pass_rate": 44.9,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 16,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "Kimi-2.5",
+      "rubric_pass_rate": 44.6,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 17,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "GPT-5.4",
+      "rubric_pass_rate": 44.2,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 18,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "MiniMax-M2.7",
+      "rubric_pass_rate": 44.1,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 19,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "Seed-2.0-Code",
+      "rubric_pass_rate": 42.5,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 20,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "Kimi-2.5",
+      "rubric_pass_rate": 41.6,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 21,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "Seed-2.0-Code",
+      "rubric_pass_rate": 40,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 22,
+      "agent": "ClaudeCode",
+      "harness": "ClaudeCode",
+      "model": "Seed-2.0-Code",
+      "rubric_pass_rate": 38.4,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 23,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "Gemini-3.1-Pro",
+      "rubric_pass_rate": 37.3,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 24,
+      "agent": "DeepAgent",
+      "harness": "DeepAgent",
+      "model": "Gemini-3.1-Pro",
+      "rubric_pass_rate": 37,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 25,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "GPT-5.4",
+      "rubric_pass_rate": 35.8,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 26,
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
+      "model": "Seed-2.0-Code",
+      "rubric_pass_rate": 34.5,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 27,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "Gemini-3.1-Pro",
+      "rubric_pass_rate": 31.4,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    },
+    {
+      "rank": 28,
+      "agent": "Hermes",
+      "harness": "Hermes",
+      "model": "Gemini-3.1-Pro",
+      "rubric_pass_rate": 27,
+      "source": "repository-figure",
+      "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
+    }
+  ],
+  "thresholds": [
+    {
+      "label": "Pass >= 30%",
+      "value": 30
+    },
+    {
+      "label": "Pass >= 40%",
+      "value": 40
+    },
+    {
+      "label": "Pass >= 50%",
+      "value": 50
+    },
+    {
+      "label": "Pass >= 60%",
+      "value": 60
+    }
+  ],
+  "fullSummaryRows": [
+    {
+      "rank": 1,
+      "agent": "Human + Tools",
+      "harness": "Human reference",
+      "model": "Human",
+      "overall_score": 80.7,
+      "task_success_rate": 80.7,
+      "rubric_pass_rate": 80.7,
+      "workspace_size": "Full",
+      "profile": "All profiles",
+      "capability": "Overall",
+      "date": "2026-05-05",
+      "verified": true,
+      "source": "paper-reported",
+      "report_url": "https://arxiv.org/abs/2605.03596"
+    },
+    {
+      "rank": 2,
+      "agent": "Best public agent",
+      "harness": "Best evaluated harness",
+      "model": "Best evaluated model",
+      "overall_score": 68.7,
+      "task_success_rate": 68.7,
+      "rubric_pass_rate": 68.7,
+      "workspace_size": "Full",
+      "profile": "All profiles",
+      "capability": "Overall",
+      "date": "2026-05-05",
+      "verified": true,
+      "source": "paper-reported",
+      "report_url": "https://arxiv.org/abs/2605.03596"
+    },
+    {
+      "rank": 3,
+      "agent": "Average public agent",
+      "harness": "Mean across evaluated agents",
+      "model": "4 harnesses / 7 foundation models",
+      "overall_score": 47.4,
+      "task_success_rate": 47.4,
+      "rubric_pass_rate": 47.4,
+      "workspace_size": "Full",
+      "profile": "All profiles",
+      "capability": "Overall",
+      "date": "2026-05-05",
+      "verified": true,
+      "source": "paper-reported",
+      "report_url": "https://arxiv.org/abs/2605.03596"
+    }
+  ],
   "leaderboards": [
     {
       "name": "Overall",
-      "description": "Full Workspace-Bench setting with large-scale workspaces, rubric-based scoring, and realistic file dependencies.",
-      "results": [
-        {
-          "rank": 1,
-          "agent": "Best Paper-Reported Agent",
-          "harness": "Agent harness from paper evaluation",
-          "model": "Best of evaluated foundation models",
-          "overall_score": 68.7,
-          "task_success_rate": 61.9,
-          "rubric_pass_rate": 68.7,
-          "cost_usd": 19.6,
-          "runtime_minutes": 72,
-          "workspace_size": "Full",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": true,
-          "source": "paper-reported",
-          "report_url": "https://arxiv.org/abs/2605.03596"
-        },
-        {
-          "rank": 2,
-          "agent": "Planner-Executor Agent",
-          "harness": "Planner executor",
-          "model": "Frontier model",
-          "overall_score": 63.4,
-          "task_success_rate": 56.8,
-          "rubric_pass_rate": 63.4,
-          "cost_usd": 15.2,
-          "runtime_minutes": 64,
-          "workspace_size": "Full",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": false,
-          "source": "illustrative breakdown",
-          "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
-        },
-        {
-          "rank": 3,
-          "agent": "Tool-Use Agent",
-          "harness": "Tool-use scaffold",
-          "model": "Frontier model",
-          "overall_score": 58.9,
-          "task_success_rate": 51.7,
-          "rubric_pass_rate": 58.9,
-          "cost_usd": 11.4,
-          "runtime_minutes": 58,
-          "workspace_size": "Full",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": false,
-          "source": "illustrative breakdown",
-          "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
-        },
-        {
-          "rank": 4,
-          "agent": "Average Paper-Reported Agent",
-          "harness": "Mean across evaluated systems",
-          "model": "7 foundation models",
-          "overall_score": 47.4,
-          "task_success_rate": 41.8,
-          "rubric_pass_rate": 47.4,
-          "cost_usd": 8.8,
-          "runtime_minutes": 46,
-          "workspace_size": "Full",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": true,
-          "source": "paper-reported",
-          "report_url": "https://arxiv.org/abs/2605.03596"
-        },
-        {
-          "rank": 5,
-          "agent": "Human Reference",
-          "harness": "Human worker",
-          "model": "Human",
-          "overall_score": 80.7,
-          "task_success_rate": 78.4,
-          "rubric_pass_rate": 80.7,
-          "cost_usd": null,
-          "runtime_minutes": null,
-          "workspace_size": "Full",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": true,
-          "source": "paper-reported",
-          "report_url": "https://arxiv.org/abs/2605.03596"
-        }
-      ]
+      "description": "Full Workspace-Bench paper summary. Detailed full-benchmark per-system tables are not public yet."
     },
     {
       "name": "Workspace-Bench-Lite",
-      "description": "A 100-task subset designed to reduce evaluation cost by approximately 70% while retaining representative workspace complexity.",
-      "results": [
-        {
-          "rank": 1,
-          "agent": "Best Paper-Reported Agent",
-          "harness": "Agent harness from paper evaluation",
-          "model": "Best of evaluated foundation models",
-          "overall_score": 70.1,
-          "task_success_rate": 63.0,
-          "rubric_pass_rate": 70.1,
-          "cost_usd": 5.9,
-          "runtime_minutes": 24,
-          "workspace_size": "Lite",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": true,
-          "source": "paper-reported",
-          "report_url": "https://arxiv.org/abs/2605.03596"
-        },
-        {
-          "rank": 2,
-          "agent": "Average Paper-Reported Agent",
-          "harness": "Mean across evaluated systems",
-          "model": "7 foundation models",
-          "overall_score": 49.0,
-          "task_success_rate": 43.5,
-          "rubric_pass_rate": 49.0,
-          "cost_usd": 2.7,
-          "runtime_minutes": 18,
-          "workspace_size": "Lite",
-          "profile": "All profiles",
-          "capability": "Overall",
-          "date": "2026-05-05",
-          "verified": true,
-          "source": "paper-reported",
-          "report_url": "https://arxiv.org/abs/2605.03596"
-        }
-      ]
+      "description": "Public Workspace-Bench-Lite leaderboard transcribed from the official repository figure."
+    },
+    {
+      "name": "Threshold Views",
+      "description": "Count how many public Lite systems clear increasingly strict rubric pass-rate thresholds."
     },
     {
       "name": "By Worker Profile",
-      "description": "Performance by professional workspace profile. Values are prepared for visualization and should be updated with official per-profile releases.",
-      "results": [
-        { "rank": 1, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 72.4, "task_success_rate": 65.2, "rubric_pass_rate": 72.4, "cost_usd": 16.8, "runtime_minutes": 60, "workspace_size": "Full", "profile": "Research analyst", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 2, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 69.3, "task_success_rate": 62.0, "rubric_pass_rate": 69.3, "cost_usd": 18.4, "runtime_minutes": 67, "workspace_size": "Full", "profile": "Data operator", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 3, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 66.8, "task_success_rate": 59.6, "rubric_pass_rate": 66.8, "cost_usd": 20.1, "runtime_minutes": 73, "workspace_size": "Full", "profile": "Project coordinator", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 4, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 64.7, "task_success_rate": 56.5, "rubric_pass_rate": 64.7, "cost_usd": 21.5, "runtime_minutes": 78, "workspace_size": "Full", "profile": "Content specialist", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 5, "agent": "Best Paper-Reported Agent", "harness": "Profile analysis", "model": "Best evaluated model", "overall_score": 61.9, "task_success_rate": 54.1, "rubric_pass_rate": 61.9, "cost_usd": 19.9, "runtime_minutes": 75, "workspace_size": "Full", "profile": "Operations assistant", "capability": "Profile", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" }
-      ]
+      "description": "Official benchmark composition by workspace profile from the public distribution figure."
     },
     {
-      "name": "By Capability",
-      "description": "Capability-oriented view of workspace learning behaviors.",
-      "results": [
-        { "rank": 1, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 75.0, "task_success_rate": 68.0, "rubric_pass_rate": 75.0, "cost_usd": 18.2, "runtime_minutes": 62, "workspace_size": "Full", "profile": "All profiles", "capability": "File Dependency Discovery", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 2, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 69.2, "task_success_rate": 62.1, "rubric_pass_rate": 69.2, "cost_usd": 19.1, "runtime_minutes": 68, "workspace_size": "Full", "profile": "All profiles", "capability": "Cross-file Reasoning", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 3, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 66.5, "task_success_rate": 58.9, "rubric_pass_rate": 66.5, "cost_usd": 20.3, "runtime_minutes": 74, "workspace_size": "Full", "profile": "All profiles", "capability": "Context Integration", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 4, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 63.8, "task_success_rate": 56.0, "rubric_pass_rate": 63.8, "cost_usd": 22.0, "runtime_minutes": 80, "workspace_size": "Full", "profile": "All profiles", "capability": "Adaptive Decision Making", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" },
-        { "rank": 5, "agent": "Best Paper-Reported Agent", "harness": "Capability analysis", "model": "Best evaluated model", "overall_score": 60.4, "task_success_rate": 52.8, "rubric_pass_rate": 60.4, "cost_usd": 21.2, "runtime_minutes": 77, "workspace_size": "Full", "profile": "All profiles", "capability": "Final Deliverable Quality", "date": "2026-05-05", "verified": false, "source": "illustrative breakdown", "report_url": "https://github.com/OpenDataBox/Workspace-Bench" }
-      ]
+      "name": "By Difficulty",
+      "description": "Official task difficulty split from the public distribution figure."
+    },
+    {
+      "name": "By Ability",
+      "description": "Official task ability counts from the public distribution figure."
     }
   ]
 }

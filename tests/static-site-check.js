@@ -28,11 +28,11 @@ const requiredFiles = [
 ];
 
 const requiredText = {
-  'index.html': ['Workspace-Bench 1.0', '20,476 Files', '7,399 Rubrics', '80.7%', '68.7%', '47.4%'],
-  'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Capability'],
-  'dataset.html': ['Dataset Visualizations', 'File Type Distribution', 'Task Complexity', 'Lite Split'],
-  'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements'],
-  'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples'],
+  'index.html': ['Workspace-Bench 1.0', '20,476 Files', '7,399 Rubrics', '80.7%', '68.7%', '47.4%', 'Independent analysis of workspace agents'],
+  'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability', 'Framework x Model Matrix', 'No public cost data'],
+  'dataset.html': ['Dataset Visualizations', 'File Type Distribution', 'Task Complexity', 'Lite Split', 'Dataset intelligence overview', 'Workspace Composition Table'],
+  'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
+  'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
   'submit.html': ['Submission', 'Result JSON Schema', 'Verified Results'],
   'citation.html': ['Citation', '2605.03596', 'OpenDataBox/Workspace-Bench']
 };
@@ -40,6 +40,16 @@ const requiredText = {
 function fail(message) {
   console.error(`FAIL: ${message}`);
   process.exitCode = 1;
+}
+
+const styleText = fs.readFileSync(path.join(root, 'styles/workspace.css'), 'utf8');
+for (const selector of ['analysis-shell', 'aa-metric-strip', 'leaderboard-insight-card', 'rank-bar', 'no-data-panel', 'analysis-list', 'compact-data-table', 'pipeline-step']) {
+  if (!styleText.includes(selector)) fail(`workspace.css missing Artificial Analysis style selector: ${selector}`);
+}
+
+const leaderboardScript = fs.readFileSync(path.join(root, 'workspace-leaderboard.js'), 'utf8');
+for (const marker of ['workspaceRenderFrameworkMatrix', 'workspaceRenderInsightCards', 'workspaceRenderNoDataPanel']) {
+  if (!leaderboardScript.includes(marker)) fail(`workspace-leaderboard.js missing renderer: ${marker}`);
 }
 
 for (const file of requiredFiles) {
@@ -81,7 +91,7 @@ if (fs.existsSync(leaderboardPath)) {
   if (!Array.isArray(data.leaderboards)) fail('leaderboard.json must contain leaderboards array');
   else {
     const names = data.leaderboards.map((item) => item.name);
-    for (const expected of ['Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Capability']) {
+    for (const expected of ['Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability']) {
       if (!names.includes(expected)) fail(`leaderboard missing tab ${expected}`);
     }
   }

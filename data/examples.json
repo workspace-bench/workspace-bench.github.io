@@ -1,44 +1,43 @@
 {
   "examples": [
     {
-      "title": "Quarterly research brief from scattered evidence",
-      "profile": "Research analyst",
-      "workspace": "Mixed documents, tables, notes, and archived references",
-      "instruction": "Prepare a concise decision brief by locating the relevant source files, resolving conflicting figures, and citing the final evidence chain.",
-      "requiredFiles": ["planning memo", "spreadsheet extracts", "meeting notes", "source PDFs"],
-      "hiddenDependencies": "Important assumptions appear in a dated note and a spreadsheet comment, not in the top-level README.",
-      "deliverable": "Brief with reconciled metrics, source citations, and caveats.",
-      "rubrics": ["Uses all required evidence", "Flags stale assumptions", "Reports reconciled values", "Provides traceable citations"]
+      "title": "Large workspace evidence gathering",
+      "profile": "Workspace learning",
+      "workspace": "A realistic workspace containing heterogeneous file types and large-scale file dependencies.",
+      "instruction": "Locate the files needed for a worker-style task, integrate the relevant context, and produce a rubric-gradable deliverable.",
+      "requiredFiles": [
+        "task instruction",
+        "workspace files",
+        "implicit dependencies",
+        "rubric criteria"
+      ],
+      "hiddenDependencies": "Dependencies may be implicit rather than named directly in the user instruction.",
+      "deliverable": "A final artifact scored by detailed Workspace-Bench rubrics.",
+      "rubrics": [
+        "Finds relevant files",
+        "Uses dependent evidence",
+        "Produces correct deliverable",
+        "Satisfies rubric criteria"
+      ]
     },
     {
-      "title": "Workspace cleanup with policy constraints",
-      "profile": "Operations assistant",
-      "workspace": "Nested directories with duplicated files, policy docs, and logs",
-      "instruction": "Identify obsolete files, preserve regulated records, and produce a cleanup manifest.",
-      "requiredFiles": ["retention policy", "directory inventory", "audit log", "exception list"],
-      "hiddenDependencies": "Several files look duplicated but are retained because an audit log references them.",
-      "deliverable": "Cleanup manifest with keep/delete decisions and rationale.",
-      "rubrics": ["Does not remove protected files", "Explains each exception", "Groups duplicates correctly", "Includes reproducible commands"]
-    },
-    {
-      "title": "Cross-file data quality investigation",
-      "profile": "Data operator",
-      "workspace": "CSV files, schema notes, validation reports, and dashboards",
-      "instruction": "Find why the dashboard total diverges from the source exports and propose the correction.",
-      "requiredFiles": ["schema notes", "source CSVs", "dashboard config", "validation report"],
-      "hiddenDependencies": "The mismatch depends on a column rename documented only in a migration note.",
-      "deliverable": "Diagnosis, corrected aggregation rule, and updated validation summary.",
-      "rubrics": ["Finds the migration note", "Identifies the wrong join key", "Quantifies the impact", "Provides corrected logic"]
-    },
-    {
-      "title": "Multi-file content package update",
-      "profile": "Content specialist",
-      "workspace": "Drafts, asset metadata, style guide, and release checklist",
-      "instruction": "Update a content package so that copy, asset references, and release checklist are consistent.",
-      "requiredFiles": ["style guide", "draft pages", "asset catalog", "release checklist"],
-      "hiddenDependencies": "The current asset version is encoded in metadata and not visible in filenames.",
-      "deliverable": "Updated package summary with all changed references.",
-      "rubrics": ["Maintains style constraints", "Uses current assets", "Updates all references", "Notes unresolved risks"]
+      "title": "Rubric-based final deliverable scoring",
+      "profile": "Evaluation",
+      "workspace": "Workspace-Bench task with task-specific rubrics.",
+      "instruction": "Complete the task and submit an answer that can be evaluated against fine-grained rubrics.",
+      "requiredFiles": [
+        "workspace context",
+        "task data",
+        "rubrics"
+      ],
+      "hiddenDependencies": "A correct answer may require multi-file reasoning and cannot be judged by a single file lookup.",
+      "deliverable": "Task output with enough evidence to satisfy scoring criteria.",
+      "rubrics": [
+        "Task correctness",
+        "Completeness",
+        "Evidence consistency",
+        "Workspace dependency handling"
+      ]
     }
   ]
 }

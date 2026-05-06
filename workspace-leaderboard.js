@@ -194,6 +194,7 @@ function workspaceRenderTable(rows) {
   if (!container) return;
   const sorted = workspaceSortRows(rows);
   const visibleCount = sorted.length;
+  const topScore = Math.max(...sorted.map((row) => Number(row.overall_score) || 0), 1);
   container.innerHTML = `
     <div class="toolbar" style="margin-top:0;margin-bottom:10px">
       <div class="table-note">Showing ${visibleCount} row${visibleCount === 1 ? "" : "s"} from the current leaderboard view.</div>
@@ -225,7 +226,10 @@ function workspaceRenderTable(rows) {
                 <span class="badge">${row.harness}</span>
               </td>
               <td>${row.model}</td>
-              <td class="numeric score">${workspaceFormatNumber(row.overall_score, "%")}</td>
+              <td class="numeric score">
+                <span class="matrix-score">${workspaceFormatNumber(row.overall_score, "%")}</span>
+                <div class="rank-bar-track" aria-hidden="true"><span class="rank-bar" style="width:${Math.max(4, (Number(row.overall_score) || 0) / topScore * 100)}%"></span></div>
+              </td>
               <td class="numeric">${row.rubric_pass_rate === null ? "-" : workspaceFormatNumber(row.rubric_pass_rate, "%")}</td>
               <td class="numeric">${row.task_success_rate === null ? "-" : workspaceFormatNumber(row.task_success_rate, "%")}</td>
               <td class="numeric">${row.cost_usd === null ? "-" : `$${workspaceFormatNumber(row.cost_usd)}`}</td>
@@ -255,6 +259,18 @@ let scoreChart;
 let costChart;
 let runtimeChart;
 
+function workspaceRenderNoDataPanel(panel, title, message, note) {
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="no-data-panel">
+      <span class="badge">Public data pending</span>
+      <h3>${title}</h3>
+      <p>${message}</p>
+      <p class="table-note">${note}</p>
+    </div>
+  `;
+}
+
 function workspaceRenderLeaderboardCharts(rows) {
   if (typeof Chart === "undefined") return;
   const agentRows = rows.filter((row) => row.model !== "Human");
@@ -273,7 +289,12 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (costPoints.length > 0) {
     costChart = workspaceMakeScatterChart("scoreCostChart", costPoints, "Score vs Cost", "Cost ($)", "Score (%)");
   } else {
-    if (costPanel) costPanel.innerHTML = '<h3 style="margin:0 0 8px">Score vs Cost</h3><p class="section-subtitle">No public per-system cost data has been released in the current Workspace-Bench materials.</p><p class="table-note">This panel will update automatically once cost metadata is added to the leaderboard source.</p>';
+    workspaceRenderNoDataPanel(
+      costPanel,
+      "No public cost data",
+      "Workspace-Bench public materials do not currently release per-system evaluation cost.",
+      "This panel will render a cost-efficiency chart when verified submissions include cost metadata."
+    );
   }
 
   if (runtimeChart) runtimeChart.destroy();
@@ -281,8 +302,83 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (runtimePoints.length > 0) {
     runtimeChart = workspaceMakeScatterChart("scoreRuntimeChart", runtimePoints, "Score vs Runtime", "Runtime (min)", "Score (%)");
   } else {
-    if (runtimePanel) runtimePanel.innerHTML = '<h3 style="margin:0 0 8px">Score vs Runtime</h3><p class="section-subtitle">No public per-system runtime data has been released in the current Workspace-Bench materials.</p><p class="table-note">Runtime comparisons will render here when the source data becomes available.</p>';
+    workspaceRenderNoDataPanel(
+      runtimePanel,
+      "No public runtime data",
+      "Workspace-Bench public materials do not currently release per-system runtime or latency.",
+      "This panel will render a speed comparison once verified runs publish runtime metadata."
+    );
   }
+}
+
+function workspaceRenderInsightCards(data) {
+  const container = document.getElementById("leaderboardInsightCards");
+  if (!container) return;
+  const lite = data.litePublicResults || [];
+  const top = lite[0];
+  const threshold60 = lite.filter((row) => row.rubric_pass_rate >= 60).length;
+  const frameworks = new Set(lite.map((row) => row.agent));
+  const models = new Set(lite.map((row) => row.model));
+  container.innerHTML = `
+    <div class="leaderboard-insight-card">
+      <div class="leaderboard-kicker">Human reference</div>
+      <div class="leaderboard-big-number">80.7%</div>
+      <p>Full benchmark reference score reported in the paper.</p>
+    </div>
+    <div class="leaderboard-insight-card">
+      <div class="leaderboard-kicker">Top Lite system</div>
+      <div class="leaderboard-big-number">${top ? workspaceFormatNumber(top.rubric_pass_rate, "%") : "-"}</div>
+      <p>${top ? `${top.agent} + ${top.model}` : "No public Lite row available."}</p>
+    </div>
+    <div class="leaderboard-insight-card">
+      <div class="leaderboard-kicker">>= 60% Lite pass</div>
+      <div class="leaderboard-big-number">${threshold60}</div>
+      <p>Public Lite combinations clearing the strictest displayed threshold.</p>
+    </div>
+    <div class="leaderboard-insight-card">
+      <div class="leaderboard-kicker">Public matrix</div>
+      <div class="leaderboard-big-number">${frameworks.size} x ${models.size}</div>
+      <p>Framework and model families represented by released Lite rows.</p>
+    </div>
+  `;
+}
+
+function workspaceRenderFrameworkMatrix(data) {
+  const container = document.getElementById("frameworkModelMatrix");
+  if (!container) return;
+  const rows = data.litePublicResults || [];
+  const frameworks = Array.from(new Set(rows.map((row) => row.agent))).sort();
+  const models = Array.from(new Set(rows.map((row) => row.model))).sort((a, b) => {
+    const bestA = Math.max(...rows.filter((row) => row.model === a).map((row) => row.rubric_pass_rate));
+    const bestB = Math.max(...rows.filter((row) => row.model === b).map((row) => row.rubric_pass_rate));
+    return bestB - bestA;
+  });
+  const lookup = new Map(rows.map((row) => [`${row.agent}__${row.model}`, row.rubric_pass_rate]));
+  container.innerHTML = `
+    <div class="matrix-grid">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Framework</th>
+            ${models.map((model) => `<th class="numeric">${model}</th>`).join("")}
+          </tr>
+        </thead>
+        <tbody>
+          ${frameworks.map((framework) => `
+            <tr>
+              <td><strong>${framework}</strong></td>
+              ${models.map((model) => {
+                const value = lookup.get(`${framework}__${model}`);
+                const opacity = value ? Math.max(0.12, value / 80) : 0;
+                return `<td class="numeric" style="${value ? `background:rgba(22,93,255,${opacity * 0.16})` : ""}">${value ? `<span class="matrix-score">${workspaceFormatNumber(value, "%")}</span>` : "-"}</td>`;
+              }).join("")}
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Scores are public Workspace-Bench-Lite rubric pass rates, not fabricated full-benchmark per-system results.</p>
+  `;
 }
 
 function workspaceRenderThresholdViews() {
@@ -344,6 +440,7 @@ function workspaceRenderCompositionCharts() {
 
 async function workspaceRenderLeaderboard() {
   const data = await workspaceLoadLeaderboardData();
+  workspaceRenderInsightCards(data);
   workspaceRenderTabs(data);
   const leaderboard = workspaceGetActiveLeaderboard(data);
   const allRows = workspaceRowsForView(data, leaderboard.name);
@@ -362,6 +459,7 @@ async function workspaceRenderLeaderboard() {
   if (description) description.textContent = leaderboard.description;
 
   workspaceRenderTable(rows);
+  workspaceRenderFrameworkMatrix(data);
   workspaceRenderLeaderboardCharts(rows);
   workspaceRenderThresholdViews();
   workspaceRenderCompositionCharts();

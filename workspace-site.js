@@ -42,7 +42,7 @@ function workspaceRenderShell() {
     footer.innerHTML = `
       <footer class="site-footer">
         <div class="container footer-inner">
-          <div>© 2026 Workspace-Bench</div>
+          <div>&copy; 2026 Workspace-Bench</div>
           <div class="footer-links">
             <a href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv</a>

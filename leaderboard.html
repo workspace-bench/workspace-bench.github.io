@@ -31,52 +31,20 @@
 
       <section class="section">
         <div class="container">
-          <p style="display:none">Overall Workspace-Bench-Lite By Worker Profile By Capability</p>
-          <div class="callout">
-            The paper reports aggregate evaluation across 4 agent harnesses and 7 foundation models. Detailed per-system
-            rows on this page are structured to support the website and should be replaced with official submission data
-            as maintainers publish verified runs.
+          <p style="display:none">Overall Workspace-Bench-Lite By Worker Profile By Difficulty By Ability</p>
+          <div class="source-note">
+            <div>
+              The leaderboard uses only Workspace-Bench public data: paper-reported full benchmark aggregate scores and
+              Lite per harness/model results transcribed from the official repository figure. No public cost data or
+              runtime metadata has been released yet.
+            </div>
           </div>
         </div>
       </section>
 
       <section class="section">
         <div class="container">
-          <div class="grid grid-3 leaderboard-summary-grid">
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Best agent</div>
-              <div class="leaderboard-big-number">68.7%</div>
-              <p>Best public Workspace-Bench score reported in the paper.</p>
-            </div>
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Human reference</div>
-              <div class="leaderboard-big-number">80.7%</div>
-              <p>Human performance remains meaningfully ahead of current agents.</p>
-            </div>
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Evaluation scope</div>
-              <div class="leaderboard-big-number">4 x 7</div>
-              <p>Four agent harnesses and seven foundation models in the public paper summary.</p>
-            </div>
-          </div>
-
-          <div class="grid grid-3 leaderboard-summary-grid">
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Lite public rows</div>
-              <div class="leaderboard-big-number">28</div>
-              <p>Public Lite combinations transcribed from the official repository figure.</p>
-            </div>
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Task difficulty</div>
-              <div class="leaderboard-big-number">14 / 53 / 33</div>
-              <p>Easy, medium, and hard task split from the official distribution figure.</p>
-            </div>
-            <div class="card leaderboard-summary-card">
-              <div class="leaderboard-kicker">Ability labels</div>
-              <div class="leaderboard-big-number">6</div>
-              <p>Ability-oriented analysis dimensions in the public distribution summary.</p>
-            </div>
-          </div>
+          <div id="leaderboardInsightCards" class="leaderboard-insight-grid"></div>
 
           <div class="section-head">
             <div>
@@ -115,6 +83,21 @@
           </div>
 
           <div id="leaderboardTable"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Framework x Model Matrix</h2>
+              <p class="section-subtitle">
+                Matrix view of public Workspace-Bench-Lite rubric pass rates. Blank cells mean the public figure does
+                not expose that framework/model combination.
+              </p>
+            </div>
+          </div>
+          <div id="frameworkModelMatrix"></div>
         </div>
       </section>
 

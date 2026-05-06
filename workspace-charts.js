@@ -55,7 +55,22 @@ function workspaceMakeHorizontalBarChart(canvasId, labels, values, title, color 
       indexAxis: "y",
       layout: {
         padding: {
-          left: 36
+          left: 12,
+          right: 12
+        }
+      },
+      scales: {
+        x: { ticks: { color: colors.text }, grid: { color: colors.grid }, beginAtZero: true },
+        y: {
+          ticks: {
+            color: colors.text,
+            autoSkip: false,
+            callback: function(value) {
+              const label = this.getLabelForValue(value);
+              return label.length > 28 ? `${label.slice(0, 28)}...` : label;
+            }
+          },
+          grid: { display: false }
         }
       }
     })

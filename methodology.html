@@ -26,35 +26,46 @@
       </section>
 
       <section class="section">
-        <div class="container">
-          <div class="grid grid-2">
-            <div class="card">
-              <h2 style="font-size:1.35rem">Workspace Learning</h2>
-              <p>
-                Agents must understand explicit and implicit file relationships. The correct answer is often distributed
-                across notes, comments, metadata, configuration files, archive contents, or historical versions.
-              </p>
+        <div class="container page-stack">
+          <div class="analysis-shell">
+            <div class="analysis-shell-header">
+              <div class="analysis-shell-title"><span class="status-dot"></span>Evaluation pipeline</div>
+              <span class="badge badge-blue">Reproducible workflow</span>
             </div>
-            <div class="card">
-              <h2 style="font-size:1.35rem">Task Construction</h2>
-              <p>
-                Tasks are built from realistic workspaces and worker profiles. Each task requires the agent to interpret
-                instructions, identify the relevant context, and produce a final output that satisfies detailed rubrics.
-              </p>
-            </div>
-            <div class="card">
-              <h2 style="font-size:1.35rem">Rubric-based Scoring</h2>
-              <p>
-                Workspace-Bench does not reduce evaluation to a single unit test. Deliverables are graded against
-                rubric criteria that capture evidence use, correctness, policy adherence, completeness, and consistency.
-              </p>
-            </div>
-            <div class="card">
-              <h2 style="font-size:1.35rem">Full vs Lite Benchmark</h2>
-              <p>
-                The full benchmark contains 388 tasks. The lite split contains 100 tasks and is intended for faster
-                repeated evaluation with lower cost while preserving representative difficulty.
-              </p>
+            <div class="analysis-shell-body">
+              <div class="compact-data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Stage</th>
+                      <th>Input</th>
+                      <th>Output</th>
+                      <th>Failure mode</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Workspace Setup</strong></td><td>Selected split and task files</td><td>Controlled workspace state</td><td>Wrong benchmark context</td></tr>
+                    <tr><td><strong>Agent Execution</strong></td><td>Harness, model, tools, limits</td><td>Logs and intermediate actions</td><td>Undeclared runtime conditions</td></tr>
+                    <tr><td><strong>Output Collection</strong></td><td>Modified artifacts and answer</td><td>Deliverable bundle</td><td>Missing evidence trail</td></tr>
+                    <tr><td><strong>Rubric Evaluation</strong></td><td>Deliverables and rubrics</td><td>Task and overall scores</td><td>Unverifiable scoring basis</td></tr>
+                    <tr><td><strong>Verification</strong></td><td>Configs, logs, cost, runtime</td><td>Maintainer-reviewable report</td><td>Non-reproducible submission</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="analysis-side">
+                <div class="analysis-note">
+                  <strong>Workspace Learning</strong>
+                  <p>Success depends on explicit and implicit file relationship understanding, not just direct answer lookup.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Rubric-based Scoring</strong>
+                  <p>Evaluation checks correctness, evidence use, completeness, policy adherence, and consistency.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Full vs Lite Benchmark</strong>
+                  <p>388 full tasks; 100 Lite tasks for lower-cost repeated measurement.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -64,17 +75,43 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Evaluation Protocol</h2>
-              <p class="section-subtitle">A complete run should make the agent behavior, environment, and final outputs reproducible.</p>
+              <h2>Scoring Dimensions</h2>
+              <p class="section-subtitle">
+                Scoring dimensions are intentionally separable so benchmark failures reveal where a system breaks down.
+              </p>
             </div>
           </div>
-          <div class="grid grid-3">
-            <div class="card"><h3>1. Workspace Setup</h3><p>Initialize the benchmark workspace, selected split, and task-specific files in a controlled environment.</p></div>
-            <div class="card"><h3>2. Agent Execution</h3><p>Run the agent with the declared harness, model, context limits, tools, and budget constraints.</p></div>
-            <div class="card"><h3>3. Output Collection</h3><p>Capture logs, modified files, final deliverables, and task metadata for downstream grading.</p></div>
-            <div class="card"><h3>4. Rubric Evaluation</h3><p>Score deliverables against rubric criteria and aggregate into task success and overall benchmark metrics.</p></div>
-            <div class="card"><h3>5. Verification</h3><p>Maintain a reproducible record of runtime, cost, versioning, and the exact evaluation configuration used.</p></div>
-            <div class="card"><h3>6. Release</h3><p>Publish verified results with a report link and sufficient reproduction material for maintainers to inspect.</p></div>
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="mini-kicker">Dimension 01</div>
+              <h3>File Dependency Discovery</h3>
+              <p>Locating the right files, versions, and references under incomplete or misleading top-level cues.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">Dimension 02</div>
+              <h3>Cross-file Reasoning</h3>
+              <p>Combining evidence across heterogeneous artifacts to resolve ambiguity and conflicts.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">Dimension 03</div>
+              <h3>Context Integration</h3>
+              <p>Keeping relevant context active while ignoring irrelevant workspace noise.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">Dimension 04</div>
+              <h3>Adaptive Decision Making</h3>
+              <p>Choosing safe, effective actions based on workspace state, policy constraints, and deliverable needs.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">Dimension 05</div>
+              <h3>Workspace Modification</h3>
+              <p>Editing or preserving files correctly without breaking dependencies or violating retention constraints.</p>
+            </div>
+            <div class="card">
+              <div class="mini-kicker">Dimension 06</div>
+              <h3>Final Deliverable Quality</h3>
+              <p>Producing outputs that satisfy rubric criteria for correctness, traceability, completeness, and consistency.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -83,27 +120,29 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Capability Dimensions</h2>
-              <p class="section-subtitle">The benchmark is designed so each dimension can fail independently.</p>
+              <h2>Evaluation Pipeline</h2>
+              <p class="section-subtitle">A verified run needs an inspectable workflow, not just a final score.</p>
             </div>
           </div>
-          <div class="grid grid-2">
-            <div class="card"><h3>File Dependency Discovery</h3><p>Locating the right files, versions, and references under incomplete or misleading top-level cues.</p></div>
-            <div class="card"><h3>Cross-file Reasoning</h3><p>Combining evidence across heterogeneous artifacts to resolve ambiguity and conflicts.</p></div>
-            <div class="card"><h3>Context Integration</h3><p>Keeping the relevant context active while ignoring irrelevant noise in large workspaces.</p></div>
-            <div class="card"><h3>Adaptive Decision Making</h3><p>Choosing safe, effective actions based on workspace state, policy constraints, and deliverable requirements.</p></div>
-            <div class="card"><h3>Workspace Modification</h3><p>Editing or preserving files correctly without breaking dependencies or violating retention constraints.</p></div>
-            <div class="card"><h3>Final Deliverable Quality</h3><p>Producing outputs that satisfy rubric criteria for correctness, traceability, completeness, and consistency.</p></div>
+          <div class="pipeline-grid">
+            <div class="pipeline-step"><div class="pipeline-step-number">1</div><h3>Initialize</h3><p>Prepare benchmark split, workspace constraints, and selected task environment.</p></div>
+            <div class="pipeline-step"><div class="pipeline-step-number">2</div><h3>Execute</h3><p>Run the declared harness and model with stable tool access and budget settings.</p></div>
+            <div class="pipeline-step"><div class="pipeline-step-number">3</div><h3>Collect</h3><p>Capture logs, edited files, generated outputs, and task metadata.</p></div>
+            <div class="pipeline-step"><div class="pipeline-step-number">4</div><h3>Grade</h3><p>Apply rubric-based evaluation and aggregate per-task outcomes into benchmark metrics.</p></div>
+            <div class="pipeline-step"><div class="pipeline-step-number">5</div><h3>Verify</h3><p>Attach runtime configuration, versioning, cost, and latency metadata.</p></div>
+            <div class="pipeline-step"><div class="pipeline-step-number">6</div><h3>Release</h3><p>Publish a stable report link that maintainers can inspect or replay.</p></div>
           </div>
         </div>
       </section>
 
       <section class="section">
         <div class="container">
-          <div class="callout">
-            <strong>Reproducibility Requirements.</strong> Verified submissions should include the benchmark split,
-            harness name, model identifier, runtime configuration, workspace constraints, logs, final outputs, cost and
-            latency summary, and a stable report link that lets maintainers replay or inspect the run.
+          <div class="source-note">
+            <div>
+              <strong>Reproducibility Requirements.</strong> Verified submissions should include the benchmark split,
+              harness name, model identifier, runtime configuration, workspace constraints, logs, final outputs, cost
+              and latency summary, and a stable report link that lets maintainers replay or inspect the run.
+            </div>
           </div>
         </div>
       </section>

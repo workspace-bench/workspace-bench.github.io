@@ -20,18 +20,63 @@
             <div><h1 style="font-size:2.5rem">Dataset Visualizations</h1></div>
           </div>
           <p class="page-lead">
-            Workspace-Bench 1.0 contains 5 worker profiles, 74 file types, 20,476 files, 388 tasks, and 7,399 rubrics.
-            This page summarizes the structure of the benchmark and the workload characteristics that drive evaluation difficulty.
+            Dataset intelligence overview for Workspace-Bench 1.0: 5 worker profiles, 74 file types,
+            20,476 files, 388 tasks, and 7,399 rubrics organized around realistic workspace learning.
           </p>
         </div>
       </section>
 
       <section class="section">
-        <div class="container">
-          <div class="grid grid-3">
-            <div class="card stat-card"><div class="value">20,476</div><div class="label">Files distributed across full benchmark workspaces.</div></div>
-            <div class="card stat-card"><div class="value">7,399</div><div class="label">Rubrics used to grade deliverables.</div></div>
-            <div class="card stat-card"><div class="value">20GB</div><div class="label">Largest workspace size represented in the benchmark.</div></div>
+        <div class="container page-stack">
+          <div class="aa-metric-strip" aria-label="Dataset metrics">
+            <div class="aa-metric"><div class="aa-metric-value">5</div><div class="aa-metric-label">Worker profiles</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">74</div><div class="aa-metric-label">File types</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">20,476</div><div class="aa-metric-label">Files</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">388</div><div class="aa-metric-label">Tasks</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">7,399</div><div class="aa-metric-label">Rubrics</div></div>
+            <div class="aa-metric"><div class="aa-metric-value">20GB</div><div class="aa-metric-label">Max workspace</div></div>
+          </div>
+
+          <div class="analysis-shell">
+            <div class="analysis-shell-header">
+              <div class="analysis-shell-title"><span class="status-dot"></span>Workspace Composition Table</div>
+              <span class="badge badge-green">Official public figure</span>
+            </div>
+            <div class="analysis-shell-body">
+              <div class="compact-data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Worker profile</th>
+                      <th class="numeric">Tasks</th>
+                      <th class="numeric">Share</th>
+                      <th>Interpretation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><strong>Operations Manager</strong></td><td class="numeric">120</td><td class="numeric score">31%</td><td>Largest operational workspace slice.</td></tr>
+                    <tr><td><strong>Logistics Manager</strong></td><td class="numeric">116</td><td class="numeric score">30%</td><td>Dense coordination and tracking workloads.</td></tr>
+                    <tr><td><strong>Researcher</strong></td><td class="numeric">66</td><td class="numeric score">17%</td><td>Evidence-heavy document and data analysis.</td></tr>
+                    <tr><td><strong>Backend Developer</strong></td><td class="numeric">44</td><td class="numeric score">11%</td><td>Code and configuration-oriented tasks.</td></tr>
+                    <tr><td><strong>AI Product Manager</strong></td><td class="numeric">42</td><td class="numeric score">11%</td><td>Product, requirement, and evaluation artifacts.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="analysis-side">
+                <div class="analysis-note">
+                  <strong>Lite Split</strong>
+                  <p>100 tasks, approximately 70% lower evaluation cost, while preserving representative workspace complexity.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>File Type Distribution</strong>
+                  <p>74 file types span documents, spreadsheets, code, structured data, media, metadata, configuration, and archives.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Task Complexity</strong>
+                  <p>Difficulty is driven by hidden dependencies, heterogeneous file reading, and rubric-heavy deliverables.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -42,8 +87,8 @@
             <div>
               <h2>Dataset Overview</h2>
               <p class="section-subtitle">
-                The benchmark is organized around realistic professional workspaces. Each task requires reasoning over
-                files, metadata, and dependencies that may not be explicit in the initial instruction.
+                The benchmark is organized around realistic professional workspaces. Charts summarize the same public
+                distribution data in a compact dashboard format.
               </p>
             </div>
           </div>
@@ -58,33 +103,10 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Official Workspace-Bench Figures</h2>
-              <p class="section-subtitle">
-                These figures are pulled from the public Workspace-Bench repository assets and shown directly in the site.
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-2">
-            <div class="card">
-              <h3>Framework</h3>
-              <img src="./assets/Framework.png" alt="Workspace-Bench framework figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
-            </div>
-            <div class="card">
-              <h3>Distribution</h3>
-              <img src="./assets/Distribution.png" alt="Workspace-Bench distribution figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head">
-            <div>
               <h2>Task Complexity</h2>
               <p class="section-subtitle">
-                Complexity comes from both the number of required files and the structure of the dependency graph.
-                Workspace-Bench makes context search part of the benchmark rather than an implementation detail.
+                Complexity comes from required evidence, dependency graph shape, role-specific workspace noise, and
+                scoring criteria that require more than a single exact match.
               </p>
             </div>
           </div>
@@ -99,10 +121,22 @@
 
       <section class="section">
         <div class="container">
-          <div class="grid grid-1">
+          <div class="section-head">
+            <div>
+              <h2>Official Workspace-Bench Figures</h2>
+              <p class="section-subtitle">
+                Public repository figures are retained as source-of-truth visuals beneath the structured dashboard.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
             <div class="card">
-              <h3>Rubrics and Success</h3>
-              <img src="./assets/rubrics_success.png" alt="Workspace-Bench rubrics and success figure" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--border);margin-top:10px">
+              <h3>Framework</h3>
+              <img src="./assets/Framework.png" alt="Workspace-Bench framework figure" class="figure-image" style="margin-top:10px">
+            </div>
+            <div class="card">
+              <h3>Distribution</h3>
+              <img src="./assets/Distribution.png" alt="Workspace-Bench distribution figure" class="figure-image" style="margin-top:10px">
             </div>
           </div>
         </div>
@@ -110,21 +144,9 @@
 
       <section class="section">
         <div class="container">
-          <div class="grid grid-2">
-            <div class="card">
-              <h2 style="font-size:1.35rem">Lite Split</h2>
-              <p>
-                Workspace-Bench-Lite contains 100 tasks and reduces evaluation cost by approximately 70% while retaining
-                representative patterns of hidden file dependencies, multi-step context integration, and rubric-heavy grading.
-              </p>
-            </div>
-            <div class="card">
-              <h2 style="font-size:1.35rem">File Type Distribution</h2>
-              <p>
-                The 74 file types span documents, spreadsheets, code, structured data, media, metadata, configuration,
-                and archived bundles. This diversity pushes agents beyond narrow code-only or document-only settings.
-              </p>
-            </div>
+          <div class="card">
+            <h3>Rubrics and Success</h3>
+            <img src="./assets/rubrics_success.png" alt="Workspace-Bench rubrics and success figure" class="figure-image" style="margin-top:10px">
           </div>
         </div>
       </section>

@@ -19,28 +19,77 @@
             <div><h1 style="font-size:2.5rem">Representative Tasks</h1></div>
           </div>
           <p class="page-lead">
-            These examples illustrate how Workspace-Bench evaluates hidden dependencies, multi-file coordination, and
-            rubric-based grading. The important context often lives outside the first file an agent opens.
+            Task intelligence feed for Workspace-Bench examples. The page shows how hidden dependencies,
+            evidence path construction, and rubric-based grading shape the benchmark.
           </p>
         </div>
       </section>
 
       <section class="section">
-        <div class="container">
-          <div class="grid grid-2">
-            <div class="card">
-              <h2 style="font-size:1.35rem">Hidden Dependencies</h2>
-              <p>
-                Critical evidence may appear in comments, archived bundles, policy appendices, historical notes,
-                spreadsheet formulas, or metadata files that are not called out in the task instruction.
-              </p>
+        <div class="container page-stack">
+          <div class="analysis-shell">
+            <div class="analysis-shell-header">
+              <div class="analysis-shell-title"><span class="status-dot"></span>Task intelligence feed</div>
+              <span class="badge badge-blue">Representative examples</span>
             </div>
-            <div class="card">
-              <h2 style="font-size:1.35rem">Rubric Examples</h2>
-              <p>
-                Rubrics check whether an agent used all required evidence, respected policy constraints, reconciled
-                conflicting values, documented exceptions, and delivered a final artifact that can be audited.
-              </p>
+            <div class="analysis-shell-body">
+              <div class="compact-data-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Signal</th>
+                      <th>What the agent must do</th>
+                      <th>Why it matters</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Hidden Dependencies</strong></td>
+                      <td>Find relevant files that are not named in the instruction.</td>
+                      <td>Prevents shallow root-file lookup from scoring well.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Evidence Path</strong></td>
+                      <td>Connect task instruction, workspace files, implicit dependencies, and rubrics.</td>
+                      <td>Measures workspace learning rather than isolated QA.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Rubric Examples</strong></td>
+                      <td>Satisfy fine-grained grading criteria for correctness and completeness.</td>
+                      <td>Captures partial failures that binary pass/fail would hide.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="analysis-side">
+                <div class="analysis-note">
+                  <strong>Hidden Dependencies</strong>
+                  <p>Important context can live in comments, archives, policy appendices, historical notes, formulas, or metadata.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Rubric Examples</strong>
+                  <p>Rubrics check evidence use, policy constraints, conflict resolution, auditability, and final deliverable quality.</p>
+                </div>
+                <div class="analysis-note">
+                  <strong>Benchmark Role</strong>
+                  <p>Examples clarify the kinds of workspace failures that aggregate scores compress into a single number.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="split-band">
+            <div class="source-note">
+              <div>
+                <strong>Evidence path.</strong> A strong run identifies the task instruction, searches likely dependency
+                locations, resolves conflicts across files, and maps the final deliverable to rubric criteria.
+              </div>
+            </div>
+            <div class="source-note">
+              <div>
+                <strong>Rubric examples.</strong> A task can be partially correct while still failing completeness,
+                traceability, or policy-adherence checks.
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +97,16 @@
 
       <section class="section">
         <div class="container">
-          <div id="examplesContainer" class="grid grid-2"></div>
+          <div class="section-head">
+            <div>
+              <h2>Example Feed</h2>
+              <p class="section-subtitle">
+                Example cards are generated from the same local Workspace-Bench data bundle used by the rest of the site,
+                so the page works from both local file opening and a static server.
+              </p>
+            </div>
+          </div>
+          <div id="examplesContainer" class="evidence-grid"></div>
         </div>
       </section>
     </main>
@@ -58,25 +116,30 @@
     <script src="./workspace-data.js"></script>
     <script src="./workspace-site.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const container = document.getElementById('examplesContainer');
+      document.addEventListener("DOMContentLoaded", async () => {
+        const container = document.getElementById("examplesContainer");
         if (!container) return;
         try {
-          const data = window.WORKSPACE_BENCH_DATA ? { examples: window.WORKSPACE_BENCH_DATA.examples } : await workspaceFetchJson('./data/examples.json');
-          container.innerHTML = data.examples.map((example) => `
-            <article class="card">
-              <div class="badge badge-blue">${example.profile}</div>
-              <h2 style="font-size:1.35rem;margin-top:12px">${example.title}</h2>
-              <p style="margin-top:8px">${example.instruction}</p>
-              <div class="grid" style="margin-top:16px">
-                <div><strong>Workspace</strong><p>${example.workspace}</p></div>
-                <div><strong>Required Files</strong><p>${example.requiredFiles.join(', ')}</p></div>
-                <div><strong>Hidden Dependencies</strong><p>${example.hiddenDependencies}</p></div>
-                <div><strong>Expected Deliverable</strong><p>${example.deliverable}</p></div>
-                <div><strong>Rubric Examples</strong><p>${example.rubrics.join(', ')}</p></div>
+          const data = window.WORKSPACE_BENCH_DATA ? { examples: window.WORKSPACE_BENCH_DATA.examples } : await workspaceFetchJson("./data/examples.json");
+          container.innerHTML = data.examples.map((example, index) => `
+            <article class="evidence-card">
+              <div class="toolbar" style="margin:0 0 10px">
+                <div>
+                  <div class="mini-kicker">Example ${index + 1}</div>
+                  <h2 style="font-size:1.35rem;margin:4px 0 0">${example.title}</h2>
+                </div>
+                <span class="badge badge-blue">${example.profile}</span>
+              </div>
+              <p>${example.instruction}</p>
+              <div class="analysis-list" style="margin-top:16px">
+                <div class="analysis-list-row"><div class="analysis-list-key">Workspace</div><div class="analysis-list-value">${example.workspace}</div></div>
+                <div class="analysis-list-row"><div class="analysis-list-key">Required files</div><div class="analysis-list-value">${example.requiredFiles.join(", ")}</div></div>
+                <div class="analysis-list-row"><div class="analysis-list-key">Hidden dependencies</div><div class="analysis-list-value">${example.hiddenDependencies}</div></div>
+                <div class="analysis-list-row"><div class="analysis-list-key">Expected deliverable</div><div class="analysis-list-value">${example.deliverable}</div></div>
+                <div class="analysis-list-row"><div class="analysis-list-key">Rubric examples</div><div class="analysis-list-value">${example.rubrics.join(", ")}</div></div>
               </div>
             </article>
-          `).join('');
+          `).join("");
         } catch (error) {
           container.innerHTML = `<div class="callout">Unable to load examples: ${error.message}</div>`;
         }
