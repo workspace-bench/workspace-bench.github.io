@@ -594,12 +594,68 @@ p { margin: 0; }
   padding: 18px 18px 14px;
 }
 
+.aa-hero-ranking-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--border);
+}
+
+.aa-hero-ranking-stat {
+  background: var(--surface-3);
+  padding: 12px;
+}
+
+.aa-hero-ranking-stat strong {
+  display: block;
+  font-size: 1.22rem;
+  line-height: 1;
+}
+
+.aa-hero-ranking-stat span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.leaderboard-module {
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: #ffffff;
+  padding: 20px;
+}
+
+.leaderboard-module + .leaderboard-module {
+  margin-top: 18px;
+}
+
+.leaderboard-module .section-head {
+  margin-bottom: 14px;
+}
+
 .leaderboard-tall-card {
-  min-height: 420px;
+  min-height: 440px;
+}
+
+.leaderboard-tall-card canvas {
+  height: 360px !important;
+}
+
+.leaderboard-composition-card {
+  min-height: 390px;
+}
+
+.leaderboard-composition-card canvas {
+  height: 320px !important;
 }
 
 .leaderboard-text-panel {
-  min-height: 340px;
+  min-height: 390px;
   display: grid;
   align-content: start;
 }
@@ -785,13 +841,13 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .badge-violet { color: #6d28d9; background: #ede9fe; border-color: #ddd6fe; }
 
 .chart-card {
-  min-height: 340px;
+  min-height: 360px;
   position: relative;
 }
 
 .chart-card canvas {
   width: 100% !important;
-  height: 280px !important;
+  height: 310px !important;
 }
 
 .wide-chart canvas { height: 360px !important; }
