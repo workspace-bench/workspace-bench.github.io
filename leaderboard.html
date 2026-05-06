@@ -42,6 +42,24 @@
 
       <section class="section">
         <div class="container">
+          <div class="grid grid-3 leaderboard-summary-grid">
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Best agent</div>
+              <div class="leaderboard-big-number">68.7%</div>
+              <p>Best public Workspace-Bench score reported in the paper.</p>
+            </div>
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Human reference</div>
+              <div class="leaderboard-big-number">80.7%</div>
+              <p>Human performance remains meaningfully ahead of current agents.</p>
+            </div>
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Evaluation scope</div>
+              <div class="leaderboard-big-number">4 x 7</div>
+              <p>Four agent harnesses and seven foundation models in the public paper summary.</p>
+            </div>
+          </div>
+
           <div class="section-head">
             <div>
               <h2>Leaderboard Views</h2>
@@ -78,10 +96,19 @@
 
       <section class="section">
         <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Leaderboard Analysis</h2>
+              <p class="section-subtitle">
+                Use the charts below for quick comparison. When the public materials do not expose cost or runtime by system,
+                the page states that explicitly instead of implying nonexistent data.
+              </p>
+            </div>
+          </div>
           <div class="grid grid-3">
-            <div class="card chart-card"><canvas id="scoreChart" aria-label="Overall score chart"></canvas></div>
-            <div class="card chart-card"><canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas></div>
-            <div class="card chart-card"><canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreChart" aria-label="Overall score chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas></div>
           </div>
         </div>
       </section>

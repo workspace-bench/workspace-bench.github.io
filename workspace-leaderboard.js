@@ -83,7 +83,11 @@ function workspaceRenderTable(rows) {
   const container = document.getElementById("leaderboardTable");
   if (!container) return;
   const sorted = workspaceSortRows(rows);
+  const visibleCount = sorted.length;
   container.innerHTML = `
+    <div class="toolbar" style="margin-top:0;margin-bottom:10px">
+      <div class="table-note">Showing ${visibleCount} row${visibleCount === 1 ? "" : "s"} from the current leaderboard view.</div>
+    </div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -112,8 +116,8 @@ function workspaceRenderTable(rows) {
               </td>
               <td>${row.model}</td>
               <td class="numeric score">${workspaceFormatNumber(row.overall_score, "%")}</td>
-              <td class="numeric">${workspaceFormatNumber(row.rubric_pass_rate, "%")}</td>
-              <td class="numeric">${workspaceFormatNumber(row.task_success_rate, "%")}</td>
+              <td class="numeric">${row.rubric_pass_rate === null ? "-" : workspaceFormatNumber(row.rubric_pass_rate, "%")}</td>
+              <td class="numeric">${row.task_success_rate === null ? "-" : workspaceFormatNumber(row.task_success_rate, "%")}</td>
               <td class="numeric">${row.cost_usd === null ? "-" : `$${workspaceFormatNumber(row.cost_usd)}`}</td>
               <td class="numeric">${row.runtime_minutes === null ? "-" : `${workspaceFormatNumber(row.runtime_minutes)}m`}</td>
               <td><span class="badge badge-blue">${row.workspace_size}</span></td>
@@ -157,7 +161,7 @@ function workspaceRenderLeaderboardCharts(rows) {
   } else {
     const canvas = document.getElementById("scoreCostChart");
     const parent = canvas?.closest(".chart-card");
-    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Cost</h3><p class="section-subtitle">No public per-system cost data has been released in the current Workspace-Bench materials.</p>';
+    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Cost</h3><p class="section-subtitle">No public per-system cost data has been released in the current Workspace-Bench materials.</p><p class="table-note">This panel will update automatically once cost metadata is added to the leaderboard source.</p>';
   }
 
   if (runtimeChart) runtimeChart.destroy();
@@ -167,7 +171,7 @@ function workspaceRenderLeaderboardCharts(rows) {
   } else {
     const canvas = document.getElementById("scoreRuntimeChart");
     const parent = canvas?.closest(".chart-card");
-    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Runtime</h3><p class="section-subtitle">No public per-system runtime data has been released in the current Workspace-Bench materials.</p>';
+    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Runtime</h3><p class="section-subtitle">No public per-system runtime data has been released in the current Workspace-Bench materials.</p><p class="table-note">Runtime comparisons will render here when the source data becomes available.</p>';
   }
 }
 

@@ -350,6 +350,54 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 .wide-chart canvas { height: 360px !important; }
 
+.figure-panel {
+  padding: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 252, 0.98)),
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.08), transparent 36%);
+}
+
+.figure-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.leaderboard-summary-grid {
+  margin-bottom: 22px;
+}
+
+.leaderboard-summary-card {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  min-height: 164px;
+}
+
+.leaderboard-kicker {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 760;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+
+.leaderboard-big-number {
+  font-size: 2.3rem;
+  line-height: 1;
+  font-weight: 790;
+  margin-bottom: 10px;
+}
+
+.leaderboard-chart-card {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
 .callout {
   border: 1px solid #bfdbfe;
   background: #eff6ff;
