@@ -29,8 +29,7 @@ const workspaceNavGroups = [
     label: "Project",
     items: [
       ["submit.html", "Submit"],
-      ["citation.html", "Citation"],
-      ["contact.html", "Contact"]
+      ["contact.html", "Citation & Contact"]
     ]
   }
 ];
@@ -110,7 +109,7 @@ function workspaceRenderShell() {
             <a href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv</a>
             <a href="./dataset.html">Dataset</a>
             <a href="./submit.html">Submit</a>
-            <a href="./citation.html">Citation</a>
+            <a href="./contact.html">Citation & Contact</a>
           </div>
         </div>
       </footer>

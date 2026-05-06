@@ -18,14 +18,13 @@ function workspaceSetCanvasHeight(canvas, aspectRatio) {
   });
 }
 
-function workspaceChartOptions(title, extra = {}) {
+function workspaceChartOptions(extra = {}) {
   const colors = workspaceChartColors();
   return {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { position: "bottom", labels: { color: colors.text, boxWidth: 12 } },
-      title: { display: !!title, text: title, color: colors.text, font: { size: 14, weight: "600" } },
       tooltip: {
         mode: "index",
         intersect: false,
@@ -53,7 +52,7 @@ function workspaceMakeBarChart(canvasId, labels, values, title, color = "#5b3df5
       labels,
       datasets: [{ label: title, data: values, backgroundColor: color, borderRadius: 4 }]
     },
-    options: workspaceChartOptions(title, { aspectRatio: 1.8 })
+    options: workspaceChartOptions({ aspectRatio: 1.8 })
   });
   workspaceSetCanvasHeight(canvas, 1.8);
   return chart;
@@ -78,13 +77,12 @@ function workspaceMakeDenseBarChart(canvasId, labels, values, title, color = "#5
         maxBarThickness: 58
       }]
     },
-    options: workspaceChartOptions(title, {
+    options: workspaceChartOptions({
       indexAxis: "y",
       aspectRatio: 2.5,
       layout: { padding: { top: 4, right: 14, bottom: 0, left: 0 } },
       plugins: {
         legend: { display: false },
-        title: { display: true, text: title, color: colors.text, font: { size: 14, weight: "600" } },
         tooltip: {
           backgroundColor: "#ffffff",
           titleColor: "#111111",
@@ -121,7 +119,7 @@ function workspaceMakeHorizontalBarChart(canvasId, labels, values, title, color 
       labels,
       datasets: [{ label: title, data: values, backgroundColor: color, borderRadius: 4 }]
     },
-    options: workspaceChartOptions(title, {
+    options: workspaceChartOptions({
       indexAxis: "y",
       aspectRatio: 1.5,
       layout: {
@@ -163,7 +161,6 @@ function workspaceMakeDoughnutChart(canvasId, labels, values, title) {
       aspectRatio: 1.4,
       plugins: {
         legend: { position: "bottom", labels: { color: "#555555", boxWidth: 12 } },
-        title: { display: !!title, text: title, color: "#555555", font: { size: 14, weight: "600" } },
         tooltip: {
           backgroundColor: "#ffffff",
           titleColor: "#111111",
@@ -203,7 +200,6 @@ function workspaceMakeLargeDoughnutChart(canvasId, labels, values, title) {
       layout: { padding: { top: 0, right: 0, bottom: 0, left: 0 } },
       plugins: {
         legend: { display: false },
-        title: { display: !!title, text: title, color: "#555555", font: { size: 14, weight: "600" } },
         tooltip: {
           backgroundColor: "#ffffff",
           titleColor: "#111111",
@@ -233,7 +229,7 @@ function workspaceMakeScatterChart(canvasId, points, title, xTitle, yTitle) {
         pointHoverRadius: 8
       }]
     },
-    options: workspaceChartOptions(title, {
+    options: workspaceChartOptions({
       aspectRatio: 1.5,
       scales: {
         x: { title: { display: true, text: xTitle, color: "#555555" }, ticks: { color: "#555555" }, grid: { color: "rgba(17, 17, 17, 0.08)" } },
@@ -241,7 +237,6 @@ function workspaceMakeScatterChart(canvasId, points, title, xTitle, yTitle) {
       },
       plugins: {
         legend: { display: false },
-        title: { display: true, text: title, color: "#555555", font: { size: 14, weight: "600" } },
         tooltip: {
           backgroundColor: "#ffffff",
           titleColor: "#111111",
@@ -276,7 +271,7 @@ async function workspaceInitHomeCharts() {
         borderRadius: 4
       }]
     },
-    options: workspaceChartOptions("Current Performance Gap", {
+    options: workspaceChartOptions({
       scales: {
         x: { ticks: { color: "#555555" }, grid: { display: false } },
         y: { max: 100, ticks: { color: "#555555", callback: (v) => `${v}%` }, grid: { color: "rgba(17, 17, 17, 0.08)" } }

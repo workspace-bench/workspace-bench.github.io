@@ -433,7 +433,7 @@ function workspaceRenderThresholdViews() {
   }));
 
   if (thresholdChart) thresholdChart.destroy();
-  thresholdChart = workspaceMakeBarChart(
+  thresholdChart = workspaceMakeDenseBarChart(
     "thresholdChart",
     thresholdRows.map((item) => item.threshold),
     thresholdRows.map((item) => item.hits),
@@ -493,7 +493,10 @@ async function workspaceRenderLeaderboard() {
   const rows = workspaceFilterRows(allRows);
 
   const description = document.getElementById("leaderboardDescription");
-  if (description) description.textContent = leaderboard.description;
+  if (description) {
+    description.textContent = leaderboard.description;
+    description.style.visibility = "";
+  }
 
   workspaceRenderTable(rows);
   workspaceRenderFrameworkMatrix(data);

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Workspace-Bench Contact</title>
-    <meta name="description" content="Contact and project links for Workspace-Bench.">
+    <title>Workspace-Bench Citation & Contact</title>
+    <meta name="description" content="Citation and contact information for Workspace-Bench.">
     <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles/workspace.css">
   </head>
@@ -16,11 +16,11 @@
         <div class="container">
           <div class="page-title-row">
             <img src="./workspace-bench.svg" alt="">
-            <div><h1 style="font-size:2.5rem">Contact</h1></div>
+            <div><h1 class="aa-page-title">Citation & Contact</h1></div>
           </div>
-          <p class="page-lead">
-            Use the project repository as the primary coordination point for benchmark questions, result submissions,
-            correction requests, and reproducibility discussions.
+          <p class="page-lead aa-page-lead">
+            Cite Workspace-Bench using the arXiv record. Use the project repository as the primary coordination point
+            for benchmark questions, result submissions, correction requests, and reproducibility discussions.
           </p>
         </div>
       </section>
@@ -29,14 +29,14 @@
         <div class="container">
           <div class="grid grid-2">
             <div class="card">
-              <h2 style="font-size:1.35rem">Project Repository</h2>
-              <p><a href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">OpenDataBox/Workspace-Bench</a></p>
-              <p style="margin-top:10px">Use issues or repository discussions for benchmark bugs, submission coordination, and leaderboard questions.</p>
+              <h3>Paper</h3>
+              <p><a href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv:2605.03596</a></p>
+              <p class="table-note" style="margin-top:10px">Workspace-Bench 1.0: Benchmarking AI Agents on Workspace Tasks with Large-Scale File Dependencies.</p>
             </div>
             <div class="card">
-              <h2 style="font-size:1.35rem">Paper Record</h2>
-              <p><a href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv:2605.03596</a></p>
-              <p style="margin-top:10px">Reference the paper when discussing methodology, benchmark scope, or published aggregate results.</p>
+              <h3>Repository</h3>
+              <p><a href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">OpenDataBox/Workspace-Bench</a></p>
+              <p class="table-note" style="margin-top:10px">Source benchmark assets, documentation, issue tracking, and future leaderboard updates.</p>
             </div>
           </div>
         </div>
@@ -44,9 +44,28 @@
 
       <section class="section">
         <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>BibTeX</h2>
+              <p class="section-subtitle">Copy the entry below to cite Workspace-Bench in academic work.</p>
+            </div>
+          </div>
+          <div class="code-block">@article{workspacebench2026,
+  title={Workspace-Bench 1.0: Benchmarking AI Agents on Workspace Tasks with Large-Scale File Dependencies},
+  author={Workspace-Bench authors},
+  journal={arXiv preprint arXiv:2605.03596},
+  year={2026},
+  url={https://arxiv.org/abs/2605.03596}
+}</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
           <div class="callout">
-            For leaderboard inclusion, prepare your result JSON, logs, configuration, and report link first, then open a
-            submission request through the repository so maintainers can verify the run.
+            <strong>Submission coordination.</strong> For leaderboard inclusion, prepare your result JSON, logs,
+            configuration, and report link first, then open a submission request through the repository so
+            maintainers can verify the run.
           </div>
         </div>
       </section>

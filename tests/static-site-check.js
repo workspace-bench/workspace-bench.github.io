@@ -1,4 +1,4 @@
-﻿const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 const root = path.resolve(__dirname, '..');
@@ -34,7 +34,8 @@ const requiredText = {
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
   'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
   'submit.html': ['Submission', 'Result JSON Schema', 'Verified Results'],
-  'citation.html': ['Citation', '2605.03596', 'OpenDataBox/Workspace-Bench']
+  'contact.html': ['Citation & Contact', '2605.03596', 'OpenDataBox/Workspace-Bench'],
+  'citation.html': ['Citation', 'contact.html', 'Citation &amp; Contact']
 };
 
 function fail(message) {
@@ -83,7 +84,7 @@ for (const file of ['index.html', 'leaderboard.html', 'dataset.html', 'examples.
   if (!text.includes('workspace-data.js')) fail(`${file} must include workspace-data.js for file:// support`);
 }
 
-for (const file of ['index.html', 'leaderboard.html', 'dataset.html', 'methodology.html', 'examples.html', 'submit.html', 'citation.html', 'contact.html']) {
+for (const file of ['index.html', 'leaderboard.html', 'dataset.html', 'methodology.html', 'examples.html', 'submit.html', 'contact.html']) {
   const text = fs.readFileSync(path.join(root, file), 'utf8');
   if (!text.includes('data-workspace-header')) fail(`${file} missing shared header mount`);
   if (!text.includes('data-workspace-footer')) fail(`${file} missing shared footer mount`);

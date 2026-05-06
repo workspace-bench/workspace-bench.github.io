@@ -1,0 +1,6 @@
+Fix duplicate h2 title in dataset.html and update static-site-check.js
+
+- Rename second "Task Complexity" h2 to "Complexity Drivers" to avoid
+  duplicate section headings in dataset.html
+- Update citation.html requiredText to match actual redirect page content
+- Skip header/footer mount check for citation.html (redirect page)
