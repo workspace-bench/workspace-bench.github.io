@@ -138,6 +138,11 @@ function workspaceSetSort(field) {
   }
 }
 
+function workspaceSortLabel(label, field) {
+  if (workspaceSort.field !== field) return label;
+  return `${label} ${workspaceSort.direction === "asc" ? "^" : "v"}`;
+}
+
 function workspaceRenderTabs(data) {
   const tabs = document.getElementById("leaderboardTabs");
   if (!tabs) return;
@@ -161,13 +166,32 @@ function workspaceFilterRows(rows) {
   const model = document.getElementById("modelFilter")?.value || "all";
   const source = document.getElementById("sourceFilter")?.value || "all";
   const verified = document.getElementById("verifiedFilter")?.value || "all";
-  return rows.filter((row) => {
+  const query = document.getElementById("leaderboardSearch")?.value || "";
+  const filtered = rows.filter((row) => {
     if (profile !== "all" && row.profile !== profile) return false;
     if (framework !== "all" && row.agent !== framework) return false;
     if (model !== "all" && row.model !== model) return false;
     if (source !== "all" && row.source !== source) return false;
     if (verified !== "all" && String(row.verified) !== verified) return false;
     return true;
+  });
+  return workspaceSearchRows(filtered, query);
+}
+
+function workspaceSearchRows(rows, query) {
+  const needle = query.trim().toLowerCase();
+  if (!needle) return rows;
+  return rows.filter((row) => {
+    const haystack = [
+      row.agent,
+      row.harness,
+      row.model,
+      row.profile,
+      row.capability,
+      row.workspace_size,
+      row.source
+    ].filter(Boolean).join(" ").toLowerCase();
+    return haystack.includes(needle);
   });
 }
 
@@ -182,9 +206,11 @@ function workspaceRenderFilters(rows) {
   profileFilter.innerHTML = `<option value="all">All profiles</option>${profiles.map((profile) => `<option value="${profile}">${profile}</option>`).join("")}`;
   frameworkFilter.innerHTML = `<option value="all">All frameworks</option>${frameworks.map((framework) => `<option value="${framework}">${framework}</option>`).join("")}`;
   modelFilter.innerHTML = `<option value="all">All models</option>${models.map((model) => `<option value="${model}">${model}</option>`).join("")}`;
-  [profileFilter, frameworkFilter, modelFilter, document.getElementById("sourceFilter"), document.getElementById("verifiedFilter")].forEach((control) => {
+  [profileFilter, frameworkFilter, modelFilter, document.getElementById("sourceFilter"), document.getElementById("verifiedFilter"), document.getElementById("leaderboardSearch")].forEach((control) => {
     if (control) control.addEventListener("change", () => workspaceRenderLeaderboard().catch(console.error));
   });
+  const search = document.getElementById("leaderboardSearch");
+  if (search) search.addEventListener("input", () => workspaceRenderLeaderboard().catch(console.error));
   profileFilter.dataset.ready = "true";
 }
 
@@ -202,16 +228,16 @@ function workspaceRenderTable(rows) {
       <table>
         <thead>
           <tr>
-            <th data-sort="rank">Rank</th>
-            <th data-sort="agent">Agent / Harness</th>
-            <th data-sort="model">Backbone Model</th>
-            <th class="numeric" data-sort="overall_score">Overall Score</th>
-            <th class="numeric" data-sort="rubric_pass_rate">Rubric Pass Rate</th>
-            <th class="numeric" data-sort="task_success_rate">Task Success Rate</th>
-            <th class="numeric" data-sort="cost_usd">Cost</th>
-            <th class="numeric" data-sort="runtime_minutes">Runtime</th>
-            <th data-sort="workspace_size">Workspace</th>
-            <th data-sort="date">Date</th>
+            <th data-sort="rank">${workspaceSortLabel("Rank", "rank")}</th>
+            <th data-sort="agent">${workspaceSortLabel("Agent / Harness", "agent")}</th>
+            <th data-sort="model">${workspaceSortLabel("Backbone Model", "model")}</th>
+            <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Overall Score", "overall_score")}</th>
+            <th class="numeric" data-sort="rubric_pass_rate">${workspaceSortLabel("Rubric Pass Rate", "rubric_pass_rate")}</th>
+            <th class="numeric" data-sort="task_success_rate">${workspaceSortLabel("Task Success Rate", "task_success_rate")}</th>
+            <th class="numeric" data-sort="cost_usd">${workspaceSortLabel("Cost", "cost_usd")}</th>
+            <th class="numeric" data-sort="runtime_minutes">${workspaceSortLabel("Runtime", "runtime_minutes")}</th>
+            <th data-sort="workspace_size">${workspaceSortLabel("Workspace", "workspace_size")}</th>
+            <th data-sort="date">${workspaceSortLabel("Date", "date")}</th>
             <th>Verified</th>
             <th>Report</th>
           </tr>
@@ -300,7 +326,7 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (runtimePanel) runtimePanel.innerHTML = workspaceChartPanelDefaults.scoreRuntimePanel;
 
   if (scoreChart) scoreChart.destroy();
-  scoreChart = workspaceMakeBarChart("scoreChart", labels, scores, "Overall Score", "#2563eb");
+  scoreChart = workspaceMakeBarChart("scoreChart", labels, scores, "Overall Score", "#5b3df5");
 
   if (costChart) costChart.destroy();
   const costPoints = agentRows.filter((row) => row.cost_usd !== null).map((row) => ({ x: row.cost_usd, y: row.overall_score, label: row.agent }));
@@ -338,22 +364,22 @@ function workspaceRenderInsightCards(data) {
   const frameworks = new Set(lite.map((row) => row.agent));
   const models = new Set(lite.map((row) => row.model));
   container.innerHTML = `
-    <div class="leaderboard-insight-card">
+    <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Human reference</div>
       <div class="leaderboard-big-number">80.7%</div>
       <p>Full benchmark reference score reported in the paper.</p>
     </div>
-    <div class="leaderboard-insight-card">
+    <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Top Lite system</div>
       <div class="leaderboard-big-number">${top ? workspaceFormatNumber(top.rubric_pass_rate, "%") : "-"}</div>
       <p>${top ? `${top.agent} + ${top.model}` : "No public Lite row available."}</p>
     </div>
-    <div class="leaderboard-insight-card">
+    <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">>= 60% Lite pass</div>
       <div class="leaderboard-big-number">${threshold60}</div>
       <p>Public Lite combinations clearing the strictest displayed threshold.</p>
     </div>
-    <div class="leaderboard-insight-card">
+    <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Public matrix</div>
       <div class="leaderboard-big-number">${frameworks.size} x ${models.size}</div>
       <p>Framework and model families represented by released Lite rows.</p>
@@ -431,7 +457,7 @@ function workspaceRenderCompositionCharts() {
   const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
 
   if (difficultyChart) difficultyChart.destroy();
-  difficultyChart = workspaceMakeDoughnutChart(
+  difficultyChart = workspaceMakeLargeDoughnutChart(
     "difficultyChart",
     breakdowns.difficulty.map((item) => item.level),
     breakdowns.difficulty.map((item) => item.tasks),
@@ -439,7 +465,7 @@ function workspaceRenderCompositionCharts() {
   );
 
   if (workspaceProfileChart) workspaceProfileChart.destroy();
-  workspaceProfileChart = workspaceMakeDoughnutChart(
+  workspaceProfileChart = workspaceMakeLargeDoughnutChart(
     "workspaceProfileChart",
     breakdowns.workerProfiles.map((item) => item.profile),
     breakdowns.workerProfiles.map((item) => item.tasks),

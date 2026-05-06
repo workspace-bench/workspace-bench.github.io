@@ -16,8 +16,8 @@
       <section class="page-header">
         <div class="container">
           <div class="eyebrow">Workspace-Bench Leaderboards</div>
-          <h1 style="font-size:3rem">Official Leaderboard</h1>
-          <p class="page-lead">
+          <h1 class="aa-page-title">Official Leaderboard</h1>
+          <p class="page-lead aa-page-lead">
             Workspace-Bench compares AI agents on realistic workspace tasks with large-scale file dependencies. Scores
             below combine task-level success and rubric-level grading. Rows marked <span class="badge badge-green">Verified</span>
             correspond to paper-reported or maintainers-verified results.
@@ -53,6 +53,7 @@
 
           <div class="toolbar">
             <div class="filters">
+              <input id="leaderboardSearch" class="aa-table-search" type="search" placeholder="Search systems, models, frameworks" aria-label="Search systems, models, frameworks">
               <select id="profileFilter" aria-label="Filter by profile"></select>
               <select id="frameworkFilter" aria-label="Filter by framework">
                 <option value="all">All frameworks</option>
@@ -107,7 +108,7 @@
               </p>
             </div>
           </div>
-          <div class="grid grid-2">
+          <div class="grid threshold-layout">
             <div class="card chart-card leaderboard-chart-card leaderboard-tall-card"><canvas id="thresholdChart" aria-label="Threshold chart"></canvas></div>
             <div class="card">
               <h3>Public threshold summary</h3>
@@ -128,7 +129,7 @@
               </p>
             </div>
           </div>
-          <div class="grid grid-3">
+          <div class="grid composition-layout">
             <div class="card chart-card leaderboard-chart-card leaderboard-composition-card"><canvas id="difficultyChart" aria-label="Difficulty chart"></canvas></div>
             <div class="card chart-card leaderboard-chart-card leaderboard-composition-card"><canvas id="workspaceProfileChart" aria-label="Workspace profile chart"></canvas></div>
             <div class="card leaderboard-text-panel" id="abilityInsightPanel"></div>
