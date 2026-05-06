@@ -95,21 +95,57 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Latest Public Lite Leaders</h2>
-              <p class="section-subtitle">
-                The top public combinations are read from the official Workspace-Bench repository figure and displayed
-                as an analysis-first ranking, similar to model intelligence dashboards.
-              </p>
+              <h2>Workspace-Bench highlights</h2>
+              <p class="section-subtitle">Independent benchmark summaries for workspace agents, model backbones, and benchmark composition.</p>
             </div>
             <a class="button" href="./leaderboard.html">Open Full Leaderboard</a>
           </div>
-          <div class="card">
-            <div class="rank-list">
-              <div class="rank-row"><span class="rank">#1</span><strong>OpenClaw + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:66.6%"></span></div><span class="score">66.6%</span></div>
-              <div class="rank-row"><span class="rank">#2</span><strong>ClaudeCode + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:64.4%"></span></div><span class="score">64.4%</span></div>
-              <div class="rank-row"><span class="rank">#3</span><strong>Hermes + Opus-4.7</strong><div class="rank-bar-track"><span class="rank-bar" style="width:64.3%"></span></div><span class="score">64.3%</span></div>
-              <div class="rank-row"><span class="rank">#4</span><strong>DeepAgent + GLM-5.1</strong><div class="rank-bar-track"><span class="rank-bar" style="width:60.8%"></span></div><span class="score">60.8%</span></div>
+          <div class="aa-highlight-grid">
+            <article class="aa-highlight-card">
+              <div class="mini-kicker">Lite leaderboard</div>
+              <h3>Top public systems</h3>
+              <p>Rubric pass rates from the public repository figure.</p>
+              <div class="aa-mini-leaderboard">
+                <div class="aa-mini-row"><span class="rank">#1</span><strong>OpenClaw + Opus-4.7</strong><span class="score">66.6%</span></div>
+                <div class="aa-mini-row"><span class="rank">#2</span><strong>ClaudeCode + Opus-4.7</strong><span class="score">64.4%</span></div>
+                <div class="aa-mini-row"><span class="rank">#3</span><strong>Hermes + Opus-4.7</strong><span class="score">64.3%</span></div>
+              </div>
+            </article>
+            <article class="aa-highlight-card">
+              <div class="mini-kicker">Performance gap</div>
+              <h3>Human reference remains ahead</h3>
+              <p>Workspace-Bench reports a clear gap between human performance and current evaluated agents.</p>
+              <div class="aa-mini-leaderboard">
+                <div class="aa-mini-row"><span class="rank">01</span><strong>Human + Tools</strong><span class="score">80.7%</span></div>
+                <div class="aa-mini-row"><span class="rank">02</span><strong>Best public agent</strong><span class="score">68.7%</span></div>
+                <div class="aa-mini-row"><span class="rank">03</span><strong>Average public agent</strong><span class="score">47.4%</span></div>
+              </div>
+            </article>
+            <article class="aa-highlight-card">
+              <div class="mini-kicker">Latest benchmark updates</div>
+              <h3>Latest benchmark updates</h3>
+              <div class="aa-changelog">
+                <div class="aa-changelog-item"><span class="table-note">2026-05</span><p>Workspace-Bench 1.0 paper and public repository released.</p></div>
+                <div class="aa-changelog-item"><span class="table-note">Lite split</span><p>100-task evaluation split with approximately 70% lower cost.</p></div>
+                <div class="aa-changelog-item"><span class="table-note">Public data</span><p>Lite framework/model rows and official distribution figures added.</p></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Leaderboards</h2>
+              <p class="section-subtitle">Browse Workspace-Bench by full summary, Lite public systems, profile mix, difficulty, and ability dimensions.</p>
             </div>
+          </div>
+          <div class="grid grid-3">
+            <a class="aa-highlight-card" href="./leaderboard.html"><div class="mini-kicker">Models</div><h3>Workspace-Bench-Lite</h3><p>Public harness x model combinations ranked by rubric pass rate.</p></a>
+            <a class="aa-highlight-card" href="./dataset.html"><div class="mini-kicker">Dataset</div><h3>Benchmark Composition</h3><p>Profile, difficulty, and ability views from official distribution data.</p></a>
+            <a class="aa-highlight-card" href="./methodology.html"><div class="mini-kicker">Evaluation</div><h3>Scoring Protocol</h3><p>Rubric-based scoring, reproducibility requirements, and submission structure.</p></a>
           </div>
         </div>
       </section>

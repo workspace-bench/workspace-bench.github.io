@@ -20,19 +20,30 @@ function workspaceRenderShell() {
   const current = workspaceCurrentPage();
 
   if (header) {
+    const primary = workspaceNavItems.slice(0, 5);
+    const secondary = workspaceNavItems.slice(5);
     header.innerHTML = `
       <header class="site-header">
         <div class="container nav">
-          <a class="brand" href="./index.html" aria-label="Workspace-Bench home">
-            <img src="./workspace-bench.svg" alt="">
-            <span>Workspace-Bench</span>
-          </a>
-          <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
-          <nav class="nav-links" aria-label="Primary navigation">
-            ${workspaceNavItems.map(([href, label]) => `
-              <a class="nav-link ${href === current ? "active" : ""}" href="./${href}">${label}</a>
-            `).join("")}
-          </nav>
+          <div class="aa-floating-nav">
+            <a class="brand aa-brand-pill" href="./index.html" aria-label="Workspace-Bench home">
+              <img src="./workspace-bench.svg" alt="">
+              <span>Workspace-Bench</span>
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">Menu</button>
+            <nav class="nav-links" aria-label="Primary navigation">
+              <div class="nav-pill-group">
+                ${primary.map(([href, label]) => `
+                  <a class="nav-link ${href === current ? "active" : ""}" href="./${href}">${label}</a>
+                `).join("")}
+              </div>
+              <div class="nav-pill-group">
+                ${secondary.map(([href, label]) => `
+                  <a class="nav-link ${href === current ? "active" : ""}" href="./${href}">${label}</a>
+                `).join("")}
+              </div>
+            </nav>
+          </div>
         </div>
       </header>
     `;

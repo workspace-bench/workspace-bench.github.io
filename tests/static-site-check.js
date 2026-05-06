@@ -28,8 +28,8 @@ const requiredFiles = [
 ];
 
 const requiredText = {
-  'index.html': ['Workspace-Bench 1.0', '20,476 Files', '7,399 Rubrics', '80.7%', '68.7%', '47.4%', 'Independent analysis of workspace agents'],
-  'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability', 'Framework x Model Matrix', 'No public cost data'],
+  'index.html': ['Workspace-Bench 1.0', '20,476 Files', '7,399 Rubrics', '80.7%', '68.7%', '47.4%', 'Independent analysis of workspace agents', 'Workspace-Bench highlights', 'Latest benchmark updates'],
+  'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability', 'Framework x Model Matrix', 'No public cost data', 'Workspace-Bench Leaderboards'],
   'dataset.html': ['Dataset Visualizations', 'File Type Distribution', 'Task Complexity', 'Lite Split', 'Dataset intelligence overview', 'Workspace Composition Table'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
   'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
@@ -43,7 +43,7 @@ function fail(message) {
 }
 
 const styleText = fs.readFileSync(path.join(root, 'styles/workspace.css'), 'utf8');
-for (const selector of ['analysis-shell', 'aa-metric-strip', 'leaderboard-insight-card', 'rank-bar', 'no-data-panel', 'analysis-list', 'compact-data-table', 'pipeline-step']) {
+for (const selector of ['analysis-shell', 'aa-metric-strip', 'leaderboard-insight-card', 'rank-bar', 'no-data-panel', 'analysis-list', 'compact-data-table', 'pipeline-step', 'aa-floating-nav', 'aa-brand-pill', 'aa-highlight-grid', 'aa-mini-leaderboard', 'aa-changelog']) {
   if (!styleText.includes(selector)) fail(`workspace.css missing Artificial Analysis style selector: ${selector}`);
 }
 
