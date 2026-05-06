@@ -667,73 +667,98 @@ p { margin: 0; }
   padding: 24px;
 }
 
-/* ─── Vertical timeline ─────────────────────────────────────────────── */
-.timeline-vertical {
-  position: relative;
-  padding-left: 28px;
+/* ─── Changelog cards ───────────────────────────────────────────────── */
+.changelog-cards {
   display: grid;
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  position: relative;
 }
 
-.timeline-vertical::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: var(--border);
-  border-radius: 999px;
-}
-
-.timeline-vertical-item {
-  position: relative;
+.changelog-card {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 18px;
+  grid-template-columns: 24px 1fr;
+  gap: 0 14px;
   align-items: start;
 }
 
-.timeline-vertical-dot {
-  position: absolute;
-  left: -25px;
-  top: 8px;
-  width: 16px;
-  height: 16px;
+.changelog-card-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  background: var(--border);
+  background: var(--border-strong);
   border: 3px solid var(--bg);
-  box-shadow: 0 0 0 2px var(--border);
+  box-shadow: 0 0 0 2px var(--border-strong);
+  margin-top: 18px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 
-.timeline-vertical-dot-active {
+.changelog-card-latest .changelog-card-dot {
   background: var(--primary);
   box-shadow: 0 0 0 2px var(--primary);
 }
 
-.timeline-vertical-date {
-  color: var(--primary);
-  font-weight: 760;
-  font-size: 0.85rem;
-  padding-top: 6px;
+.changelog-card-inner {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  background: var(--surface);
 }
 
-.timeline-vertical-body h3 {
-  font-size: 1rem;
-  margin-bottom: 5px;
+.changelog-card-latest .changelog-card-inner {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
 }
 
-.timeline-vertical-body p {
+.changelog-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.changelog-date {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 760;
+}
+
+.changelog-tags {
+  display: flex;
+  gap: 6px;
+}
+
+.changelog-tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.changelog-card-title {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.changelog-card-desc {
+  font-size: 0.84rem;
+  color: var(--muted);
   line-height: 1.5;
   margin: 0;
 }
 
 @media (max-width: 620px) {
-  .timeline-vertical-item { grid-template-columns: 1fr; }
-  .timeline-vertical-date { padding-top: 0; }
+  .changelog-cards { grid-template-columns: 1fr; }
 }
+
+/* ─── Vertical timeline ─────────────────────────────────────────────── */
+/* (kept for future use — unused for now) */
 
 .leaderboard-chart-mini {
   margin-bottom: 10px;
