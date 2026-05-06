@@ -586,6 +586,42 @@ p { margin: 0; }
   color: var(--muted);
 }
 
+.aa-hero-ranking {
+  border-radius: 24px;
+}
+
+.aa-hero-ranking-body {
+  padding: 18px 18px 14px;
+}
+
+.leaderboard-tall-card {
+  min-height: 420px;
+}
+
+.leaderboard-text-panel {
+  min-height: 340px;
+  display: grid;
+  align-content: start;
+}
+
+.ability-insight-list {
+  display: grid;
+  gap: 10px;
+}
+
+.ability-insight-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 68px;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.ability-insight-row:last-child {
+  border-bottom: 0;
+}
+
 .section { padding: 30px 0; }
 .section + .section { border-top: 0; }
 

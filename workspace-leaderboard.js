@@ -4,7 +4,6 @@ const workspaceSort = { field: "overall_score", direction: "desc" };
 let thresholdChart;
 let difficultyChart;
 let workspaceProfileChart;
-let abilityChart;
 const workspaceChartPanelDefaults = {
   scoreCostPanel: '<canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas>',
   scoreRuntimePanel: '<canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas>'
@@ -271,6 +270,25 @@ function workspaceRenderNoDataPanel(panel, title, message, note) {
   `;
 }
 
+function workspaceRenderAbilityInsightPanel() {
+  const panel = document.getElementById("abilityInsightPanel");
+  const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
+  if (!panel || !breakdowns?.abilities) return;
+  panel.innerHTML = `
+    <div class="mini-kicker">Ability composition</div>
+    <h3>Task Abilities</h3>
+    <p class="table-note" style="margin-bottom:10px">Official ability counts from the public distribution figure.</p>
+    <div class="ability-insight-list">
+      ${breakdowns.abilities.map((item) => `
+        <div class="ability-insight-row">
+          <strong>${item.ability}</strong>
+          <span class="score">${item.tasks}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 function workspaceRenderLeaderboardCharts(rows) {
   if (typeof Chart === "undefined") return;
   const agentRows = rows.filter((row) => row.model !== "Human");
@@ -428,14 +446,7 @@ function workspaceRenderCompositionCharts() {
     "Task per Workspace"
   );
 
-  if (abilityChart) abilityChart.destroy();
-  abilityChart = workspaceMakeHorizontalBarChart(
-    "abilityChart",
-    breakdowns.abilities.map((item) => item.ability),
-    breakdowns.abilities.map((item) => item.tasks),
-    "Task Abilities",
-    "#f59e0b"
-  );
+  workspaceRenderAbilityInsightPanel();
 }
 
 async function workspaceRenderLeaderboard() {
