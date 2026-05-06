@@ -1,9 +1,190 @@
-window.WORKSPACE_BENCH_DATA = {
+// Workspace-Bench public data bundle
+// Schema mirrors the HuggingFace dataset: ShenYunTzr/Workspace-Bench
+// Fields: absolute_id, persona, task, collaboration_type, rubrics,
+//         rubric_types, file_deps_cc, data_manifest
+
+(function(global) {
+  "use strict";
+
+  // --- Data access API ---
+
+  /**
+   * Load leaderboard data from the public bundle or a remote JSON endpoint.
+   * @param {string} [path] - Optional path to a custom JSON file.
+   * @returns {Promise<Object>} Leaderboard data object.
+   */
+  async function workspaceLoadLeaderboard(path) {
+    if (window.WORKSPACE_BENCH_DATA?.leaderboard) {
+      return window.WORKSPACE_BENCH_DATA.leaderboard;
+    }
+    const url = path || "./data/leaderboard.json";
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+    return res.json();
+  }
+
+  /**
+   * Load dataset statistics from the public bundle or a remote JSON endpoint.
+   * @param {string} [path] - Optional path to a custom JSON file.
+   * @returns {Promise<Object>} Dataset stats object.
+   */
+  async function workspaceLoadDatasetStats(path) {
+    if (window.WORKSPACE_BENCH_DATA?.datasetStats) {
+      return window.WORKSPACE_BENCH_DATA.datasetStats;
+    }
+    const url = path || "./data/dataset-stats.json";
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+    return res.json();
+  }
+
+  /**
+   * Fetch a raw JSON file from the site. Falls back to bundled data when available.
+   * @param {string} path - Relative path to a JSON file.
+   * @returns {Promise<Object>} Parsed JSON.
+   */
+  async function workspaceFetchPublic(path) {
+    if (window.WORKSPACE_BENCH_DATA) {
+      if (path.includes("leaderboard")) return window.WORKSPACE_BENCH_DATA.leaderboard;
+      if (path.includes("dataset-stats")) return window.WORKSPACE_BENCH_DATA.datasetStats;
+      if (path.includes("profile-results")) return window.WORKSPACE_BENCH_DATA.profileResults;
+      if (path.includes("capability-results")) return window.WORKSPACE_BENCH_DATA.capabilityResults;
+      if (path.includes("examples")) return { examples: window.WORKSPACE_BENCH_DATA.examples };
+    }
+    const res = await fetch(path);
+    if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
+    return res.json();
+  }
+
+  /**
+   * Add or update a leaderboard row (e.g. from a new verified submission).
+   * @param {Object} row - Row object matching the result JSON schema.
+   */
+  function workspaceUpsertLeaderboardRow(row) {
+    if (!window.WORKSPACE_BENCH_DATA?.leaderboard?.litePublicResults) return;
+    const list = window.WORKSPACE_BENCH_DATA.leaderboard.litePublicResults;
+    const idx = list.findIndex((r) => r.agent === row.agent && r.model === row.model);
+    const enriched = {
+      rank: 0,
+      agent: row.agent,
+      harness: row.harness,
+      model: row.model,
+      rubric_pass_rate: row.rubric_pass_rate ?? row.overall_score ?? 0,
+      overall_score: row.overall_score ?? row.rubric_pass_rate ?? 0,
+      task_success_rate: row.task_success_rate ?? null,
+      cost_usd: row.cost_usd ?? null,
+      runtime_minutes: row.runtime_minutes ?? null,
+      verified: row.verified ?? false,
+      source: "submitted",
+      report_url: row.report_url ?? "",
+      workspace_size: row.workspace_size ?? "Lite",
+      profile: row.profile ?? "All profiles",
+      capability: row.capability ?? "Lite public leaderboard",
+      date: row.date ?? new Date().toISOString().slice(0, 10)
+    };
+    if (idx >= 0) {
+      list[idx] = enriched;
+    } else {
+      list.push(enriched);
+    }
+    // Re-rank by rubric_pass_rate descending
+    list.sort((a, b) => b.rubric_pass_rate - a.rubric_pass_rate);
+    list.forEach((r, i) => { r.rank = i + 1; });
+  }
+
+  /**
+   * Add a new task example to the dataset.
+   * @param {Object} task - Task object with persona, task, collaboration_type, rubrics, etc.
+   */
+  function workspaceAddTask(task) {
+    if (!window.WORKSPACE_BENCH_DATA?.dataset?.tasks) return;
+    const id = window.WORKSPACE_BENCH_DATA.dataset.tasks.length + 1;
+    window.WORKSPACE_BENCH_DATA.dataset.tasks.push({ absolute_id: id, ...task });
+    // Recompute derived statistics
+    recomputeDatasetStats();
+  }
+
+  /**
+   * Update metadata about the benchmark.
+   * @param {Object} meta - Key-value pairs to merge into existing metadata.
+   */
+  function workspaceUpdateMeta(meta) {
+    if (!window.WORKSPACE_BENCH_DATA?.dataset?.meta) return;
+    Object.assign(window.WORKSPACE_BENCH_DATA.dataset.meta, meta);
+  }
+
+  /**
+   * Recompute all derived statistics from tasks after data changes.
+   * Call this whenever tasks are added or modified.
+   */
+  function recomputeDatasetStats() {
+    const tasks = window.WORKSPACE_BENCH_DATA?.dataset?.tasks;
+    if (!tasks || !tasks.length) return;
+    const stats = window.WORKSPACE_BENCH_DATA.datasetStats;
+    const profileResults = window.WORKSPACE_BENCH_DATA.profileResults;
+    const capabilityResults = window.WORKSPACE_BENCH_DATA.capabilityResults;
+    const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
+
+    // Persona distribution
+    const personaMap = {};
+    tasks.forEach(t => { personaMap[t.persona] = (personaMap[t.persona] || 0) + 1; });
+    const personaSorted = Object.entries(personaMap).sort((a, b) => b[1] - a[1]);
+    const totalTasks = tasks.length;
+
+    // Collaboration type distribution
+    const collabMap = {};
+    tasks.forEach(t => {
+      (t.collaboration_type || []).forEach(c => { collabMap[c] = (collabMap[c] || 0) + 1; });
+    });
+
+    // Rubric type distribution
+    const rubricTypeMap = {};
+    tasks.forEach(t => {
+      (t.rubric_types || []).forEach(r => { rubricTypeMap[r] = (rubricTypeMap[r] || 0) + 1; });
+    });
+
+    // File count distribution
+    const fileCountMap = {};
+    tasks.forEach(t => {
+      const count = t.data_manifest ? t.data_manifest.length : 0;
+      const bucket = count === 0 ? "No files" : count <= 5 ? "1-5 files" : count <= 20 ? "6-20 files" : count <= 50 ? "21-50 files" : "50+ files";
+      fileCountMap[bucket] = (fileCountMap[bucket] || 0) + 1;
+    });
+
+    // Update breakdowns
+    if (breakdowns?.workerProfiles) {
+      breakdowns.workerProfiles = personaSorted.map(([profile, tasks_n]) => ({
+        profile,
+        tasks: tasks_n,
+        share: Math.round(tasks_n / totalTasks * 100)
+      }));
+    }
+
+    // Update datasetStats
+    if (stats) {
+      stats.profileTasks = Object.entries(personaMap).sort((a, b) => b[1] - a[1]).map(([profile, tasks_n]) => ({ profile, tasks: tasks_n }));
+      stats.collabTypes = Object.entries(collabMap).sort((a, b) => b[1] - a[1]).map(([type, count]) => ({ type, count }));
+      stats.rubricTypes = Object.entries(rubricTypeMap).sort((a, b) => b[1] - a[1]).map(([type, count]) => ({ type, count }));
+      stats.fileCountDist = Object.entries(fileCountMap).map(([bucket, count]) => ({ bucket, count }));
+    }
+  }
+
+  window.WORKSPACE_BENCH_API = {
+    loadLeaderboard: workspaceLoadLeaderboard,
+    loadDatasetStats: workspaceLoadDatasetStats,
+    fetchPublic: workspaceFetchPublic,
+    upsertRow: workspaceUpsertLeaderboardRow,
+    addTask: workspaceAddTask,
+    updateMeta: workspaceUpdateMeta
+  };
+
+  // --- Embedded public data bundle ---
+  window.WORKSPACE_BENCH_DATA = {
   summary: [
-    { label: "Worker Profiles", value: "5", description: "Operations Manager, Logistics Manager, AI Product Manager, Researcher, and Backend Developer." },
-    { label: "File Types", value: "74", description: "Heterogeneous files across realistic workspace environments." },
+    { label: "Worker Profiles", value: "10", description: "Operations Manager, Logistics Manager, Researcher, Backend Developer, Product Manager, and more." },
+    { label: "File Types", value: "24+", description: "24+ distinct extensions: .md, .json, .txt, .xlsx, .csv, .pdf, .java, .py, .js, .ts, and more." },
     { label: "Files", value: "20,476", description: "Files distributed across role-specific workspaces." },
-    { label: "Tasks", value: "388", description: "Tasks in the full benchmark with explicit dependency graphs." },
+    { label: "Tasks", value: "388", description: "Tasks with heterogeneous file dependencies and rubric-based evaluation." },
     { label: "Rubrics", value: "7,399", description: "Fine-grained rubric checks used for evaluation." },
     { label: "Max Workspace", value: "20GB", description: "Largest workspace size represented in the benchmark." }
   ],
@@ -106,11 +287,16 @@ window.WORKSPACE_BENCH_DATA = {
   },
   leaderboardBreakdowns: {
     workerProfiles: [
-      { profile: "Operations Manager", tasks: 120, share: 31 },
-      { profile: "Researcher", tasks: 66, share: 17 },
-      { profile: "Backend Developer", tasks: 44, share: 11 },
-      { profile: "Logistics Manager", tasks: 116, share: 30 },
-      { profile: "AI Product Manager", tasks: 42, share: 11 }
+      { profile: "Operations Manager", tasks: 95, share: 24.5 },
+      { profile: "Logistics Manager", tasks: 96, share: 24.7 },
+      { profile: "Researcher", tasks: 63, share: 16.2 },
+      { profile: "Backend Developer", tasks: 33, share: 8.5 },
+      { profile: "Product Manager", tasks: 28, share: 7.2 },
+      { profile: "Operations Staff", tasks: 27, share: 7.0 },
+      { profile: "Admin / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Product Staff", tasks: 13, share: 3.4 },
+      { profile: "Developer", tasks: 10, share: 2.6 },
+      { profile: "Researchers", tasks: 4, share: 1.0 }
     ],
     difficulty: [
       { level: "Easy", tasks: 54, share: 14 },
@@ -118,29 +304,80 @@ window.WORKSPACE_BENCH_DATA = {
       { level: "Hard", tasks: 128, share: 33 }
     ],
     abilities: [
-      { ability: "Workspace Exploration", tasks: 262 },
-      { ability: "Task-Supporting Files Utilization", tasks: 238 },
-      { ability: "Result-Providing Files Utilization", tasks: 211 },
-      { ability: "Lineage Tracing", tasks: 136 },
-      { ability: "Semantic Content Relations Understanding", tasks: 170 },
-      { ability: "Heterogeneous File Understanding", tasks: 140 }
+      { ability: "Workspace Exploration", count: 199 },
+      { ability: "Task-Supporting Files Utilization", count: 189 },
+      { ability: "Result-Providing Files Utilization", count: 188 },
+      { ability: "Semantic Content Relations Understanding", count: 151 },
+      { ability: "Heterogeneous File Understanding", count: 112 },
+      { ability: "Lineage Tracing", count: 116 }
     ]
   },
   datasetStats: {
-    fileTypeGroups: [
-      { group: "Operations Manager", count: 31 },
-      { group: "Researcher", count: 17 },
-      { group: "Backend Developer", count: 11 },
-      { group: "Logistics Manager", count: 30 },
-      { group: "AI Product Manager", count: 11 }
+    // Persona (worker profile) distribution from real HF data
+    profileTasks: [
+      { profile: "Operations Manager", tasks: 95, share: 24.5 },
+      { profile: "Logistics Manager", tasks: 96, share: 24.7 },
+      { profile: "Researcher", tasks: 63, share: 16.2 },
+      { profile: "Backend Developer", tasks: 33, share: 8.5 },
+      { profile: "Product Manager", tasks: 28, share: 7.2 },
+      { profile: "Operations Staff", tasks: 27, share: 7.0 },
+      { profile: "Admin / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Product Staff", tasks: 13, share: 3.4 },
+      { profile: "Developer", tasks: 10, share: 2.6 },
+      { profile: "Researchers", tasks: 4, share: 1.0 }
     ],
+    // Collaboration type (task ability) counts from real HF data
+    collabTypes: [
+      { type: "Workspace Exploration", count: 199 },
+      { type: "Task-Supporting Files Utilization", count: 189 },
+      { type: "Result-Providing Files Utilization", count: 188 },
+      { type: "Semantic Content Relations Understanding", count: 151 },
+      { type: "Lineage Tracing", count: 116 },
+      { type: "Heterogeneous File Understanding", count: 112 }
+    ],
+    // Rubric type distribution — 7,399 total rubrics from real HF data
+    rubricTypes: [
+      { type: "Outcome Evaluation", count: 4056, share: 54.8 },
+      { type: "Basic Evaluation", count: 1851, share: 25.0 },
+      { type: "Process Evaluation", count: 1492, share: 20.2 }
+    ],
+    // File dependency coverage
+    fileDependencyCoverage: {
+      withDeps: 304,
+      withoutDeps: 84,
+      share: 78.4
+    },
+    // Files per task distribution (from data_manifest lengths)
+    fileCountDist: [
+      { bucket: "No files", count: 84 },
+      { bucket: "1-5 files", count: 120 },
+      { bucket: "6-20 files", count: 88 },
+      { bucket: "21-50 files", count: 62 },
+      { bucket: "50+ files", count: 34 }
+    ],
+    // 74 distinct file type extensions found across all workspaces
+    fileTypeGroups: [
+      { group: "Documents (.md, .txt, .doc, .docx, .pdf, .ppt, .pptx)", count: 1881 },
+      { group: "Spreadsheets (.xlsx, .xls, .csv)", count: 733 },
+      { group: "Code (.java, .py, .js, .ts, .go, .sh, .yaml, .yml, .xml, .html)", count: 846 },
+      { group: "Data (.json)", count: 585 },
+      { group: "Media (.png, .jpg)", count: 37 },
+      { group: "Archives (.zip)", count: 3 }
+    ],
+    // Difficulty levels (official benchmark split)
+    difficultyLevels: [
+      { level: "Easy", tasks: 54, share: 14 },
+      { level: "Medium", tasks: 206, share: 53 },
+      { level: "Hard", tasks: 128, share: 33 }
+    ],
+    // Workspace complexity by collaboration type
     complexity: [
       { bucket: "Workspace Exploration", tasks: 262 },
       { bucket: "Task-Supporting Files", tasks: 238 },
       { bucket: "Result-Providing Files", tasks: 211 },
-      { bucket: "Lineage Tracing", tasks: 136 },
       { bucket: "Semantic Relations", tasks: 170 },
-      { bucket: "Heterogeneous Files", tasks: 140 }
+      { bucket: "Heterogeneous Files", tasks: 140 },
+      { bucket: "Lineage Tracing", tasks: 136 }
     ],
     workspaceSizes: [
       { bucket: "Easy", tasks: 54 },
@@ -148,11 +385,11 @@ window.WORKSPACE_BENCH_DATA = {
       { bucket: "Hard", tasks: 128 }
     ],
     rubricCounts: [
-      { bucket: "1 workspace", tasks: 42 },
-      { bucket: "2 workspaces", tasks: 116 },
-      { bucket: "3 workspaces", tasks: 44 },
-      { bucket: "4 workspaces", tasks: 66 },
-      { bucket: "5 workspaces", tasks: 120 }
+      { bucket: "No files", tasks: 84 },
+      { bucket: "1-5 files", tasks: 120 },
+      { bucket: "6-20 files", tasks: 88 },
+      { bucket: "21-50 files", tasks: 62 },
+      { bucket: "50+ files", tasks: 34 }
     ],
     liteSplit: {
       tasks: 100,
@@ -202,3 +439,5 @@ window.WORKSPACE_BENCH_DATA = {
     }
   ]
 };
+
+})(window);

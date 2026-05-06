@@ -280,6 +280,75 @@ async function workspaceInitHomeCharts() {
   });
 }
 
+async function workspaceInitHeroChart() {
+  const canvas = document.getElementById("heroLiteChart");
+  if (!canvas || typeof Chart === "undefined") return;
+  const colors = workspaceChartColors();
+  const topResults = [
+    { agent: "OpenClaw", model: "Opus-4.7", score: 66.6 },
+    { agent: "ClaudeCode", model: "Opus-4.7", score: 64.4 },
+    { agent: "Hermes", model: "Opus-4.7", score: 64.3 },
+    { agent: "DeepAgent", model: "GLM-5.1", score: 60.8 },
+    { agent: "Hermes", model: "GLM-5.1", score: 57.7 },
+    { agent: "OpenClaw", model: "GLM-5.1", score: 57.5 },
+    { agent: "ClaudeCode", model: "MiniMax-M2.7", score: 54.6 },
+    { agent: "DeepAgent", model: "Opus-4.7", score: 54.3 },
+    { agent: "ClaudeCode", model: "GLM-5.1", score: 52.4 },
+    { agent: "Hermes", model: "MiniMax-M2.7", score: 52.3 }
+  ];
+  new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: topResults.map((r) => `${r.agent}\n${r.model}`),
+      datasets: [{
+        label: "Rubric pass rate",
+        data: topResults.map((r) => r.score),
+        backgroundColor: topResults.map((r, i) =>
+          i === 0 ? "#1f9d55" : i < 3 ? "#5b3df5" : "#9ca3af"
+        ),
+        borderRadius: 3,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#ffffff",
+          titleColor: "#111111",
+          bodyColor: "#5f6368",
+          borderColor: "#dddddd",
+          borderWidth: 1,
+          callbacks: {
+            label: (ctx) => ` ${ctx.raw}%`
+          }
+        }
+      },
+      scales: {
+        x: {
+          max: 80,
+          ticks: { color: colors.text, callback: (v) => `${v}%`, precision: 0 },
+          grid: { color: colors.grid }
+        },
+        y: {
+          ticks: {
+            color: colors.text,
+            font: { size: 9 },
+            callback: function(value) {
+              const label = this.getLabelForValue(value);
+              return label.length > 20 ? `${label.slice(0, 20)}...` : label;
+            }
+          },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
 async function workspaceInitDatasetCharts() {
   if (!document.getElementById("fileTypeChart")) return;
   const stats = window.WORKSPACE_BENCH_DATA?.datasetStats || await workspaceFetchJson("./data/dataset-stats.json");

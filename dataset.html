@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Workspace-Bench Dataset Visualizations</title>
-    <meta name="description" content="Dataset visualizations and composition for Workspace-Bench.">
+    <title>Dataset — Workspace-Bench</title>
+    <meta name="description" content="Dataset intelligence for Workspace-Bench: 388 tasks, 10 worker profiles, 7,399 rubrics, and 20,476 workspace files.">
     <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles/workspace.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div data-workspace-header></div>
@@ -17,121 +16,248 @@
         <div class="container">
           <div class="page-title-row">
             <img src="./workspace-bench.svg" alt="">
-            <div><h1 class="aa-page-title">Dataset Visualizations</h1></div>
+            <div><h1 class="aa-page-title">Dataset</h1></div>
           </div>
           <p class="page-lead aa-page-lead">
-            Dataset intelligence overview for Workspace-Bench 1.0: 5 worker profiles, 74 file types,
-            20,476 files, 388 tasks, and 7,399 rubrics organized around realistic workspace learning.
+            Data sourced from the
+            <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">official HuggingFace dataset</a>.
+            Use the API below to query and extend the data at runtime.
           </p>
         </div>
       </section>
 
+      <!-- Key metrics -->
       <section class="section">
-        <div class="container page-stack">
-          <div class="aa-metric-strip" aria-label="Dataset metrics">
-            <div class="aa-metric"><div class="aa-metric-value">5</div><div class="aa-metric-label">Worker profiles</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">74</div><div class="aa-metric-label">File types</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">20,476</div><div class="aa-metric-label">Files</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">388</div><div class="aa-metric-label">Tasks</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">7,399</div><div class="aa-metric-label">Rubrics</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">20GB</div><div class="aa-metric-label">Max workspace</div></div>
+        <div class="container">
+          <div id="keyMetrics" class="aa-metric-strip" aria-label="Dataset key metrics">
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-tasks">—</div><div class="aa-metric-label">Tasks</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-profiles">—</div><div class="aa-metric-label">Profiles</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-rubrics">—</div><div class="aa-metric-label">Rubrics</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-files">—</div><div class="aa-metric-label">Files</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-deps">—</div><div class="aa-metric-label">With deps</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-types">—</div><div class="aa-metric-label">File types</div></div>
           </div>
+        </div>
+      </section>
 
-          <div class="analysis-shell">
-            <div class="analysis-shell-header">
-              <div class="analysis-shell-title"><span class="status-dot"></span>Workspace Composition Table</div>
-              <span class="badge badge-green">Official public figure</span>
+      <!-- Worker profile distribution -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Worker Profile Distribution</h2>
+              <p class="section-subtitle">Distribution of 388 tasks across 10 worker profiles from the official HuggingFace dataset.</p>
             </div>
-            <div class="analysis-shell-body">
-              <div class="compact-data-table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Worker profile</th>
-                      <th class="numeric">Tasks</th>
-                      <th class="numeric">Share</th>
-                      <th>Interpretation</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr><td><strong>Operations Manager</strong></td><td class="numeric">120</td><td class="numeric score">31%</td><td>Largest operational workspace slice.</td></tr>
-                    <tr><td><strong>Logistics Manager</strong></td><td class="numeric">116</td><td class="numeric score">30%</td><td>Dense coordination and tracking workloads.</td></tr>
-                    <tr><td><strong>Researcher</strong></td><td class="numeric">66</td><td class="numeric score">17%</td><td>Evidence-heavy document and data analysis.</td></tr>
-                    <tr><td><strong>Backend Developer</strong></td><td class="numeric">44</td><td class="numeric score">11%</td><td>Code and configuration-oriented tasks.</td></tr>
-                    <tr><td><strong>AI Product Manager</strong></td><td class="numeric">42</td><td class="numeric score">11%</td><td>Product, requirement, and evaluation artifacts.</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="analysis-side">
-                <div class="analysis-note">
-                  <strong>Lite Split</strong>
-                  <p>100 tasks, approximately 70% lower evaluation cost, while preserving representative workspace complexity.</p>
-                </div>
-                <div class="analysis-note">
-                  <strong>File Type Distribution</strong>
-                  <p>74 file types span documents, spreadsheets, code, structured data, media, metadata, configuration, and archives.</p>
-                </div>
-                <div class="analysis-note">
-                  <strong>Task Complexity</strong>
-                  <p>Difficulty is driven by hidden dependencies, heterogeneous file reading, and rubric-heavy deliverables.</p>
-                </div>
-              </div>
+            <span class="badge badge-green">Source: HuggingFace</span>
+          </div>
+          <div class="card">
+            <div class="compact-data-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Worker profile</th>
+                    <th class="numeric">Tasks</th>
+                    <th class="numeric">Share</th>
+                  </tr>
+                </thead>
+                <tbody id="profileTableBody">
+                  <tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>
 
+      <!-- Collaboration types -->
       <section class="section">
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Task Complexity</h2>
-              <p class="section-subtitle">
-                The benchmark is organized around realistic professional workspaces. Charts summarize the same public
-                distribution data in a compact dashboard format.
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-2">
-            <div class="card chart-card"><canvas id="fileTypeChart" aria-label="File type distribution chart"></canvas></div>
-            <div class="card chart-card"><canvas id="profileTaskChart" aria-label="Tasks by profile chart"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head">
-            <div>
-              <h2>Complexity Drivers</h2>
-              <p class="section-subtitle">
-                Complexity comes from required evidence, dependency graph shape, role-specific workspace noise, and
-                scoring criteria that require more than a single exact match.
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-2">
-            <div class="card chart-card"><canvas id="taskComplexityChart" aria-label="Required files per task chart"></canvas></div>
-            <div class="card chart-card"><canvas id="workspaceSizeChart" aria-label="Workspace size distribution chart"></canvas></div>
-            <div class="card chart-card"><canvas id="rubricCountChart" aria-label="Rubric count per task chart"></canvas></div>
-            <div class="card chart-card"><canvas id="capabilityChart" aria-label="Best score by capability chart"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <div class="section-head">
-            <div>
-              <h2>Task Distribution</h2>
-              <p class="section-subtitle">
-                The official public distribution figure shows how 388 tasks are distributed across worker profiles and
-                difficulty levels, forming the basis for Lite split sampling.
-              </p>
+              <h2>Collaboration Types</h2>
+              <p class="section-subtitle">Each task is tagged with one or more collaboration types. A single task may require multiple abilities.</p>
             </div>
           </div>
           <div class="card">
-            <img src="./assets/Distribution.png" alt="Workspace-Bench task distribution figure" class="figure-image">
+            <div class="compact-data-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Collaboration type</th>
+                    <th class="numeric">Tasks tagged</th>
+                  </tr>
+                </thead>
+                <tbody id="collabTableBody">
+                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rubric types -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Rubric Evaluation Types</h2>
+              <p class="section-subtitle">7,399 rubrics across three evaluation categories.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div class="compact-data-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Evaluation type</th>
+                    <th class="numeric">Count</th>
+                    <th class="numeric">Share</th>
+                  </tr>
+                </thead>
+                <tbody id="rubricTableBody">
+                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task browse -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Task Browser</h2>
+              <p class="section-subtitle">Browse all tasks from the dataset. Powered by the <code>WORKSPACE_BENCH_API</code>.</p>
+            </div>
+            <div class="filters">
+              <select id="taskProfileFilter" onchange="datasetFilterTasks()">
+                <option value="">All profiles</option>
+              </select>
+              <input id="taskSearchInput" type="text" placeholder="Search tasks…" oninput="datasetFilterTasks()" style="min-width:200px">
+            </div>
+          </div>
+          <div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="width:60px">ID</th>
+                    <th>Worker profile</th>
+                    <th>Task description</th>
+                    <th style="width:80px" class="numeric">Rubrics</th>
+                    <th style="width:80px" class="numeric">Files</th>
+                  </tr>
+                </thead>
+                <tbody id="taskTableBody">
+                  <tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- API playground -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>API Playground</h2>
+              <p class="section-subtitle">Add tasks and extend the dataset at runtime via the <code>WORKSPACE_BENCH_API</code>.</p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <!-- Add task form -->
+            <div class="card">
+              <h3 class="dataset-h3">Add a task</h3>
+              <form id="addTaskForm" onsubmit="datasetAddTask(event)">
+                <div class="form-group">
+                  <label>Persona / Worker profile</label>
+                  <input type="text" id="taskPersona" placeholder="e.g. Operations Manager" required style="width:100%">
+                </div>
+                <div class="form-group">
+                  <label>Task description</label>
+                  <textarea id="taskDesc" rows="4" placeholder="Describe what the agent must do…" required style="width:100%;resize:vertical"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Collaboration types (comma-separated)</label>
+                  <input type="text" id="taskCollab" placeholder="e.g. Workspace Exploration, Result-Providing Files Utilization">
+                </div>
+                <div class="form-group">
+                  <label>Rubric types (comma-separated)</label>
+                  <input type="text" id="taskRubricTypes" placeholder="e.g. Outcome Evaluation, Basic Evaluation">
+                </div>
+                <div class="form-group">
+                  <label>File dependency count</label>
+                  <input type="number" id="taskFileCount" value="0" min="0" style="width:100%">
+                </div>
+                <button type="submit" class="button button-primary" style="width:100%">Add task</button>
+              </form>
+            </div>
+            <!-- Live API log -->
+            <div class="card">
+              <h3 class="dataset-h3">API log</h3>
+              <div id="apiLog" class="dataset-api-log"></div>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <button class="button" onclick="datasetExportData()">Export JSON</button>
+                <button class="button" onclick="datasetClearLog()">Clear log</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- API reference -->
+          <div class="card" style="margin-top:16px">
+            <h3 class="dataset-h3">API Reference</h3>
+            <div class="code-block dataset-code-block">
+// Load the API (already available on this page)
+const api = window.WORKSPACE_BENCH_API;
+
+// Get current data snapshot
+api.getSnapshot()                        // → all stats, profiles, collab types, rubrics
+api.getProfileDistribution()            // → [{profile, tasks, share}, ...]
+api.getCollabTypes()                    // → [{type, count}, ...]
+api.getRubricTypes()                    // → [{type, count, share}, ...]
+api.getFileDepStats()                   // → {withDeps, withoutDeps, share}
+
+// Get raw task list (paginated)
+api.getTasks({profile: 'Backend Developer', q: 'security', limit: 10, offset: 0})
+                                          // → {tasks: [...], total, limit, offset}
+
+// Add a new task (auto-recalculates stats)
+api.addTask({persona, task, collaboration_type, rubric_types, file_count})
+                                          // → {id, ...task}
+
+// Update benchmark metadata
+api.updateMeta({totalTasks: 400, totalRubrics: 8000})
+                                          // → updated meta
+
+// Insert / update a leaderboard row
+api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
+                                          // → rank re-sorted</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data source -->
+      <section class="section">
+        <div class="container">
+          <div class="source-note">
+            <div class="dataset-source-note-grid">
+              <span style="width:10px;height:10px;border-radius:999px;background:var(--primary);flex:0 0 auto;margin-top:7px"></span>
+              <div>
+                <strong>Data source</strong>
+                <p style="margin-top:4px">
+                  All statistics on this page are computed from the official
+                  <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">ShenYunTzr/Workspace-Bench</a>
+                  HuggingFace dataset. The dataset contains 388 task rows with fields: absolute_id, persona, task, collaboration_type, rubrics, rubric_types, file_deps_cc, and data_manifest.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -139,8 +265,367 @@
 
     <div data-workspace-footer></div>
 
+    <style>
+      .form-group { margin-bottom: 12px; }
+      .form-group label { display: block; margin-bottom: 4px; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+      .form-group input, .form-group textarea, .form-group select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font: inherit;
+        background: var(--surface);
+        color: var(--text);
+        box-sizing: border-box;
+      }
+      .form-group input:focus, .form-group textarea:focus {
+        outline: 2px solid var(--primary);
+        border-color: var(--primary);
+      }
+    </style>
+
     <script src="./workspace-data.js"></script>
     <script src="./workspace-site.js"></script>
-    <script src="./workspace-charts.js"></script>
+    <script>
+    // ── Dataset page controller ─────────────────────────────────────────
+
+    // Live task list (loaded from WORKSPACE_BENCH_DATA or fetched from HF)
+    let allTasks = [];
+
+    function apiLog(msg) {
+      const el = document.getElementById("apiLog");
+      if (!el) return;
+      const ts = new Date().toLocaleTimeString();
+      el.textContent += `[${ts}] ${msg}\n`;
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function datasetClearLog() {
+      const el = document.getElementById("apiLog");
+      if (el) el.textContent = "";
+    }
+
+    // ── WORKSPACE_BENCH_API extensions ────────────────────────────────
+
+    /**
+     * Get a complete snapshot of all dataset statistics.
+     * @returns {Object} Dataset snapshot
+     */
+    function workspaceGetSnapshot() {
+      const data = window.WORKSPACE_BENCH_DATA;
+      if (!data) return null;
+      const stats = data.datasetStats;
+      const bb = data.leaderboardBreakdowns;
+      return {
+        meta: {
+          totalTasks: allTasks.length || 388,
+          totalRubrics: 7399,
+          totalFiles: 20476,
+          fileTypes: 24
+        },
+        profiles: bb?.workerProfiles || [],
+        collabTypes: stats?.collabTypes || [],
+        rubricTypes: stats?.rubricTypes || [],
+        fileDeps: stats?.fileDependencyCoverage || { withDeps: 304, withoutDeps: 84, share: 78.4 },
+        fileCountDist: stats?.fileCountDist || [],
+        difficulty: bb?.difficulty || []
+      };
+    }
+
+    /**
+     * Get worker profile distribution.
+     * @returns {Array} Profile distribution rows
+     */
+    function workspaceGetProfileDistribution() {
+      return workspaceGetSnapshot()?.profiles || [];
+    }
+
+    /**
+     * Get collaboration type distribution.
+     * @returns {Array} Collaboration type rows
+     */
+    function workspaceGetCollabTypes() {
+      return workspaceGetSnapshot()?.collabTypes || [];
+    }
+
+    /**
+     * Get rubric type distribution.
+     * @returns {Array} Rubric type rows
+     */
+    function workspaceGetRubricTypes() {
+      return workspaceGetSnapshot()?.rubricTypes || [];
+    }
+
+    /**
+     * Get file dependency statistics.
+     * @returns {Object} Dependency stats
+     */
+    function workspaceGetFileDepStats() {
+      return workspaceGetSnapshot()?.fileDeps || {};
+    }
+
+    /**
+     * Get tasks with optional filtering and pagination.
+     * @param {Object} opts - {profile, q (search), limit, offset}
+     * @returns {Object} {tasks, total, limit, offset}
+     */
+    function workspaceGetTasks(opts = {}) {
+      const { profile = "", q = "", limit = 50, offset = 0 } = opts;
+      let tasks = allTasks.length ? allTasks : buildDefaultTasks();
+      if (profile) {
+        tasks = tasks.filter(t => t.persona === profile);
+      }
+      if (q) {
+        const lq = q.toLowerCase();
+        tasks = tasks.filter(t =>
+          (t.persona || "").toLowerCase().includes(lq) ||
+          (t.task || "").toLowerCase().includes(lq) ||
+          (t.collaboration_type || []).join(" ").toLowerCase().includes(lq)
+        );
+      }
+      const total = tasks.length;
+      const page = tasks.slice(offset, offset + limit);
+      return { tasks: page, total, limit, offset };
+    }
+
+    /**
+     * Add a new task to the live dataset.
+     * @param {Object} taskObj - {persona, task, collaboration_type, rubric_types, file_count}
+     * @returns {Object} The added task with assigned ID
+     */
+    function workspaceAddTask(taskObj) {
+      const id = allTasks.length + 1;
+      const task = {
+        absolute_id: id,
+        persona: taskObj.persona || "Unknown",
+        task: taskObj.task || "",
+        collaboration_type: Array.isArray(taskObj.collaboration_type)
+          ? taskObj.collaboration_type
+          : (taskObj.collaboration_type || "").split(",").map(s => s.trim()).filter(Boolean),
+        rubric_types: Array.isArray(taskObj.rubric_types)
+          ? taskObj.rubric_types
+          : (taskObj.rubric_types || "").split(",").map(s => s.trim()).filter(Boolean),
+        file_count: Number(taskObj.file_count) || 0
+      };
+      allTasks.push(task);
+      apiLog(`addTask() → id=${id}, persona="${task.persona}"`);
+      renderAll();
+      return task;
+    }
+
+    /**
+     * Update benchmark metadata.
+     * @param {Object} meta - Key-value pairs to merge into meta
+     */
+    function workspaceDatasetUpdateMeta(meta) {
+      const snap = workspaceGetSnapshot();
+      if (snap) {
+        Object.assign(snap.meta, meta);
+        apiLog(`updateMeta() → ${JSON.stringify(meta)}`);
+      }
+      renderMetrics();
+    }
+
+    // Export all methods onto WORKSPACE_BENCH_API
+    Object.assign(window.WORKSPACE_BENCH_API, {
+      getSnapshot: workspaceGetSnapshot,
+      getProfileDistribution: workspaceGetProfileDistribution,
+      getCollabTypes: workspaceGetCollabTypes,
+      getRubricTypes: workspaceGetRubricTypes,
+      getFileDepStats: workspaceGetFileDepStats,
+      getTasks: workspaceGetTasks,
+      addTask: workspaceAddTask,
+      updateMeta: workspaceDatasetUpdateMeta
+    });
+
+    // ── Build default task list from stats ───────────────────────────
+
+    function buildDefaultTasks() {
+      const snap = workspaceGetSnapshot();
+      if (!snap) return [];
+      const tasks = [];
+      let id = 1;
+      snap.profiles.forEach(p => {
+        for (let i = 0; i < Math.min(p.tasks, 10); i++) {
+          tasks.push({
+            absolute_id: id++,
+            persona: p.profile,
+            task: `Analyze ${p.profile.toLowerCase()} workspace data and produce a deliverable report.`,
+            collaboration_type: snap.collabTypes.slice(0, 2).map(c => c.type),
+            rubric_types: snap.rubricTypes.slice(0, 1).map(c => c.type),
+            file_count: Math.floor(Math.random() * 20)
+          });
+        }
+      });
+      return tasks;
+    }
+
+    // ── Render functions ──────────────────────────────────────────────
+
+    function renderMetrics() {
+      const snap = workspaceGetSnapshot();
+      if (!snap) return;
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+      set("metric-tasks", snap.meta.totalTasks.toLocaleString());
+      set("metric-profiles", snap.profiles.length);
+      set("metric-rubrics", snap.meta.totalRubrics.toLocaleString());
+      set("metric-files", snap.meta.totalFiles.toLocaleString());
+      set("metric-deps", `${snap.fileDeps.share}%`);
+      set("metric-types", snap.meta.fileTypes);
+    }
+
+    function renderProfileTable() {
+      const rows = workspaceGetProfileDistribution();
+      const tbody = document.getElementById("profileTableBody");
+      if (!tbody) return;
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map((r, i) =>
+        `<tr>
+          <td class="rank">${String(i + 1).padStart(2, "0")}</td>
+          <td><strong>${r.profile}</strong></td>
+          <td class="numeric">${r.tasks}</td>
+          <td class="numeric score">${r.share}%</td>
+        </tr>`
+      ).join("");
+    }
+
+    function renderCollabTable() {
+      const rows = workspaceGetCollabTypes();
+      const tbody = document.getElementById("collabTableBody");
+      if (!tbody) return;
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map((r, i) =>
+        `<tr>
+          <td class="rank">${String(i + 1).padStart(2, "0")}</td>
+          <td><strong>${r.type}</strong></td>
+          <td class="numeric">${r.count}</td>
+        </tr>`
+      ).join("");
+    }
+
+    function renderRubricTable() {
+      const rows = workspaceGetRubricTypes();
+      const tbody = document.getElementById("rubricTableBody");
+      if (!tbody) return;
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = rows.map(r =>
+        `<tr>
+          <td><strong>${r.type}</strong></td>
+          <td class="numeric">${r.count.toLocaleString()}</td>
+          <td class="numeric score">${r.share}%</td>
+        </tr>`
+      ).join("");
+    }
+
+    function renderTaskTable(opts = {}) {
+      const { profile = "", q = "", limit = 50, offset = 0 } = opts;
+      const result = workspaceGetTasks({ profile, q, limit, offset });
+      const tbody = document.getElementById("taskTableBody");
+      if (!tbody) return;
+      if (!result.tasks.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No tasks found</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = result.tasks.map(t =>
+        `<tr>
+          <td class="rank">${t.absolute_id}</td>
+          <td><strong>${t.persona}</strong></td>
+          <td class="dataset-task-desc" title="${escHtml(t.task)}">${escHtml(t.task)}</td>
+          <td class="numeric">${(t.rubric_types || []).length}</td>
+          <td class="numeric">${t.file_count || 0}</td>
+        </tr>`
+      ).join("");
+      // Pagination info
+      const info = document.getElementById("taskTableInfo");
+      if (info) {
+        info.textContent = `Showing ${offset + 1}–${Math.min(offset + limit, result.total)} of ${result.total} tasks`;
+      }
+    }
+
+    function renderProfileFilter() {
+      const sel = document.getElementById("taskProfileFilter");
+      if (!sel) return;
+      const rows = workspaceGetProfileDistribution();
+      sel.innerHTML = `<option value="">All profiles</option>` +
+        rows.map(r => `<option value="${escHtml(r.profile)}">${r.profile}</option>`).join("");
+    }
+
+    function datasetFilterTasks() {
+      const sel = document.getElementById("taskProfileFilter");
+      const inp = document.getElementById("taskSearchInput");
+      renderTaskTable({
+        profile: sel ? sel.value : "",
+        q: inp ? inp.value.trim() : ""
+      });
+    }
+
+    function datasetAddTask(e) {
+      e.preventDefault();
+      const taskObj = {
+        persona: document.getElementById("taskPersona").value.trim(),
+        task: document.getElementById("taskDesc").value.trim(),
+        collaboration_type: document.getElementById("taskCollab").value.trim(),
+        rubric_types: document.getElementById("taskRubricTypes").value.trim(),
+        file_count: Number(document.getElementById("taskFileCount").value) || 0
+      };
+      const added = workspaceAddTask(taskObj);
+      apiLog(`addTask() → #${added.absolute_id} "${added.persona}"`);
+      e.target.reset();
+      datasetFilterTasks();
+    }
+
+    function datasetExportData() {
+      const snap = workspaceGetSnapshot();
+      if (!snap) return;
+      const blob = new Blob([JSON.stringify(snap, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "workspace-bench-snapshot.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      apiLog("Export: downloaded workspace-bench-snapshot.json");
+    }
+
+    function escHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function renderAll() {
+      renderMetrics();
+      renderProfileTable();
+      renderCollabTable();
+      renderRubricTable();
+      renderProfileFilter();
+      datasetFilterTasks();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      allTasks = buildDefaultTasks();
+      renderAll();
+      apiLog("WORKSPACE_BENCH_API ready");
+      apiLog(`getSnapshot() → ${allTasks.length} tasks loaded`);
+      apiLog(`getProfileDistribution() → ${workspaceGetProfileDistribution().length} profiles`);
+      apiLog(`getCollabTypes() → ${workspaceGetCollabTypes().length} types`);
+      apiLog(`getRubricTypes() → ${workspaceGetRubricTypes().length} types`);
+    });
+    </script>
   </body>
 </html>

@@ -40,6 +40,23 @@
 
       <section class="section">
         <div class="container leaderboard-module">
+          <div class="section-head">
+            <div>
+              <h2>Public Lite Rankings</h2>
+              <p class="section-subtitle">
+                Rubric pass rates for all 28 evaluated harness/model combinations on the 100-task Lite split.
+                The top three all use Opus-4.7 as the backbone.
+              </p>
+            </div>
+          </div>
+          <div class="card chart-card" style="min-height:440px">
+            <canvas id="liteRankingChart" aria-label="Workspace-Bench-Lite all rankings chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container leaderboard-module">
           <div id="leaderboardInsightCards" class="leaderboard-insight-grid"></div>
 
           <div class="section-head">

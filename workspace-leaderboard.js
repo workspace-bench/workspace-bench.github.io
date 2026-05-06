@@ -283,6 +283,71 @@ function workspaceRenderTable(rows) {
 let scoreChart;
 let costChart;
 let runtimeChart;
+let liteRankingChart;
+
+function workspaceRenderLiteRankingChart(data) {
+  if (typeof Chart === "undefined") return;
+  const canvas = document.getElementById("liteRankingChart");
+  if (!canvas) return;
+  const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
+  if (liteRankingChart) liteRankingChart.destroy();
+  liteRankingChart = new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: rows.map((r) => `${r.agent} + ${r.model}`),
+      datasets: [{
+        label: "Rubric pass rate",
+        data: rows.map((r) => r.rubric_pass_rate),
+        backgroundColor: rows.map((r) => {
+          if (r.displayRank === 1) return "#1f9d55";
+          if (r.displayRank <= 3) return "#5b3df5";
+          if (r.displayRank <= 10) return "#0ea5e9";
+          return "#9ca3af";
+        }),
+        borderRadius: 3,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#ffffff",
+          titleColor: "#111111",
+          bodyColor: "#5f6368",
+          borderColor: "#dddddd",
+          borderWidth: 1,
+          callbacks: {
+            title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
+            label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
+          }
+        }
+      },
+      scales: {
+        x: {
+          max: 80,
+          ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
+          grid: { color: "rgba(17, 17, 17, 0.08)" },
+          beginAtZero: true
+        },
+        y: {
+          ticks: {
+            color: "#555555",
+            font: { size: 10 },
+            callback: function(value) {
+              const label = this.getLabelForValue(value);
+              return label.length > 22 ? `${label.slice(0, 22)}...` : label;
+            }
+          },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
 
 function workspaceRenderNoDataPanel(panel, title, message, note) {
   if (!panel) return;
@@ -503,6 +568,7 @@ async function workspaceRenderLeaderboard() {
   workspaceRenderLeaderboardCharts(rows);
   workspaceRenderThresholdViews();
   workspaceRenderCompositionCharts();
+  workspaceRenderLiteRankingChart(data);
 }
 
 document.addEventListener("DOMContentLoaded", () => {

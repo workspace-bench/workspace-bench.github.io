@@ -176,6 +176,9 @@ async function workspaceFetchJson(path) {
     if (path.includes("capability-results")) return data.capabilityResults;
     if (path.includes("examples")) return { examples: data.examples };
   }
+  if (window.WORKSPACE_BENCH_API?.fetchPublic) {
+    return window.WORKSPACE_BENCH_API.fetchPublic(path);
+  }
   if (window.location.protocol === "file:") {
     throw new Error("Local JSON loading is blocked by the browser. Include workspace-data.js or open the site through a local server.");
   }

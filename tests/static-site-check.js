@@ -30,7 +30,7 @@ const requiredFiles = [
 const requiredText = {
   'index.html': ['Workspace-Bench 1.0', '20,476', '7,399', '80.7%', '68.7%', '47.4%', 'Independent benchmark analysis', 'Workspace-Bench highlights', 'Latest benchmark updates'],
   'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability', 'Framework x Model Matrix', 'No public cost data', 'Workspace-Bench Leaderboards', 'Search systems, models, frameworks'],
-  'dataset.html': ['Dataset Visualizations', 'File Type Distribution', 'Task Complexity', 'Lite Split', 'Dataset intelligence overview', 'Workspace Composition Table'],
+  'dataset.html': ['Dataset', 'Dataset intelligence', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
   'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
   'submit.html': ['Submission', 'Result JSON Schema', 'Verified Results'],

@@ -39,7 +39,7 @@
               <span class="badge badge-green">Repository figure</span>
             </div>
             <div class="aa-hero-ranking-body">
-              <div class="aa-mini-leaderboard">
+              <div class="aa-mini-leaderboard" id="heroMiniLeaderboard">
                 <div class="aa-mini-row"><span class="rank">#1</span><strong>OpenClaw + Opus-4.7</strong><span class="score">66.6%</span></div>
                 <div class="aa-mini-row"><span class="rank">#2</span><strong>ClaudeCode + Opus-4.7</strong><span class="score">64.4%</span></div>
                 <div class="aa-mini-row"><span class="rank">#3</span><strong>Hermes + Opus-4.7</strong><span class="score">64.3%</span></div>
@@ -48,10 +48,9 @@
               </div>
               <div class="aa-hero-ranking-stats">
                 <div class="aa-hero-ranking-stat"><strong>28</strong><span>Public Lite rows</span></div>
-                <div class="aa-hero-ranking-stat"><strong>4 x 7</strong><span>Harnesses x models</span></div>
+                <div class="aa-hero-ranking-stat"><strong>5</strong><span>Worker profiles</span></div>
                 <div class="aa-hero-ranking-stat"><strong>100</strong><span>Lite tasks</span></div>
               </div>
-              <p class="table-note">Public Lite rows transcribed from the official Workspace-Bench repository figure.</p>
             </div>
           </aside>
         </div>
@@ -80,7 +79,7 @@
             </div>
             <a class="button" href="./leaderboard.html">Open Full Leaderboard</a>
           </div>
-          <div class="aa-highlight-grid">
+          <div class="aa-highlight-grid grid-2">
             <article class="aa-highlight-card">
               <div class="mini-kicker">Evaluation focus</div>
               <h3>What the benchmark tests</h3>
@@ -101,15 +100,42 @@
                 <div class="aa-mini-row"><span class="rank">03</span><strong>Average public agent</strong><span class="score">47.4%</span></div>
               </div>
             </article>
-            <article class="aa-highlight-card">
-              <div class="mini-kicker">Latest benchmark updates</div>
-              <h3>Release timeline</h3>
-              <div class="aa-changelog">
-                <div class="aa-changelog-item"><span class="table-note">2026-05</span><p>Workspace-Bench 1.0 paper and public repository released.</p></div>
-                <div class="aa-changelog-item"><span class="table-note">Lite split</span><p>100-task evaluation split with approximately 70% lower cost.</p></div>
-                <div class="aa-changelog-item"><span class="table-note">Public data</span><p>Lite framework/model rows and official distribution figures added.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" style="padding-top:0">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Latest benchmark updates</h2>
+              <p class="section-subtitle">Major milestones and feature additions since the benchmark's public launch.</p>
+            </div>
+          </div>
+          <div class="card release-timeline-card">
+            <div class="release-timeline-grid">
+              <div class="release-timeline-item">
+                <div class="release-date-badge">2026-05</div>
+                <div class="release-timeline-body">
+                  <h3>Workspace-Bench 1.0 released</h3>
+                  <p>Paper and public repository made available. 388 tasks across 5 worker profiles, 20,476 workspace files, and 7,399 rubric criteria published.</p>
+                </div>
               </div>
-            </article>
+              <div class="release-timeline-item">
+                <div class="release-date-badge release-date-badge-amber">Lite split</div>
+                <div class="release-timeline-body">
+                  <h3>100-task evaluation split</h3>
+                  <p>Lite split introduced, reducing evaluation cost by approximately 70% while preserving the official benchmark distribution across profiles, difficulty levels, and task abilities.</p>
+                </div>
+              </div>
+              <div class="release-timeline-item">
+                <div class="release-date-badge release-date-badge-teal">Public data</div>
+                <div class="release-timeline-body">
+                  <h3>Lite rankings and distribution figures released</h3>
+                  <p>Harness/model rows and official distribution figures published. Dataset on Hugging Face updated with task definitions, rubrics, and file dependency metadata.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
