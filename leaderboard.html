@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RIP-Bench Leaderboard</title>
+    <link rel="stylesheet" href="./SWE-bench%20Leaderboards_files/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+      (function () {
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+          document.documentElement.classList.add('dark-mode');
+        }
+      })();
+    </script>
+    <link rel="icon" href="./rip-bench.svg" type="image/svg+xml">
+  </head>
+  <body class="topnav-layout">
+    <div class="topnav-overlay" id="topnav-overlay"></div>
+    <header class="topnav">
+      <div class="topnav-inner container">
+        <a href="./index.html" class="topnav-brand">
+          <img src="./rip-bench.svg" alt="RIP-Bench logo" class="topnav-logo">
+          <span class="topnav-title">RIP-Bench</span>
+        </a>
+
+        <button class="topnav-toggle" id="topnav-toggle" aria-label="Open menu">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="topnav-links" id="topnav-links" aria-label="Primary">
+          <a href="./index.html" class="topnav-link" data-page="leaderboard"><i class="fa-solid fa-chart-column"></i><span>Leaderboard</span></a>
+          <a href="./overview.html" class="topnav-link" data-page="overview"><i class="fa-solid fa-house"></i><span>Overview</span></a>
+          <a href="./docs.html" class="topnav-link" data-page="docs"><i class="fa-solid fa-book"></i><span>Docs</span></a>
+          <a href="./evaluation.html" class="topnav-link" data-page="evaluation"><i class="fa-solid fa-clipboard-check"></i><span>Evaluation</span></a>
+          <a href="./videos.html" class="topnav-link" data-page="videos"><i class="fa-brands fa-youtube"></i><span>Videos</span></a>
+          <a href="./citations.html" class="topnav-link" data-page="citations"><i class="fa-solid fa-quote-left"></i><span>Citations</span></a>
+          <a href="./contact.html" class="topnav-link" data-page="contact"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
+        </nav>
+
+        <div class="topnav-actions" aria-label="Actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <header class="page-header">
+        <div class="container">
+          <h1>
+            <img src="./rip-bench.svg" alt="RIP-Bench logo" class="header-logo-small">
+            Leaderboard
+          </h1>
+        </div>
+      </header>
+
+      <section class="container">
+        <div class="content-section">
+          <div class="leaderboard-tabs">
+            <div class="leaderboard-tab-list">
+              <button class="tablinks active" data-leaderboard="RIP-Bench">RIP-Bench</button>
+              <button class="tablinks" data-leaderboard="RIP-Bench-FileOps">File Ops</button>
+              <button class="tablinks" data-leaderboard="RIP-Bench-Collab">Collab</button>
+            </div>
+          </div>
+
+          <div class="mb-2 leaderboard-header-container">
+            <div id="leaderboard-description-text">榜单默认展示 <b>Success Rate</b>（任务级通过率，越高越好）。可在提交中提供运行日志与复现脚本以获得 <b>Checked</b> 标记。</div>
+            <div class="filter-controls-group">
+              <a class="button button-primary button-icon" href="./docs.html#submit"><i class="fa-solid fa-upload"></i><span>Submit</span></a>
+              <a class="button button-icon" href="./evaluation.html"><i class="fa-solid fa-clipboard-check"></i><span>Rules</span></a>
+            </div>
+          </div>
+
+          <div id="chart-container" style="position: relative; height:400px; width:100%; margin-bottom: 30px; background: var(--bg-elev); border-radius: var(--radius); border: 1px solid var(--border); padding: 15px; box-sizing: border-box;">
+            <canvas id="costAccuracyChart"></canvas>
+          </div>
+
+          <div id="leaderboard-container"></div>
+        </div>
+      </section>
+
+      <script id="leaderboard-data" type="application/json">
+        [
+          {
+            "name": "RIP-Bench",
+            "results": [
+              {
+                "name": "Baseline-Agent",
+                "resolved": 42.15,
+                "cost": 10.0,
+                "time": 120,
+                "date": "2026-03-01",
+                "logo": ["./SWE-bench%20Leaderboards_files/OpenAI_logo_2025_(symbol).svg"],
+                "tags": ["Org: Baseline", "Setting: default"],
+                "site": "https://github.com/",
+                "checked": true,
+                "os_system": true,
+                "os_model": false
+              },
+              {
+                "name": "Collab-Agent",
+                "resolved": 38.70,
+                "cost": 5.5,
+                "time": 85,
+                "date": "2026-03-05",
+                "logo": ["./SWE-bench%20Leaderboards_files/Google-gemini-icon.svg"],
+                "tags": ["Org: ExampleLab", "Setting: default"],
+                "site": "https://github.com/",
+                "checked": false,
+                "os_system": false,
+                "os_model": false
+              },
+              {
+                "name": "FileAgent-OSS",
+                "resolved": 31.10,
+                "cost": 1.2,
+                "time": 45,
+                "date": "2026-03-10",
+                "logo": ["./SWE-bench%20Leaderboards_files/DeepSeek-icon.svg"],
+                "tags": ["Org: Open Source", "Setting: default", "OSS"],
+                "site": "https://github.com/",
+                "checked": false,
+                "os_system": true,
+                "os_model": true
+              }
+            ]
+          },
+          {
+            "name": "RIP-Bench-FileOps",
+            "results": [
+              {
+                "name": "Baseline-Agent",
+                "resolved": 55.20,
+                "cost": 8.5,
+                "time": 90,
+                "date": "2026-03-01",
+                "logo": ["./SWE-bench%20Leaderboards_files/OpenAI_logo_2025_(symbol).svg"],
+                "tags": ["Org: Baseline", "Split: file-ops"],
+                "site": "https://github.com/",
+                "checked": true,
+                "os_system": true,
+                "os_model": false
+              }
+            ]
+          },
+          {
+            "name": "RIP-Bench-Collab",
+            "results": [
+              {
+                "name": "Baseline-Agent",
+                "resolved": 29.80,
+                "cost": 15.0,
+                "time": 150,
+                "date": "2026-03-01",
+                "logo": ["./SWE-bench%20Leaderboards_files/OpenAI_logo_2025_(symbol).svg"],
+                "tags": ["Org: Baseline", "Split: collab"],
+                "site": "https://github.com/",
+                "checked": true,
+                "os_system": true,
+                "os_model": false
+              }
+            ]
+          }
+        ]
+      </script>
+
+      <footer class="site-footer container">
+        <div class="site-footer-inner">
+          <div>© 2026 RIP-Bench</div>
+          <div class="footer-links">
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i> GitHub</a>
+            <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i> YouTube</a>
+            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X"><i class="fab fa-twitter"></i> Twitter</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./rip-site.js"></script>
+    <script src="./rip-leaderboard.js"></script>
+  </body>
+</html>
