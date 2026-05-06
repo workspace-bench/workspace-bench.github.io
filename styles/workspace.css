@@ -667,9 +667,72 @@ p { margin: 0; }
   padding: 24px;
 }
 
-@media (max-width: 700px) {
-  .release-timeline-grid { grid-template-columns: 1fr; gap: 20px; }
-  .release-timeline-item { grid-template-columns: 1fr; gap: 8px; }
+/* ─── Vertical timeline ─────────────────────────────────────────────── */
+.timeline-vertical {
+  position: relative;
+  padding-left: 28px;
+  display: grid;
+  gap: 32px;
+}
+
+.timeline-vertical::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.timeline-vertical-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.timeline-vertical-dot {
+  position: absolute;
+  left: -25px;
+  top: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--border);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--border);
+}
+
+.timeline-vertical-dot-active {
+  background: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.timeline-vertical-date {
+  color: var(--primary);
+  font-weight: 760;
+  font-size: 0.85rem;
+  padding-top: 6px;
+}
+
+.timeline-vertical-body h3 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.timeline-vertical-body p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 620px) {
+  .timeline-vertical-item { grid-template-columns: 1fr; }
+  .timeline-vertical-date { padding-top: 0; }
 }
 
 .leaderboard-chart-mini {

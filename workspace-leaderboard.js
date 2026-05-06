@@ -285,14 +285,58 @@ let costChart;
 let runtimeChart;
 let liteRankingChart;
 
+const liteRankingIconPlugin = {
+  id: "liteRankingIcons",
+  afterDatasetsDraw(chart) {
+    const { ctx, chartArea, scales } = chart;
+    if (!chartArea || !scales.x || !scales.y) return;
+    const { top, bottom } = chartArea;
+    const data = chart.data.datasets[0]?.data || [];
+    const labels = chart.data.labels || [];
+    const colors = chart.data.datasets[0]?.backgroundColor || [];
+
+    // Icon map: harness → emoji
+    const iconMap = {
+      "OpenClaw": "🦞",
+      "ClaudeCode": "🤖",
+      "Hermes": "⚡",
+      "DeepAgent": "🧪",
+    };
+    // Fallback framework emojis
+    const frameworkIcons = ["🔵", "🟢", "🟡", "🔴", "🟣", "🟠"];
+
+    data.forEach((value, i) => {
+      const x = scales.x.getPixelForValue(value);
+      const barCenterX = scales.x.getPixelForValue(0) +
+        (x - scales.x.getPixelForValue(0)) / 2;
+      const y = scales.y.getPixelForValue(labels[i]);
+
+      // Determine icon
+      const label = labels[i] || "";
+      let icon = iconMap[label.split(" + ")[0]];
+      if (!icon) icon = frameworkIcons[i % frameworkIcons.length];
+
+      // Draw icon above bar
+      ctx.save();
+      ctx.font = "bold 16px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillText(icon, barCenterX, top + 4);
+      ctx.restore();
+    });
+  }
+};
+
 function workspaceRenderLiteRankingChart(data) {
   if (typeof Chart === "undefined") return;
   const canvas = document.getElementById("liteRankingChart");
   if (!canvas) return;
   const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
   if (liteRankingChart) liteRankingChart.destroy();
+
   liteRankingChart = new Chart(canvas, {
     type: "bar",
+    plugins: [liteRankingIconPlugin],
     data: {
       labels: rows.map((r) => `${r.agent} + ${r.model}`),
       datasets: [{
@@ -304,14 +348,13 @@ function workspaceRenderLiteRankingChart(data) {
           if (r.displayRank <= 10) return "#0ea5e9";
           return "#9ca3af";
         }),
-        borderRadius: 3,
+        borderRadius: 4,
         borderSkipped: false
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      indexAxis: "y",
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -328,21 +371,28 @@ function workspaceRenderLiteRankingChart(data) {
       },
       scales: {
         x: {
-          max: 80,
-          ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
-          grid: { color: "rgba(17, 17, 17, 0.08)" },
-          beginAtZero: true
-        },
-        y: {
           ticks: {
             color: "#555555",
-            font: { size: 10 },
+            font: { size: 9 },
+            maxRotation: 45,
+            minRotation: 30,
             callback: function(value) {
               const label = this.getLabelForValue(value);
-              return label.length > 22 ? `${label.slice(0, 22)}...` : label;
+              const parts = label.split(" + ");
+              if (parts.length >= 2) {
+                return `${parts[0].slice(0, 8)}\n${parts[1].slice(0, 10)}`;
+              }
+              return label.length > 18 ? `${label.slice(0, 18)}…` : label;
             }
           },
           grid: { display: false }
+        },
+        y: {
+          max: 80,
+          ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
+          grid: { color: "rgba(17, 17, 17, 0.08)" },
+          beginAtZero: true,
+          title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
         }
       }
     }
