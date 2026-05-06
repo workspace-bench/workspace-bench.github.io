@@ -398,6 +398,20 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
     linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 }
 
+.leaderboard-stat-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.leaderboard-stat-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.leaderboard-stat-item:last-child {
+  border-bottom: 0;
+}
+
 .callout {
   border: 1px solid #bfdbfe;
   background: #eff6ff;

@@ -42,6 +42,26 @@ function workspaceMakeBarChart(canvasId, labels, values, title, color = "#2563eb
   });
 }
 
+function workspaceMakeHorizontalBarChart(canvasId, labels, values, title, color = "#2563eb") {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || typeof Chart === "undefined") return null;
+  return new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{ label: title, data: values, backgroundColor: color, borderRadius: 5 }]
+    },
+    options: workspaceChartOptions(title, {
+      indexAxis: "y",
+      layout: {
+        padding: {
+          left: 36
+        }
+      }
+    })
+  });
+}
+
 function workspaceMakeDoughnutChart(canvasId, labels, values, title) {
   const canvas = document.getElementById(canvasId);
   if (!canvas || typeof Chart === "undefined") return null;

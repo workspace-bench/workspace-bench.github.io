@@ -60,6 +60,24 @@
             </div>
           </div>
 
+          <div class="grid grid-3 leaderboard-summary-grid">
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Lite public rows</div>
+              <div class="leaderboard-big-number">28</div>
+              <p>Public Lite combinations transcribed from the official repository figure.</p>
+            </div>
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Task difficulty</div>
+              <div class="leaderboard-big-number">14 / 53 / 33</div>
+              <p>Easy, medium, and hard task split from the official distribution figure.</p>
+            </div>
+            <div class="card leaderboard-summary-card">
+              <div class="leaderboard-kicker">Ability labels</div>
+              <div class="leaderboard-big-number">6</div>
+              <p>Ability-oriented analysis dimensions in the public distribution summary.</p>
+            </div>
+          </div>
+
           <div class="section-head">
             <div>
               <h2>Leaderboard Views</h2>
@@ -72,6 +90,12 @@
           <div class="toolbar">
             <div class="filters">
               <select id="profileFilter" aria-label="Filter by profile"></select>
+              <select id="frameworkFilter" aria-label="Filter by framework">
+                <option value="all">All frameworks</option>
+              </select>
+              <select id="modelFilter" aria-label="Filter by model">
+                <option value="all">All models</option>
+              </select>
               <select id="sourceFilter" aria-label="Filter by source">
                 <option value="all">All sources</option>
                 <option value="paper-reported">Paper reported</option>
@@ -98,6 +122,45 @@
         <div class="container">
           <div class="section-head">
             <div>
+              <h2>Threshold Views</h2>
+              <p class="section-subtitle">
+                Compare how many public Lite system combinations clear different rubric pass-rate thresholds.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-2">
+            <div class="card chart-card leaderboard-chart-card"><canvas id="thresholdChart" aria-label="Threshold chart"></canvas></div>
+            <div class="card">
+              <h3>Public threshold summary</h3>
+              <div id="thresholdCards" class="grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <h2>Composition Analysis</h2>
+              <p class="section-subtitle">
+                These views are drawn from the official benchmark distribution figure and make it easier to read the
+                benchmark through the same lenses people use when comparing research leaderboards.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-3">
+            <div class="card chart-card leaderboard-chart-card"><canvas id="difficultyChart" aria-label="Difficulty chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card"><canvas id="workspaceProfileChart" aria-label="Workspace profile chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card"><canvas id="abilityChart" aria-label="Ability chart"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
               <h2>Leaderboard Analysis</h2>
               <p class="section-subtitle">
                 Use the charts below for quick comparison. When the public materials do not expose cost or runtime by system,
@@ -107,8 +170,8 @@
           </div>
           <div class="grid grid-3">
             <div class="card chart-card leaderboard-chart-card"><canvas id="scoreChart" aria-label="Overall score chart"></canvas></div>
-            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas></div>
-            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card" id="scoreCostPanel"><canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card" id="scoreRuntimePanel"><canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas></div>
           </div>
         </div>
       </section>

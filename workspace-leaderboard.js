@@ -1,6 +1,14 @@
 let workspaceLeaderboardData = null;
 let workspaceActiveLeaderboard = "Overall";
 const workspaceSort = { field: "overall_score", direction: "desc" };
+let thresholdChart;
+let difficultyChart;
+let workspaceProfileChart;
+let abilityChart;
+const workspaceChartPanelDefaults = {
+  scoreCostPanel: '<canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas>',
+  scoreRuntimePanel: '<canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas>'
+};
 
 async function workspaceLoadLeaderboardData() {
   if (workspaceLeaderboardData) return workspaceLeaderboardData;
@@ -14,6 +22,98 @@ async function workspaceLoadLeaderboardData() {
 
 function workspaceGetActiveLeaderboard(data) {
   return data.leaderboards.find((item) => item.name === workspaceActiveLeaderboard) || data.leaderboards[0];
+}
+
+function workspaceRowsForView(data, viewName) {
+  if (viewName === "Overall") return data.fullSummaryRows || [];
+  if (viewName === "Workspace-Bench-Lite") {
+    return (data.litePublicResults || []).map((row) => ({
+      ...row,
+      overall_score: row.rubric_pass_rate,
+      task_success_rate: row.rubric_pass_rate >= 50 ? 1 : 0,
+      workspace_size: "Lite",
+      profile: "All profiles",
+      capability: "Lite public leaderboard",
+      date: "2026-05-05",
+      verified: true
+    }));
+  }
+  if (viewName === "Threshold Views") {
+    return (data.thresholds || []).map((threshold, index) => {
+      const hits = (data.litePublicResults || []).filter((row) => row.rubric_pass_rate >= threshold.value).length;
+      return {
+        rank: index + 1,
+        agent: threshold.label,
+        harness: "Public Lite leaderboard count",
+        model: `${hits} systems`,
+        overall_score: hits,
+        rubric_pass_rate: threshold.value,
+        task_success_rate: hits,
+        workspace_size: "Lite",
+        profile: "All profiles",
+        capability: "Threshold count",
+        date: "2026-05-05",
+        verified: true,
+        source: "repository-figure",
+        report_url: "https://github.com/OpenDataBox/Workspace-Bench"
+      };
+    });
+  }
+  if (viewName === "By Worker Profile") {
+    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.workerProfiles || []).map((row, index) => ({
+      rank: index + 1,
+      agent: row.profile,
+      harness: "Official benchmark composition",
+      model: `${row.tasks} tasks`,
+      overall_score: row.share,
+      rubric_pass_rate: row.share,
+      task_success_rate: row.tasks,
+      workspace_size: "Full",
+      profile: row.profile,
+      capability: "Workspace profile distribution",
+      date: "2026-05-05",
+      verified: true,
+      source: "repository-reported",
+      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
+    }));
+  }
+  if (viewName === "By Difficulty") {
+    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.difficulty || []).map((row, index) => ({
+      rank: index + 1,
+      agent: row.level,
+      harness: "Official task difficulty split",
+      model: `${row.tasks} tasks`,
+      overall_score: row.share,
+      rubric_pass_rate: row.share,
+      task_success_rate: row.tasks,
+      workspace_size: "Full",
+      profile: "All profiles",
+      capability: "Task difficulty distribution",
+      date: "2026-05-05",
+      verified: true,
+      source: "repository-reported",
+      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
+    }));
+  }
+  if (viewName === "By Ability") {
+    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.abilities || []).map((row, index) => ({
+      rank: index + 1,
+      agent: row.ability,
+      harness: "Official task ability count",
+      model: `${row.tasks} tasks`,
+      overall_score: row.tasks,
+      rubric_pass_rate: row.tasks,
+      task_success_rate: row.tasks,
+      workspace_size: "Full",
+      profile: "All profiles",
+      capability: row.ability,
+      date: "2026-05-05",
+      verified: true,
+      source: "repository-reported",
+      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
+    }));
+  }
+  return [];
 }
 
 function workspaceSortRows(rows) {
@@ -58,10 +158,14 @@ function workspaceRenderTabs(data) {
 
 function workspaceFilterRows(rows) {
   const profile = document.getElementById("profileFilter")?.value || "all";
+  const framework = document.getElementById("frameworkFilter")?.value || "all";
+  const model = document.getElementById("modelFilter")?.value || "all";
   const source = document.getElementById("sourceFilter")?.value || "all";
   const verified = document.getElementById("verifiedFilter")?.value || "all";
   return rows.filter((row) => {
     if (profile !== "all" && row.profile !== profile) return false;
+    if (framework !== "all" && row.agent !== framework) return false;
+    if (model !== "all" && row.model !== model) return false;
     if (source !== "all" && row.source !== source) return false;
     if (verified !== "all" && String(row.verified) !== verified) return false;
     return true;
@@ -70,10 +174,16 @@ function workspaceFilterRows(rows) {
 
 function workspaceRenderFilters(rows) {
   const profileFilter = document.getElementById("profileFilter");
+  const frameworkFilter = document.getElementById("frameworkFilter");
+  const modelFilter = document.getElementById("modelFilter");
   if (!profileFilter || profileFilter.dataset.ready) return;
   const profiles = Array.from(new Set(rows.map((row) => row.profile).filter(Boolean)));
+  const frameworks = Array.from(new Set(rows.map((row) => row.agent).filter(Boolean)));
+  const models = Array.from(new Set(rows.map((row) => row.model).filter(Boolean)));
   profileFilter.innerHTML = `<option value="all">All profiles</option>${profiles.map((profile) => `<option value="${profile}">${profile}</option>`).join("")}`;
-  [profileFilter, document.getElementById("sourceFilter"), document.getElementById("verifiedFilter")].forEach((control) => {
+  frameworkFilter.innerHTML = `<option value="all">All frameworks</option>${frameworks.map((framework) => `<option value="${framework}">${framework}</option>`).join("")}`;
+  modelFilter.innerHTML = `<option value="all">All models</option>${models.map((model) => `<option value="${model}">${model}</option>`).join("")}`;
+  [profileFilter, frameworkFilter, modelFilter, document.getElementById("sourceFilter"), document.getElementById("verifiedFilter")].forEach((control) => {
     if (control) control.addEventListener("change", () => workspaceRenderLeaderboard().catch(console.error));
   });
   profileFilter.dataset.ready = "true";
@@ -150,6 +260,10 @@ function workspaceRenderLeaderboardCharts(rows) {
   const agentRows = rows.filter((row) => row.model !== "Human");
   const labels = rows.map((row) => row.agent);
   const scores = rows.map((row) => row.overall_score);
+  const costPanel = document.getElementById("scoreCostPanel");
+  const runtimePanel = document.getElementById("scoreRuntimePanel");
+  if (costPanel) costPanel.innerHTML = workspaceChartPanelDefaults.scoreCostPanel;
+  if (runtimePanel) runtimePanel.innerHTML = workspaceChartPanelDefaults.scoreRuntimePanel;
 
   if (scoreChart) scoreChart.destroy();
   scoreChart = workspaceMakeBarChart("scoreChart", labels, scores, "Overall Score", "#2563eb");
@@ -159,9 +273,7 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (costPoints.length > 0) {
     costChart = workspaceMakeScatterChart("scoreCostChart", costPoints, "Score vs Cost", "Cost ($)", "Score (%)");
   } else {
-    const canvas = document.getElementById("scoreCostChart");
-    const parent = canvas?.closest(".chart-card");
-    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Cost</h3><p class="section-subtitle">No public per-system cost data has been released in the current Workspace-Bench materials.</p><p class="table-note">This panel will update automatically once cost metadata is added to the leaderboard source.</p>';
+    if (costPanel) costPanel.innerHTML = '<h3 style="margin:0 0 8px">Score vs Cost</h3><p class="section-subtitle">No public per-system cost data has been released in the current Workspace-Bench materials.</p><p class="table-note">This panel will update automatically once cost metadata is added to the leaderboard source.</p>';
   }
 
   if (runtimeChart) runtimeChart.destroy();
@@ -169,18 +281,81 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (runtimePoints.length > 0) {
     runtimeChart = workspaceMakeScatterChart("scoreRuntimeChart", runtimePoints, "Score vs Runtime", "Runtime (min)", "Score (%)");
   } else {
-    const canvas = document.getElementById("scoreRuntimeChart");
-    const parent = canvas?.closest(".chart-card");
-    if (parent) parent.innerHTML = '<h3 style="margin:0 0 8px">Score vs Runtime</h3><p class="section-subtitle">No public per-system runtime data has been released in the current Workspace-Bench materials.</p><p class="table-note">Runtime comparisons will render here when the source data becomes available.</p>';
+    if (runtimePanel) runtimePanel.innerHTML = '<h3 style="margin:0 0 8px">Score vs Runtime</h3><p class="section-subtitle">No public per-system runtime data has been released in the current Workspace-Bench materials.</p><p class="table-note">Runtime comparisons will render here when the source data becomes available.</p>';
   }
+}
+
+function workspaceRenderThresholdViews() {
+  const data = window.WORKSPACE_BENCH_DATA.leaderboard;
+  const thresholdRows = data.thresholds.map((threshold) => ({
+    threshold: threshold.label,
+    hits: data.litePublicResults.filter((row) => row.rubric_pass_rate >= threshold.value).length
+  }));
+
+  if (thresholdChart) thresholdChart.destroy();
+  thresholdChart = workspaceMakeBarChart(
+    "thresholdChart",
+    thresholdRows.map((item) => item.threshold),
+    thresholdRows.map((item) => item.hits),
+    "Systems Clearing Each Threshold",
+    "#0ea5e9"
+  );
+
+  const cards = document.getElementById("thresholdCards");
+  if (cards) {
+    cards.innerHTML = thresholdRows.map((item) => `
+      <div class="leaderboard-stat-item">
+        <div class="leaderboard-kicker">${item.threshold}</div>
+        <div class="leaderboard-big-number">${item.hits}</div>
+        <p>Public Lite systems at or above this rubric pass-rate threshold.</p>
+      </div>
+    `).join("");
+  }
+}
+
+function workspaceRenderCompositionCharts() {
+  const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
+
+  if (difficultyChart) difficultyChart.destroy();
+  difficultyChart = workspaceMakeDoughnutChart(
+    "difficultyChart",
+    breakdowns.difficulty.map((item) => item.level),
+    breakdowns.difficulty.map((item) => item.tasks),
+    "Task Difficulty"
+  );
+
+  if (workspaceProfileChart) workspaceProfileChart.destroy();
+  workspaceProfileChart = workspaceMakeDoughnutChart(
+    "workspaceProfileChart",
+    breakdowns.workerProfiles.map((item) => item.profile),
+    breakdowns.workerProfiles.map((item) => item.tasks),
+    "Task per Workspace"
+  );
+
+  if (abilityChart) abilityChart.destroy();
+  abilityChart = workspaceMakeHorizontalBarChart(
+    "abilityChart",
+    breakdowns.abilities.map((item) => item.ability),
+    breakdowns.abilities.map((item) => item.tasks),
+    "Task Abilities",
+    "#f59e0b"
+  );
 }
 
 async function workspaceRenderLeaderboard() {
   const data = await workspaceLoadLeaderboardData();
   workspaceRenderTabs(data);
   const leaderboard = workspaceGetActiveLeaderboard(data);
-  const allRows = leaderboard.results || [];
-  workspaceRenderFilters(data.leaderboards.flatMap((item) => item.results || []));
+  const allRows = workspaceRowsForView(data, leaderboard.name);
+  const filterRows = [
+    ...workspaceRowsForView(data, "Overall"),
+    ...workspaceRowsForView(data, "Workspace-Bench-Lite"),
+    ...workspaceRowsForView(data, "Threshold Views"),
+    ...workspaceRowsForView(data, "By Worker Profile"),
+    ...workspaceRowsForView(data, "By Difficulty"),
+    ...workspaceRowsForView(data, "By Ability")
+  ];
+  workspaceRenderFilters(filterRows);
   const rows = workspaceFilterRows(allRows);
 
   const description = document.getElementById("leaderboardDescription");
@@ -188,6 +363,8 @@ async function workspaceRenderLeaderboard() {
 
   workspaceRenderTable(rows);
   workspaceRenderLeaderboardCharts(rows);
+  workspaceRenderThresholdViews();
+  workspaceRenderCompositionCharts();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
