@@ -1,6 +1,6 @@
 let workspaceLeaderboardData = null;
-let workspaceActiveLeaderboard = "Overall";
-const workspaceSort = { field: "overall_score", direction: "desc" };
+let workspaceActiveLeaderboard = "Workspace-Bench-Lite";
+const workspaceSort = { field: "rubric_pass_rate", direction: "desc" };
 let thresholdChart;
 let difficultyChart;
 let workspaceProfileChart;
@@ -467,7 +467,7 @@ function workspaceRenderAbilityInsightPanel() {
       ${breakdowns.abilities.map((item) => `
         <div class="ability-insight-row">
           <strong>${item.ability}</strong>
-          <span class="score">${item.tasks}</span>
+          <span class="score">${item.count}</span>
         </div>
       `).join("")}
     </div>

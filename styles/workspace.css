@@ -1200,7 +1200,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 14px 14px 18px 8px;
+  padding: 12px 14px 14px 8px;
 }
 
 .lite-ranking-scroll-compact {
@@ -1210,7 +1210,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-canvas-wrap {
   width: 100%;
   min-width: 0;
-  height: 380px;
+  height: 360px;
 }
 
 .lite-ranking-canvas-wrap canvas {
@@ -1221,8 +1221,8 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   position: relative;
   width: 100%;
   min-width: 0;
-  height: 265px;
-  padding: 26px 0 0;
+  height: 245px;
+  padding: 22px 0 0;
 }
 
 .lite-ranking-label-item {
