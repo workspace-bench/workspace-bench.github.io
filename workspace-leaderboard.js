@@ -334,7 +334,7 @@ function workspaceRenderLiteRankingChart(data) {
   const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
   const canvasWrap = canvas.closest(".lite-ranking-canvas-wrap");
   const labelRail = document.getElementById("liteRankingLabelRail");
-  const columnWidth = 132;
+  const columnWidth = 140;
   const chartWidth = rows.length * columnWidth;
   if (liteRankingChart) liteRankingChart.destroy();
   if (canvasWrap) canvasWrap.style.width = `${chartWidth}px`;

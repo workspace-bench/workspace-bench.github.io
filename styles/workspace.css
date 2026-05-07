@@ -1183,7 +1183,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 }
 
 .lite-ranking-canvas-wrap {
-  min-width: 1584px;
+  min-width: 1680px;
   height: 520px;
 }
 
@@ -1193,15 +1193,15 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 .lite-ranking-label-rail {
   position: relative;
-  min-width: 1584px;
-  height: 188px;
+  min-width: 1680px;
+  height: 196px;
   padding: 18px 0 0;
 }
 
 .lite-ranking-label-item {
   position: absolute;
   top: 0;
-  width: 124px;
+  width: 138px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1218,14 +1218,15 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 .lite-ranking-slanted-label {
   display: block;
-  width: 124px;
+  width: 138px;
   margin-top: 14px;
   color: #555555;
-  font-size: 0.5rem;
+  font-size: 0.62rem;
   font-style: italic;
-  line-height: 1;
+  font-weight: 700;
+  line-height: 1.05;
   text-align: center;
-  transform: rotate(-20deg);
+  transform: rotate(-18deg);
   transform-origin: center top;
   white-space: nowrap;
 }
