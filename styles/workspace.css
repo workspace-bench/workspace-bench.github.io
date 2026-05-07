@@ -129,7 +129,7 @@ a:hover { color: var(--primary-2); text-decoration: underline; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(420px, 0.88fr);
   gap: 28px;
-  padding: 44px 0 26px;
+  padding: 28px 0 10px;
   align-items: start;
 }
 
@@ -159,7 +159,7 @@ p { margin: 0; }
 
 .hero-copy {
   margin-top: 20px;
-  max-width: 740px;
+  max-width: 760px;
   color: #5f5753;
   font-size: 1.02rem;
 }
@@ -169,6 +169,19 @@ p { margin: 0; }
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+
+.hero .actions {
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.hero-panel.aa-hero-ranking {
+  margin-top: 2px;
+}
+
+.hero-metrics-wrap {
+  margin-top: 10px;
 }
 
 .button {
@@ -853,7 +866,7 @@ p { margin: 0; }
 }
 
 .aa-hero-ranking-body {
-  padding: 18px 18px 14px;
+  padding: 16px 16px 14px;
 }
 
 .aa-hero-ranking-stats {
@@ -869,7 +882,7 @@ p { margin: 0; }
 
 .aa-hero-ranking-stat {
   background: var(--surface-3);
-  padding: 12px;
+  padding: 11px 12px;
 }
 
 .aa-hero-ranking-stat strong {
@@ -896,11 +909,12 @@ p { margin: 0; }
 }
 
 .leaderboard-page-header {
-  padding: 26px 0 14px;
+  padding: 18px 0 8px;
 }
 
 .leaderboard-page-lead {
   max-width: 840px;
+  margin-top: 10px;
 }
 
 .leaderboard-hero-panel {
@@ -914,7 +928,7 @@ p { margin: 0; }
 
 .leaderboard-hero-stat {
   background: var(--surface-2);
-  padding: 14px 16px;
+  padding: 11px 14px;
 }
 
 .leaderboard-hero-stat span {
@@ -926,31 +940,38 @@ p { margin: 0; }
 
 .leaderboard-hero-stat strong {
   display: block;
-  margin-top: 6px;
-  font-size: 1.4rem;
+  margin-top: 4px;
+  font-size: 1.28rem;
   line-height: 1;
   font-weight: 800;
 }
 
 .leaderboard-top-summary {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.85fr);
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+.leaderboard-summary-note {
+  height: 100%;
+  font-size: 0.96rem;
 }
 
 .leaderboard-module {
   border: 1px solid var(--border);
   border-radius: 24px;
   background: #ffffff;
-  padding: 20px;
+  padding: 16px 18px;
 }
 
 .leaderboard-module + .leaderboard-module {
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .leaderboard-module .section-head {
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .leaderboard-tall-card {
@@ -1037,7 +1058,7 @@ p { margin: 0; }
 .stat-card .label { color: var(--muted); font-size: 0.92rem; }
 
 .page-header {
-  padding: 28px 0 18px;
+  padding: 20px 0 10px;
   background: transparent;
   border-bottom: 0;
 }
@@ -1179,12 +1200,17 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 18px 18px 22px 0;
+  padding: 14px 14px 18px 8px;
+}
+
+.lite-ranking-scroll-compact {
+  overflow-x: hidden;
 }
 
 .lite-ranking-canvas-wrap {
-  min-width: 1680px;
-  height: 520px;
+  width: 100%;
+  min-width: 0;
+  height: 356px;
 }
 
 .lite-ranking-canvas-wrap canvas {
@@ -1193,42 +1219,47 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 .lite-ranking-label-rail {
   position: relative;
-  min-width: 1680px;
-  height: 196px;
+  width: 100%;
+  min-width: 0;
+  height: 204px;
   padding: 18px 0 0;
 }
 
 .lite-ranking-label-item {
   position: absolute;
   top: 0;
-  width: 138px;
+  width: 78px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   transform: translateX(-50%);
 }
 
 .lite-ranking-agent-logo,
 .lite-ranking-llm-logo {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
 }
 
 .lite-ranking-slanted-label {
   display: block;
-  width: 138px;
+  width: 92px;
   margin-top: 14px;
-  color: #555555;
-  font-size: 0.62rem;
+  color: #444444;
+  font-size: 0.52rem;
   font-style: italic;
-  font-weight: 700;
-  line-height: 1.05;
+  font-weight: 760;
+  line-height: 1.06;
   text-align: center;
-  transform: rotate(-18deg);
+  transform: rotate(-33deg);
   transform-origin: center top;
-  white-space: nowrap;
+  white-space: normal;
+}
+
+.lite-ranking-slanted-label span {
+  display: block;
 }
 
 .figure-panel {

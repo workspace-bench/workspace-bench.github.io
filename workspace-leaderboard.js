@@ -285,6 +285,27 @@ let costChart;
 let runtimeChart;
 let liteRankingChart;
 
+const workspaceLiteRankingValuePlugin = {
+  id: "workspaceLiteRankingValuePlugin",
+  afterDatasetsDraw(chart) {
+    if (chart.canvas?.id !== "liteRankingChart") return;
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
+    const values = chart.data.datasets[0]?.data || [];
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "700 10px Inter, ui-sans-serif, system-ui, sans-serif";
+    meta.data.forEach((bar, index) => {
+      const value = Math.round(Number(values[index]) || 0);
+      ctx.fillStyle = index < 3 ? "#111111" : "#334155";
+      const textY = bar.y - 10;
+      ctx.fillText(String(value), bar.x, textY);
+    });
+    ctx.restore();
+  }
+};
+
 function workspaceAgentIconName(agent) {
   return agent.toLowerCase().replace(/\s+/g, "");
 }
@@ -308,7 +329,7 @@ function workspaceRenderLiteRankingLabels(rows) {
     <div class="lite-ranking-label-item">
       <img class="lite-ranking-agent-logo" src="./icons/${workspaceAgentIconName(row.agent)}.png" alt="${row.agent}">
       <img class="lite-ranking-llm-logo" src="./icons/${workspaceModelIconName(row.model)}.png" alt="${row.model}">
-      <div class="lite-ranking-slanted-label">${row.agent} + ${row.model}</div>
+      <div class="lite-ranking-slanted-label"><span>${row.agent}</span><span>${row.model}</span></div>
     </div>
   `).join("");
 }
@@ -334,12 +355,18 @@ function workspaceRenderLiteRankingChart(data) {
   const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
   const canvasWrap = canvas.closest(".lite-ranking-canvas-wrap");
   const labelRail = document.getElementById("liteRankingLabelRail");
-  const columnWidth = 140;
-  const chartWidth = rows.length * columnWidth;
   if (liteRankingChart) liteRankingChart.destroy();
-  if (canvasWrap) canvasWrap.style.width = `${chartWidth}px`;
-  if (labelRail) labelRail.style.width = `${chartWidth}px`;
+  if (canvasWrap) canvasWrap.style.width = "100%";
+  if (labelRail) labelRail.style.width = "100%";
   workspaceRenderLiteRankingLabels(rows);
+
+  const barColors = rows.map((_, index) => {
+    if (index < 3) return "#111111";
+    if (index < 8) return "#2f4da0";
+    if (index < 14) return "#5b6fb3";
+    if (index < 20) return "#8d98b8";
+    return "#c7cedd";
+  });
 
   liteRankingChart = new Chart(canvas, {
       type: "bar",
@@ -348,17 +375,11 @@ function workspaceRenderLiteRankingChart(data) {
         datasets: [{
           label: "Rubric pass rate",
           data: rows.map((r) => r.rubric_pass_rate),
-          backgroundColor: [
-            "#ef4444", "#f97316", "#f59e0b", "#eab308",
-            "#84cc16", "#22c55e", "#10b981", "#14b8a6",
-            "#06b6d4", "#0ea5e9", "#3b82f6", "#6366f1",
-            "#8b5cf6", "#a855f7", "#d946ef", "#ec4899",
-            "#f43f5e", "#fb7185", "#fbbf24", "#a3e635",
-            "#4ade80", "#2dd4bf", "#22d3ee", "#38bdf8",
-            "#818cf8", "#c084fc", "#e879f9", "#f0abfc"
-          ].slice(0, rows.length),
-          borderRadius: 4,
-          borderSkipped: false
+          backgroundColor: barColors,
+          borderColor: barColors,
+          borderRadius: 3,
+          borderSkipped: false,
+          maxBarThickness: 18
         }]
       },
       options: {
@@ -376,7 +397,8 @@ function workspaceRenderLiteRankingChart(data) {
               title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
               label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
             }
-          }
+          },
+          workspaceLiteRankingValuePlugin: {}
         },
         scales: {
           x: {
@@ -386,8 +408,9 @@ function workspaceRenderLiteRankingChart(data) {
             offset: true
           },
           y: {
+            min: 0,
             max: 100,
-            ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
+            ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0, stepSize: 10 },
             grid: { color: "rgba(17, 17, 17, 0.06)" },
             beginAtZero: true,
             title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
@@ -395,17 +418,24 @@ function workspaceRenderLiteRankingChart(data) {
         },
         layout: {
           padding: {
-            bottom: 4
+            top: 18,
+            right: 10,
+            bottom: 0,
+            left: 6
           }
         },
         datasets: {
           bar: {
-            categoryPercentage: 0.58,
-            barPercentage: 0.7
+            categoryPercentage: 0.98,
+            barPercentage: 0.42
           }
+        },
+        animation: {
+          duration: 0
         }
       }
-    });
+    },
+    [workspaceLiteRankingValuePlugin]);
   requestAnimationFrame(() => workspaceSyncLiteRankingLabelPositions());
   window.setTimeout(() => workspaceSyncLiteRankingLabelPositions(), 120);
 }

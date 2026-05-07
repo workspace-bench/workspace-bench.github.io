@@ -30,46 +30,17 @@
 
       <section class="section">
         <div class="container leaderboard-module">
-          <div class="leaderboard-top-summary">
-            <aside class="leaderboard-hero-panel" aria-label="Leaderboard snapshot">
-              <div class="leaderboard-hero-stat">
-                <span>Best public Lite score</span>
-                <strong>66.6%</strong>
-              </div>
-              <div class="leaderboard-hero-stat">
-                <span>Public Lite rows</span>
-                <strong>28</strong>
-              </div>
-              <div class="leaderboard-hero-stat">
-                <span>Lite tasks</span>
-                <strong>100</strong>
-              </div>
-            </aside>
-          </div>
-          <p style="display:none">Overall Workspace-Bench-Lite By Worker Profile By Difficulty By Ability</p>
-          <div class="source-note">
-            <div>
-              The leaderboard uses only Workspace-Bench public data: paper-reported full benchmark aggregate scores and
-              Lite per harness/model results transcribed from the official repository figure. No public cost data or
-              runtime metadata has been released yet.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container leaderboard-module">
           <div class="section-head">
             <div>
               <h2>Public Lite Rankings</h2>
               <p class="section-subtitle">
-                Default view shows the top 12 public Lite systems. Scroll horizontally to inspect the remaining evaluated
-                harness/model combinations without crowding the label rail.
+                Public Lite harness/model rows shown in one compact research-style chart so the full ranking can be read
+                at a glance without switching views.
               </p>
             </div>
           </div>
           <div class="card chart-card lite-ranking-chart-card">
-            <div class="lite-ranking-scroll">
+            <div class="lite-ranking-scroll lite-ranking-scroll-compact">
               <div class="lite-ranking-canvas-wrap">
                 <canvas id="liteRankingChart" aria-label="Workspace-Bench-Lite all rankings chart"></canvas>
               </div>
