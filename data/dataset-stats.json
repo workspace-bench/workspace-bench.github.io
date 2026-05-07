@@ -1,91 +1,274 @@
 {
+  "profileTasks": [
+    {
+      "profile": "Operations Manager",
+      "tasks": 92,
+      "share": 23.7
+    },
+    {
+      "profile": "Logistics Manager",
+      "tasks": 81,
+      "share": 20.9
+    },
+    {
+      "profile": "Researcher",
+      "tasks": 61,
+      "share": 15.7
+    },
+    {
+      "profile": "Backend Developer",
+      "tasks": 31,
+      "share": 8
+    },
+    {
+      "profile": "Operations Staff",
+      "tasks": 28,
+      "share": 7.2
+    },
+    {
+      "profile": "Product Manager",
+      "tasks": 25,
+      "share": 6.4
+    },
+    {
+      "profile": "Administrative / Logistics Staff",
+      "tasks": 19,
+      "share": 4.9
+    },
+    {
+      "profile": "Administrative/Logistics Staff",
+      "tasks": 15,
+      "share": 3.9
+    },
+    {
+      "profile": "Product Staff",
+      "tasks": 13,
+      "share": 3.4
+    },
+    {
+      "profile": "Developer",
+      "tasks": 12,
+      "share": 3.1
+    },
+    {
+      "profile": "Researchers",
+      "tasks": 4,
+      "share": 1
+    },
+    {
+      "profile": "product people",
+      "tasks": 3,
+      "share": 0.8
+    },
+    {
+      "profile": "researcher",
+      "tasks": 2,
+      "share": 0.5
+    },
+    {
+      "profile": "Operation staff",
+      "tasks": 1,
+      "share": 0.3
+    },
+    {
+      "profile": "Operations Specialist",
+      "tasks": 1,
+      "share": 0.3
+    }
+  ],
+  "collabTypes": [
+    {
+      "type": "Workspace Exploration",
+      "count": 278,
+      "share": 71.6
+    },
+    {
+      "type": "Task-Providing File Utilization",
+      "count": 238,
+      "share": 61.3
+    },
+    {
+      "type": "Result-Providing Files Utilization",
+      "count": 211,
+      "share": 54.4
+    },
+    {
+      "type": "Semantic Content Relations Understanding",
+      "count": 170,
+      "share": 43.8
+    },
+    {
+      "type": "Lineage Tracing",
+      "count": 136,
+      "share": 35.1
+    },
+    {
+      "type": "Heterogeneous File Understanding",
+      "count": 109,
+      "share": 28.1
+    }
+  ],
+  "rubricTypes": [
+    {
+      "type": "Outcome Evaluation",
+      "count": 3863,
+      "share": 52.2
+    },
+    {
+      "type": "Basic Evaluation",
+      "count": 1843,
+      "share": 24.9
+    },
+    {
+      "type": "Process Evaluation",
+      "count": 1485,
+      "share": 20.1
+    },
+    {
+      "type": "Result Evaluation",
+      "count": 169,
+      "share": 2.3
+    },
+    {
+      "type": "Results Assessment",
+      "count": 24,
+      "share": 0.3
+    },
+    {
+      "type": "Basic Assessment",
+      "count": 8,
+      "share": 0.1
+    },
+    {
+      "type": "Process Assessment",
+      "count": 7,
+      "share": 0.1
+    }
+  ],
+  "fileDependencyCoverage": {
+    "withDeps": 375,
+    "withoutDeps": 13,
+    "share": 96.6
+  },
+  "fileCountDist": [
+    {
+      "bucket": "No files",
+      "count": 0
+    },
+    {
+      "bucket": "1-5 files",
+      "count": 305
+    },
+    {
+      "bucket": "6-20 files",
+      "count": 50
+    },
+    {
+      "bucket": "21-50 files",
+      "count": 20
+    },
+    {
+      "bucket": "50+ files",
+      "count": 13
+    }
+  ],
   "fileTypeGroups": [
     {
-      "group": "Operations Manager",
-      "count": 31
+      "group": "Documents",
+      "count": 1764
     },
     {
-      "group": "Researcher",
-      "count": 17
+      "group": "Spreadsheets",
+      "count": 812
     },
     {
-      "group": "Backend Developer",
-      "count": 11
+      "group": "Code",
+      "count": 652
     },
     {
-      "group": "Logistics Manager",
-      "count": 30
+      "group": "Data",
+      "count": 585
     },
     {
-      "group": "AI Product Manager",
-      "count": 11
+      "group": "Media",
+      "count": 37
+    },
+    {
+      "group": "Archives",
+      "count": 3
     }
   ],
   "complexity": [
     {
       "bucket": "Workspace Exploration",
-      "tasks": 262
+      "tasks": 278
     },
     {
-      "bucket": "Task-Supporting Files",
+      "bucket": "Task-Providing File Utilization",
       "tasks": 238
     },
     {
-      "bucket": "Result-Providing Files",
+      "bucket": "Result-Providing Files Utilization",
       "tasks": 211
+    },
+    {
+      "bucket": "Semantic Content Relations Understanding",
+      "tasks": 170
     },
     {
       "bucket": "Lineage Tracing",
       "tasks": 136
     },
     {
-      "bucket": "Semantic Relations",
-      "tasks": 170
-    },
-    {
-      "bucket": "Heterogeneous Files",
-      "tasks": 140
+      "bucket": "Heterogeneous File Understanding",
+      "tasks": 109
     }
   ],
   "workspaceSizes": [
     {
       "bucket": "Easy",
-      "tasks": 54
+      "tasks": null
     },
     {
       "bucket": "Medium",
-      "tasks": 206
+      "tasks": null
     },
     {
       "bucket": "Hard",
-      "tasks": 128
+      "tasks": null
     }
   ],
   "rubricCounts": [
     {
-      "bucket": "1 workspace",
-      "tasks": 42
+      "bucket": "No files",
+      "tasks": 0
     },
     {
-      "bucket": "2 workspaces",
-      "tasks": 116
+      "bucket": "1-5 files",
+      "tasks": 305
     },
     {
-      "bucket": "3 workspaces",
-      "tasks": 44
+      "bucket": "6-20 files",
+      "tasks": 50
     },
     {
-      "bucket": "4 workspaces",
-      "tasks": 66
+      "bucket": "21-50 files",
+      "tasks": 20
     },
     {
-      "bucket": "5 workspaces",
-      "tasks": 120
+      "bucket": "50+ files",
+      "tasks": 13
     }
   ],
   "liteSplit": {
     "tasks": 100,
-    "costReduction": "70%",
-    "description": "Workspace-Bench-Lite preserves the benchmark distribution while reducing evaluation cost by about 70%."
+    "personas": 5,
+    "description": "Workspace-Bench-Lite contains 100 public tasks across 5 worker profiles in the official Lite release."
+  },
+  "meta": {
+    "totalTasks": 388,
+    "totalRubrics": 7399,
+    "totalFiles": 3854,
+    "fileTypes": 24
   }
 }

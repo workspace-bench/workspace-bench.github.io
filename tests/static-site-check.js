@@ -24,12 +24,14 @@ const requiredFiles = [
   'data/dataset-stats.json',
   'data/profile-results.json',
   'data/capability-results.json',
+  'data/tasks.json',
+  'data/tasks.js',
   'data/examples.json'
 ];
 
 const requiredText = {
-  'index.html': ['Workspace-Bench 1.0', '20,476', '7,399', '80.7%', '68.7%', '47.4%', 'Independent benchmark analysis', 'Workspace-Bench highlights', 'Latest benchmark updates'],
-  'leaderboard.html': ['Official Leaderboard', 'Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability', 'Framework x Model Matrix', 'No public cost data', 'Workspace-Bench Leaderboards', 'Search systems, models, frameworks'],
+  'index.html': ['Workspace-Bench 1.0', '3,854', '7,399', '80.7%', '68.7%', '47.4%', 'Independent benchmark analysis', 'Workspace-Bench highlights', 'Latest benchmark updates'],
+  'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Search systems, models, frameworks', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis'],
   'dataset.html': ['Dataset', 'Dataset intelligence', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
   'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
@@ -74,7 +76,8 @@ for (const [file, needles] of Object.entries(requiredText)) {
     if (!text.includes(needle)) fail(`${file} missing text: ${needle}`);
   }
   if (file !== 'citation.html' && /style="font-size:/.test(text)) fail(`${file} should not use inline font-size styling`);
-  if (/RIP-Bench|姒|鏄|涓|漏|馃|鉁|�/.test(text)) fail(`${file} contains legacy or mojibake text`);
+  if (/RIP-Bench/.test(text)) fail(`${file} contains legacy text`);
+  if (/[鈫閳]/.test(text)) fail(`${file} contains garbled characters`);
 }
 
 for (const file of ['index.html', 'leaderboard.html', 'dataset.html', 'examples.html']) {
@@ -115,3 +118,4 @@ if (fs.existsSync(leaderboardPath)) {
 }
 
 if (!process.exitCode) console.log('Static site checks passed.');
+

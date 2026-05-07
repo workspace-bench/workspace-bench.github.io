@@ -380,9 +380,9 @@ async function workspaceInitDatasetCharts() {
 
   workspaceMakeBarChart(
     "workspaceSizeChart",
-    stats.workspaceSizes.map((item) => item.bucket),
-    stats.workspaceSizes.map((item) => item.tasks),
-    "Workspace Size Distribution",
+    stats.fileCountDist.map((item) => item.bucket),
+    stats.fileCountDist.map((item) => item.count),
+    "Files per Task",
     "#14b8a6"
   );
 
@@ -390,7 +390,7 @@ async function workspaceInitDatasetCharts() {
     "rubricCountChart",
     stats.rubricCounts.map((item) => item.bucket),
     stats.rubricCounts.map((item) => item.tasks),
-    "Rubric Count per Task",
+    "Task Count by File Bucket",
     "#7c3aed"
   );
 
@@ -405,8 +405,8 @@ async function workspaceInitDatasetCharts() {
   workspaceMakeBarChart(
     "capabilityChart",
     capabilityData.capabilities.map((item) => item.capability),
-    capabilityData.capabilities.map((item) => item.bestScore),
-    "Best Score by Capability",
+    capabilityData.capabilities.map((item) => item.count),
+    "Tasks by Capability Tag",
     "#1f9d55"
   );
 }

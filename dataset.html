@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dataset — Workspace-Bench</title>
-    <meta name="description" content="Dataset intelligence for Workspace-Bench: 388 tasks, 10 worker profiles, 7,399 rubrics, and 20,476 workspace files.">
+    <title>Dataset - Workspace-Bench</title>
+    <meta name="description" content="Dataset intelligence for Workspace-Bench: 388 tasks, 15 public persona values, 7,399 rubrics, and 3,854 manifest-listed files.">
     <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles/workspace.css?v=20260507c">
   </head>
@@ -21,7 +21,7 @@
           <p class="page-lead aa-page-lead">
             Data sourced from the
             <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">official HuggingFace dataset</a>.
-            Use the API below to query and extend the data at runtime.
+            This page is aligned to the latest public task metadata from Hugging Face and shows only real static data.
           </p>
         </div>
       </section>
@@ -30,12 +30,12 @@
       <section class="section">
         <div class="container">
           <div id="keyMetrics" class="aa-metric-strip" aria-label="Dataset key metrics">
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-tasks">—</div><div class="aa-metric-label">Tasks</div></div>
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-profiles">—</div><div class="aa-metric-label">Profiles</div></div>
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-rubrics">—</div><div class="aa-metric-label">Rubrics</div></div>
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-files">—</div><div class="aa-metric-label">Files</div></div>
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-deps">—</div><div class="aa-metric-label">With deps</div></div>
-            <div class="aa-metric"><div class="aa-metric-value" id="metric-types">—</div><div class="aa-metric-label">File types</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-tasks">...</div><div class="aa-metric-label">Tasks</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-profiles">...</div><div class="aa-metric-label">Profiles</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-rubrics">...</div><div class="aa-metric-label">Rubrics</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-files">...</div><div class="aa-metric-label">Files</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-deps">...</div><div class="aa-metric-label">With deps</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="metric-types">...</div><div class="aa-metric-label">File types</div></div>
           </div>
         </div>
       </section>
@@ -46,7 +46,7 @@
           <div class="section-head">
             <div>
               <h2>Worker Profile Distribution</h2>
-              <p class="section-subtitle">Distribution of 388 tasks across 10 worker profiles from the official HuggingFace dataset.</p>
+              <p class="section-subtitle">Distribution of 388 tasks across 15 public persona values from the official HuggingFace dataset.</p>
             </div>
             <span class="badge badge-green">Source: HuggingFace</span>
           </div>
@@ -62,7 +62,7 @@
                   </tr>
                 </thead>
                 <tbody id="profileTableBody">
-                  <tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                  <tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -90,7 +90,7 @@
                   </tr>
                 </thead>
                 <tbody id="collabTableBody">
-                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -104,7 +104,7 @@
           <div class="section-head">
             <div>
               <h2>Rubric Evaluation Types</h2>
-              <p class="section-subtitle">7,399 rubrics across three evaluation categories.</p>
+              <p class="section-subtitle">7,399 rubrics across the public evaluation-type values released in the task metadata.</p>
             </div>
           </div>
           <div class="card">
@@ -118,7 +118,7 @@
                   </tr>
                 </thead>
                 <tbody id="rubricTableBody">
-                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                  <tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -138,7 +138,7 @@
               <select id="taskProfileFilter" onchange="datasetFilterTasks()">
                 <option value="">All profiles</option>
               </select>
-              <input id="taskSearchInput" type="text" placeholder="Search tasks…" oninput="datasetFilterTasks()" style="min-width:200px">
+              <input id="taskSearchInput" type="text" placeholder="Search tasks... oninput="datasetFilterTasks()" style="min-width:200px">
             </div>
           </div>
           <div class="card">
@@ -154,7 +154,7 @@
                   </tr>
                 </thead>
                 <tbody id="taskTableBody">
-                  <tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+                  <tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -168,7 +168,7 @@
           <div class="section-head">
             <div>
               <h2>API Playground</h2>
-              <p class="section-subtitle">Add tasks and extend the dataset at runtime via the <code>WORKSPACE_BENCH_API</code>.</p>
+              <p class="section-subtitle">Inspect the public static dataset snapshot and test local session-only extensions via <code>WORKSPACE_BENCH_API</code>.</p>
             </div>
           </div>
           <div class="grid grid-2">
@@ -182,7 +182,7 @@
                 </div>
                 <div class="form-group">
                   <label>Task description</label>
-                  <textarea id="taskDesc" rows="4" placeholder="Describe what the agent must do…" required style="width:100%;resize:vertical"></textarea>
+                  <textarea id="taskDesc" rows="4" placeholder="Describe what the agent must do..." required style="width:100%;resize:vertical"></textarea>
                 </div>
                 <div class="form-group">
                   <label>Collaboration types (comma-separated)</label>
@@ -218,27 +218,27 @@
 const api = window.WORKSPACE_BENCH_API;
 
 // Get current data snapshot
-api.getSnapshot()                        // → all stats, profiles, collab types, rubrics
-api.getProfileDistribution()            // → [{profile, tasks, share}, ...]
-api.getCollabTypes()                    // → [{type, count}, ...]
-api.getRubricTypes()                    // → [{type, count, share}, ...]
-api.getFileDepStats()                   // → {withDeps, withoutDeps, share}
+api.getSnapshot()                        // &#36820;&#22238;&#20844;&#24320;&#38745;&#24577;&#32479;&#35745;&#12289;&#30011;&#20687;&#20998;&#24067;&#12289;&#21327;&#20316;&#31867;&#22411;&#12289; rubric &#20998;&#24067;&#21644;&#20803;&#25968;&#25454;
+api.getProfileDistribution()             // &#36820;&#22238; [{profile, tasks, share}, ...]
+api.getCollabTypes()                     // &#36820;&#22238; [{type, count}, ...]
+api.getRubricTypes()                     // &#36820;&#22238; [{type, count, share}, ...]
+api.getFileDepStats()                    // &#36820;&#22238; {withDeps, withoutDeps, share}
 
 // Get raw task list (paginated)
 api.getTasks({profile: 'Backend Developer', q: 'security', limit: 10, offset: 0})
-                                          // → {tasks: [...], total, limit, offset}
+                                          // &#36820;&#22238; {tasks: [...], total, limit, offset}
 
-// Add a new task (auto-recalculates stats)
+// Add a new task in the current browser session only
 api.addTask({persona, task, collaboration_type, rubric_types, file_count})
-                                          // → {id, ...task}
+                                          // &#36820;&#22238; {id, ...task}
 
 // Update benchmark metadata
 api.updateMeta({totalTasks: 400, totalRubrics: 8000})
-                                          // → updated meta
+                                          // &#36820;&#22238;&#26356;&#26032;&#21518;&#30340;&#20803;&#25968;&#25454;
 
 // Insert / update a leaderboard row
 api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
-                                          // → rank re-sorted</div>
+                                          // &#36820;&#22238;&#37325;&#26032;&#25490;&#24207;&#21518;&#30340;&#27036;&#21333;&#32467;&#26524;</div>
           </div>
         </div>
       </section>
@@ -254,7 +254,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
                 <p style="margin-top:4px">
                   All statistics on this page are computed from the official
                   <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">ShenYunTzr/Workspace-Bench</a>
-                  HuggingFace dataset. The dataset contains 388 task rows with fields: absolute_id, persona, task, collaboration_type, rubrics, rubric_types, file_deps_cc, and data_manifest.
+                  HuggingFace dataset. The dataset contains 388 task rows with fields such as absolute_id, persona, task, tested_capabilities, rubrics, rubric_types, file_dep_graph, and data_manifest.
                 </p>
               </div>
             </div>
@@ -284,10 +284,11 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       }
     </style>
 
-    <script src="./workspace-data.js?v=20260507c"></script>
-    <script src="./workspace-site.js?v=20260507c"></script>
+    <script src="./data/tasks.js?v=20260507d"></script>
+    <script src="./workspace-data.js?v=20260507d"></script>
+    <script src="./workspace-site.js?v=20260507d"></script>
     <script>
-    // ── Dataset page controller ─────────────────────────────────────────
+    // Dataset page controller
 
     // Live task list (loaded from WORKSPACE_BENCH_DATA or fetched from HF)
     let allTasks = [];
@@ -305,7 +306,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       if (el) el.textContent = "";
     }
 
-    // ── WORKSPACE_BENCH_API extensions ────────────────────────────────
+    // WORKSPACE_BENCH_API extensions
 
     /**
      * Get a complete snapshot of all dataset statistics.
@@ -318,15 +319,15 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       const bb = data.leaderboardBreakdowns;
       return {
         meta: {
-          totalTasks: allTasks.length || 388,
+          totalTasks: allTasks.length || stats?.meta?.totalTasks || 388,
           totalRubrics: 7399,
-          totalFiles: 20476,
-          fileTypes: 24
+          totalFiles: stats?.meta?.totalFiles || 3854,
+          fileTypes: stats?.meta?.fileTypes || 24
         },
         profiles: bb?.workerProfiles || [],
         collabTypes: stats?.collabTypes || [],
         rubricTypes: stats?.rubricTypes || [],
-        fileDeps: stats?.fileDependencyCoverage || { withDeps: 304, withoutDeps: 84, share: 78.4 },
+        fileDeps: stats?.fileDependencyCoverage || { withDeps: 375, withoutDeps: 13, share: 96.6 },
         fileCountDist: stats?.fileCountDist || [],
         difficulty: bb?.difficulty || []
       };
@@ -371,7 +372,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
      */
     function workspaceGetTasks(opts = {}) {
       const { profile = "", q = "", limit = 50, offset = 0 } = opts;
-      let tasks = allTasks.length ? allTasks : buildDefaultTasks();
+      let tasks = allTasks.length ? allTasks : [];
       if (profile) {
         tasks = tasks.filter(t => t.persona === profile);
       }
@@ -408,7 +409,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
         file_count: Number(taskObj.file_count) || 0
       };
       allTasks.push(task);
-      apiLog(`addTask() → id=${id}, persona="${task.persona}"`);
+      apiLog(`addTask(): id=${id}, persona="${task.persona}"`);
       renderAll();
       return task;
     }
@@ -421,7 +422,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       const snap = workspaceGetSnapshot();
       if (snap) {
         Object.assign(snap.meta, meta);
-        apiLog(`updateMeta() → ${JSON.stringify(meta)}`);
+        apiLog(`updateMeta(): ${JSON.stringify(meta)}`);
       }
       renderMetrics();
     }
@@ -438,29 +439,9 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       updateMeta: workspaceDatasetUpdateMeta
     });
 
-    // ── Build default task list from stats ───────────────────────────
+    // Build default task list from stats
 
-    function buildDefaultTasks() {
-      const snap = workspaceGetSnapshot();
-      if (!snap) return [];
-      const tasks = [];
-      let id = 1;
-      snap.profiles.forEach(p => {
-        for (let i = 0; i < Math.min(p.tasks, 10); i++) {
-          tasks.push({
-            absolute_id: id++,
-            persona: p.profile,
-            task: `Analyze ${p.profile.toLowerCase()} workspace data and produce a deliverable report.`,
-            collaboration_type: snap.collabTypes.slice(0, 2).map(c => c.type),
-            rubric_types: snap.rubricTypes.slice(0, 1).map(c => c.type),
-            file_count: Math.floor(Math.random() * 20)
-          });
-        }
-      });
-      return tasks;
-    }
-
-    // ── Render functions ──────────────────────────────────────────────
+    // Render functions
 
     function renderMetrics() {
       const snap = workspaceGetSnapshot();
@@ -550,7 +531,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       // Pagination info
       const info = document.getElementById("taskTableInfo");
       if (info) {
-        info.textContent = `Showing ${offset + 1}–${Math.min(offset + limit, result.total)} of ${result.total} tasks`;
+        info.textContent = `Showing ${offset + 1}...{Math.min(offset + limit, result.total)} of ${result.total} tasks`;
       }
     }
 
@@ -581,7 +562,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
         file_count: Number(document.getElementById("taskFileCount").value) || 0
       };
       const added = workspaceAddTask(taskObj);
-      apiLog(`addTask() → #${added.absolute_id} "${added.persona}"`);
+      apiLog(`addTask(): #${added.absolute_id} "${added.persona}"`);
       e.target.reset();
       datasetFilterTasks();
     }
@@ -618,14 +599,16 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      allTasks = buildDefaultTasks();
+      allTasks = Array.isArray(window.WORKSPACE_BENCH_TASKS) ? window.WORKSPACE_BENCH_TASKS.slice() : [];
       renderAll();
       apiLog("WORKSPACE_BENCH_API ready");
-      apiLog(`getSnapshot() → ${allTasks.length} tasks loaded`);
-      apiLog(`getProfileDistribution() → ${workspaceGetProfileDistribution().length} profiles`);
-      apiLog(`getCollabTypes() → ${workspaceGetCollabTypes().length} types`);
-      apiLog(`getRubricTypes() → ${workspaceGetRubricTypes().length} types`);
+      apiLog(`getSnapshot(): ${allTasks.length} tasks loaded`);
+      apiLog(`getProfileDistribution(): ${workspaceGetProfileDistribution().length} profiles`);
+      apiLog(`getCollabTypes(): ${workspaceGetCollabTypes().length} types`);
+      apiLog(`getRubricTypes(): ${workspaceGetRubricTypes().length} rubric types`);
     });
     </script>
   </body>
 </html>
+
+

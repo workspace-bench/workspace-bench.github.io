@@ -2,33 +2,33 @@
   "capabilities": [
     {
       "capability": "Workspace Exploration",
-      "bestScore": 68.7,
-      "averageScore": 47.4
+      "count": 278,
+      "share": 71.6
     },
     {
-      "capability": "Task-Supporting Files",
-      "bestScore": 68.7,
-      "averageScore": 47.4
+      "capability": "Task-Providing File Utilization",
+      "count": 238,
+      "share": 61.3
     },
     {
-      "capability": "Result-Providing Files",
-      "bestScore": 68.7,
-      "averageScore": 47.4
+      "capability": "Result-Providing Files Utilization",
+      "count": 211,
+      "share": 54.4
+    },
+    {
+      "capability": "Semantic Content Relations Understanding",
+      "count": 170,
+      "share": 43.8
     },
     {
       "capability": "Lineage Tracing",
-      "bestScore": 68.7,
-      "averageScore": 47.4
+      "count": 136,
+      "share": 35.1
     },
     {
-      "capability": "Semantic Relations",
-      "bestScore": 68.7,
-      "averageScore": 47.4
-    },
-    {
-      "capability": "Heterogeneous Files",
-      "bestScore": 68.7,
-      "averageScore": 47.4
+      "capability": "Heterogeneous File Understanding",
+      "count": 109,
+      "share": 28.1
     }
   ]
 }

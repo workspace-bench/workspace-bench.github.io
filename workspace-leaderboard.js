@@ -82,14 +82,14 @@ function workspaceRowsForView(data, viewName) {
     return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.difficulty || []).map((row, index) => ({
       rank: index + 1,
       agent: row.level,
-      harness: "Official task difficulty split",
+      harness: "Public file-count bucket split",
       model: `${row.tasks} tasks`,
       overall_score: row.share,
       rubric_pass_rate: row.share,
       task_success_rate: row.tasks,
       workspace_size: "Full",
       profile: "All profiles",
-      capability: "Task difficulty distribution",
+      capability: "Task file-count distribution",
       date: "2026-05-05",
       verified: true,
       source: "repository-reported",
@@ -657,7 +657,7 @@ function workspaceRenderCompositionCharts() {
     "difficultyChart",
     breakdowns.difficulty.map((item) => item.level),
     breakdowns.difficulty.map((item) => item.tasks),
-    "Task Difficulty"
+    "Files per Task"
   );
 
   if (workspaceProfileChart) workspaceProfileChart.destroy();

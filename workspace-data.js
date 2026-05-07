@@ -49,6 +49,7 @@
       if (path.includes("dataset-stats")) return window.WORKSPACE_BENCH_DATA.datasetStats;
       if (path.includes("profile-results")) return window.WORKSPACE_BENCH_DATA.profileResults;
       if (path.includes("capability-results")) return window.WORKSPACE_BENCH_DATA.capabilityResults;
+      if (path.includes("tasks")) return { tasks: window.WORKSPACE_BENCH_DATA.dataset.tasks };
       if (path.includes("examples")) return { examples: window.WORKSPACE_BENCH_DATA.examples };
     }
     const res = await fetch(path);
@@ -179,11 +180,11 @@
   };
 
   // --- Embedded public data bundle ---
-  window.WORKSPACE_BENCH_DATA = {
+window.WORKSPACE_BENCH_DATA = {
   summary: [
-    { label: "Worker Profiles", value: "10", description: "Operations Manager, Logistics Manager, Researcher, Backend Developer, Product Manager, and more." },
+    { label: "Worker Profiles", value: "15", description: "15 persona values are currently present in the official public task metadata release." },
     { label: "File Types", value: "24+", description: "24+ distinct extensions: .md, .json, .txt, .xlsx, .csv, .pdf, .java, .py, .js, .ts, and more." },
-    { label: "Files", value: "20,476", description: "Files distributed across role-specific workspaces." },
+    { label: "Files", value: "3,854", description: "Files referenced in the public task metadata table via data_manifest entries." },
     { label: "Tasks", value: "388", description: "Tasks with heterogeneous file dependencies and rubric-based evaluation." },
     { label: "Rubrics", value: "7,399", description: "Fine-grained rubric checks used for evaluation." },
     { label: "Max Workspace", value: "20GB", description: "Largest workspace size represented in the benchmark." }
@@ -281,140 +282,175 @@
       { name: "Workspace-Bench-Lite", description: "Public Workspace-Bench-Lite leaderboard transcribed from the official repository figure." },
       { name: "Threshold Views", description: "Count how many public Lite systems clear increasingly strict rubric pass-rate thresholds." },
       { name: "By Worker Profile", description: "Official benchmark composition by workspace profile from the public distribution figure." },
-      { name: "By Difficulty", description: "Official task difficulty split from the public distribution figure." },
+      { name: "By Difficulty", description: "Public task file-count buckets derived from the latest Hugging Face metadata release." },
       { name: "By Ability", description: "Official task ability counts from the public distribution figure." }
     ]
   },
   leaderboardBreakdowns: {
     workerProfiles: [
-      { profile: "Operations Manager", tasks: 95, share: 24.5 },
-      { profile: "Logistics Manager", tasks: 96, share: 24.7 },
-      { profile: "Researcher", tasks: 63, share: 16.2 },
-      { profile: "Backend Developer", tasks: 33, share: 8.5 },
-      { profile: "Product Manager", tasks: 28, share: 7.2 },
-      { profile: "Operations Staff", tasks: 27, share: 7.0 },
-      { profile: "Admin / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Operations Manager", tasks: 92, share: 23.7 },
+      { profile: "Logistics Manager", tasks: 81, share: 20.9 },
+      { profile: "Researcher", tasks: 61, share: 15.7 },
+      { profile: "Backend Developer", tasks: 31, share: 8.0 },
+      { profile: "Operations Staff", tasks: 28, share: 7.2 },
+      { profile: "Product Manager", tasks: 25, share: 6.4 },
+      { profile: "Administrative / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Administrative/Logistics Staff", tasks: 15, share: 3.9 },
       { profile: "Product Staff", tasks: 13, share: 3.4 },
-      { profile: "Developer", tasks: 10, share: 2.6 },
-      { profile: "Researchers", tasks: 4, share: 1.0 }
+      { profile: "Developer", tasks: 12, share: 3.1 },
+      { profile: "Researchers", tasks: 4, share: 1.0 },
+      { profile: "product people", tasks: 3, share: 0.8 },
+      { profile: "researcher", tasks: 2, share: 0.5 },
+      { profile: "Operation staff", tasks: 1, share: 0.3 },
+      { profile: "Operations Specialist", tasks: 1, share: 0.3 }
     ],
     difficulty: [
-      { level: "Easy", tasks: 54, share: 14 },
-      { level: "Medium", tasks: 206, share: 53 },
-      { level: "Hard", tasks: 128, share: 33 }
+      { level: "No files", tasks: 0, share: 0.0 },
+      { level: "1-5 files", tasks: 305, share: 78.6 },
+      { level: "6-20 files", tasks: 50, share: 12.9 },
+      { level: "21-50 files", tasks: 20, share: 5.2 },
+      { level: "50+ files", tasks: 13, share: 3.4 }
     ],
     abilities: [
-      { ability: "Workspace Exploration", count: 199 },
-      { ability: "Task-Supporting Files Utilization", count: 189 },
-      { ability: "Result-Providing Files Utilization", count: 188 },
-      { ability: "Semantic Content Relations Understanding", count: 151 },
-      { ability: "Heterogeneous File Understanding", count: 112 },
-      { ability: "Lineage Tracing", count: 116 }
+      { ability: "Workspace Exploration", count: 278 },
+      { ability: "Task-Providing File Utilization", count: 238 },
+      { ability: "Result-Providing Files Utilization", count: 211 },
+      { ability: "Semantic Content Relations Understanding", count: 170 },
+      { ability: "Lineage Tracing", count: 136 },
+      { ability: "Heterogeneous File Understanding", count: 109 }
     ]
   },
   datasetStats: {
-    // Persona (worker profile) distribution from real HF data
     profileTasks: [
-      { profile: "Operations Manager", tasks: 95, share: 24.5 },
-      { profile: "Logistics Manager", tasks: 96, share: 24.7 },
-      { profile: "Researcher", tasks: 63, share: 16.2 },
-      { profile: "Backend Developer", tasks: 33, share: 8.5 },
-      { profile: "Product Manager", tasks: 28, share: 7.2 },
-      { profile: "Operations Staff", tasks: 27, share: 7.0 },
-      { profile: "Admin / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Operations Manager", tasks: 92, share: 23.7 },
+      { profile: "Logistics Manager", tasks: 81, share: 20.9 },
+      { profile: "Researcher", tasks: 61, share: 15.7 },
+      { profile: "Backend Developer", tasks: 31, share: 8.0 },
+      { profile: "Operations Staff", tasks: 28, share: 7.2 },
+      { profile: "Product Manager", tasks: 25, share: 6.4 },
+      { profile: "Administrative / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Administrative/Logistics Staff", tasks: 15, share: 3.9 },
       { profile: "Product Staff", tasks: 13, share: 3.4 },
-      { profile: "Developer", tasks: 10, share: 2.6 },
-      { profile: "Researchers", tasks: 4, share: 1.0 }
+      { profile: "Developer", tasks: 12, share: 3.1 },
+      { profile: "Researchers", tasks: 4, share: 1.0 },
+      { profile: "product people", tasks: 3, share: 0.8 },
+      { profile: "researcher", tasks: 2, share: 0.5 },
+      { profile: "Operation staff", tasks: 1, share: 0.3 },
+      { profile: "Operations Specialist", tasks: 1, share: 0.3 }
     ],
-    // Collaboration type (task ability) counts from real HF data
     collabTypes: [
-      { type: "Workspace Exploration", count: 199 },
-      { type: "Task-Supporting Files Utilization", count: 189 },
-      { type: "Result-Providing Files Utilization", count: 188 },
-      { type: "Semantic Content Relations Understanding", count: 151 },
-      { type: "Lineage Tracing", count: 116 },
-      { type: "Heterogeneous File Understanding", count: 112 }
+      { type: "Workspace Exploration", count: 278, share: 71.6 },
+      { type: "Task-Providing File Utilization", count: 238, share: 61.3 },
+      { type: "Result-Providing Files Utilization", count: 211, share: 54.4 },
+      { type: "Semantic Content Relations Understanding", count: 170, share: 43.8 },
+      { type: "Lineage Tracing", count: 136, share: 35.1 },
+      { type: "Heterogeneous File Understanding", count: 109, share: 28.1 }
     ],
-    // Rubric type distribution — 7,399 total rubrics from real HF data
     rubricTypes: [
-      { type: "Outcome Evaluation", count: 4056, share: 54.8 },
-      { type: "Basic Evaluation", count: 1851, share: 25.0 },
-      { type: "Process Evaluation", count: 1492, share: 20.2 }
+      { type: "Outcome Evaluation", count: 3863, share: 52.2 },
+      { type: "Basic Evaluation", count: 1843, share: 24.9 },
+      { type: "Process Evaluation", count: 1485, share: 20.1 },
+      { type: "Result Evaluation", count: 169, share: 2.3 },
+      { type: "Results Assessment", count: 24, share: 0.3 },
+      { type: "Basic Assessment", count: 8, share: 0.1 },
+      { type: "Process Assessment", count: 7, share: 0.1 }
     ],
-    // File dependency coverage
     fileDependencyCoverage: {
-      withDeps: 304,
-      withoutDeps: 84,
-      share: 78.4
+      withDeps: 375,
+      withoutDeps: 13,
+      share: 96.6
     },
-    // Files per task distribution (from data_manifest lengths)
     fileCountDist: [
-      { bucket: "No files", count: 84 },
-      { bucket: "1-5 files", count: 120 },
-      { bucket: "6-20 files", count: 88 },
-      { bucket: "21-50 files", count: 62 },
-      { bucket: "50+ files", count: 34 }
+      { bucket: "No files", count: 0 },
+      { bucket: "1-5 files", count: 305 },
+      { bucket: "6-20 files", count: 50 },
+      { bucket: "21-50 files", count: 20 },
+      { bucket: "50+ files", count: 13 }
     ],
-    // 74 distinct file type extensions found across all workspaces
     fileTypeGroups: [
-      { group: "Documents (.md, .txt, .doc, .docx, .pdf, .ppt, .pptx)", count: 1881 },
-      { group: "Spreadsheets (.xlsx, .xls, .csv)", count: 733 },
-      { group: "Code (.java, .py, .js, .ts, .go, .sh, .yaml, .yml, .xml, .html)", count: 846 },
-      { group: "Data (.json)", count: 585 },
-      { group: "Media (.png, .jpg)", count: 37 },
-      { group: "Archives (.zip)", count: 3 }
+      { group: "Documents", count: 1764 },
+      { group: "Spreadsheets", count: 812 },
+      { group: "Code", count: 652 },
+      { group: "Data", count: 585 },
+      { group: "Media", count: 37 },
+      { group: "Archives", count: 3 }
     ],
-    // Difficulty levels (official benchmark split)
     difficultyLevels: [
-      { level: "Easy", tasks: 54, share: 14 },
-      { level: "Medium", tasks: 206, share: 53 },
-      { level: "Hard", tasks: 128, share: 33 }
+      { level: "No files", tasks: 0, share: 0.0 },
+      { level: "1-5 files", tasks: 305, share: 78.6 },
+      { level: "6-20 files", tasks: 50, share: 12.9 },
+      { level: "21-50 files", tasks: 20, share: 5.2 },
+      { level: "50+ files", tasks: 13, share: 3.4 }
     ],
-    // Workspace complexity by collaboration type
     complexity: [
-      { bucket: "Workspace Exploration", tasks: 262 },
-      { bucket: "Task-Supporting Files", tasks: 238 },
-      { bucket: "Result-Providing Files", tasks: 211 },
-      { bucket: "Semantic Relations", tasks: 170 },
-      { bucket: "Heterogeneous Files", tasks: 140 },
-      { bucket: "Lineage Tracing", tasks: 136 }
+      { bucket: "Workspace Exploration", tasks: 278 },
+      { bucket: "Task-Providing File Utilization", tasks: 238 },
+      { bucket: "Result-Providing Files Utilization", tasks: 211 },
+      { bucket: "Semantic Content Relations Understanding", tasks: 170 },
+      { bucket: "Lineage Tracing", tasks: 136 },
+      { bucket: "Heterogeneous File Understanding", tasks: 109 }
     ],
     workspaceSizes: [
-      { bucket: "Easy", tasks: 54 },
-      { bucket: "Medium", tasks: 206 },
-      { bucket: "Hard", tasks: 128 }
+      { bucket: "Easy", tasks: null },
+      { bucket: "Medium", tasks: null },
+      { bucket: "Hard", tasks: null }
     ],
     rubricCounts: [
-      { bucket: "No files", tasks: 84 },
-      { bucket: "1-5 files", tasks: 120 },
-      { bucket: "6-20 files", tasks: 88 },
-      { bucket: "21-50 files", tasks: 62 },
-      { bucket: "50+ files", tasks: 34 }
+      { bucket: "No files", tasks: 0 },
+      { bucket: "1-5 files", tasks: 305 },
+      { bucket: "6-20 files", tasks: 50 },
+      { bucket: "21-50 files", tasks: 20 },
+      { bucket: "50+ files", tasks: 13 }
     ],
     liteSplit: {
       tasks: 100,
-      costReduction: "70%",
-      description: "Workspace-Bench-Lite preserves the benchmark distribution while reducing evaluation cost by about 70%."
+      personas: 5,
+      description: "Workspace-Bench-Lite contains 100 public tasks across 5 worker profiles in the official Lite release."
+    },
+    meta: {
+      totalTasks: 388,
+      totalRubrics: 7399,
+      totalFiles: 3854,
+      fileTypes: 24
     }
   },
   profileResults: {
     profiles: [
-      { profile: "AI Product Manager", tasks: 42, avgFiles: 74, dependencyScore: 68.7, bestScore: 68.7 },
-      { profile: "Logistics Manager", tasks: 116, avgFiles: 74, dependencyScore: 68.7, bestScore: 68.7 },
-      { profile: "Backend Developer", tasks: 44, avgFiles: 74, dependencyScore: 68.7, bestScore: 68.7 },
-      { profile: "Researcher", tasks: 66, avgFiles: 74, dependencyScore: 68.7, bestScore: 68.7 },
-      { profile: "Operations Manager", tasks: 120, avgFiles: 74, dependencyScore: 68.7, bestScore: 68.7 }
+      { profile: "Operations Manager", tasks: 92, share: 23.7 },
+      { profile: "Logistics Manager", tasks: 81, share: 20.9 },
+      { profile: "Researcher", tasks: 61, share: 15.7 },
+      { profile: "Backend Developer", tasks: 31, share: 8.0 },
+      { profile: "Operations Staff", tasks: 28, share: 7.2 },
+      { profile: "Product Manager", tasks: 25, share: 6.4 },
+      { profile: "Administrative / Logistics Staff", tasks: 19, share: 4.9 },
+      { profile: "Administrative/Logistics Staff", tasks: 15, share: 3.9 },
+      { profile: "Product Staff", tasks: 13, share: 3.4 },
+      { profile: "Developer", tasks: 12, share: 3.1 },
+      { profile: "Researchers", tasks: 4, share: 1.0 },
+      { profile: "product people", tasks: 3, share: 0.8 },
+      { profile: "researcher", tasks: 2, share: 0.5 },
+      { profile: "Operation staff", tasks: 1, share: 0.3 },
+      { profile: "Operations Specialist", tasks: 1, share: 0.3 }
     ]
   },
   capabilityResults: {
     capabilities: [
-      { capability: "Workspace Exploration", bestScore: 68.7, averageScore: 47.4 },
-      { capability: "Task-Supporting Files", bestScore: 68.7, averageScore: 47.4 },
-      { capability: "Result-Providing Files", bestScore: 68.7, averageScore: 47.4 },
-      { capability: "Lineage Tracing", bestScore: 68.7, averageScore: 47.4 },
-      { capability: "Semantic Relations", bestScore: 68.7, averageScore: 47.4 },
-      { capability: "Heterogeneous Files", bestScore: 68.7, averageScore: 47.4 }
+      { capability: "Workspace Exploration", count: 278, share: 71.6 },
+      { capability: "Task-Providing File Utilization", count: 238, share: 61.3 },
+      { capability: "Result-Providing Files Utilization", count: 211, share: 54.4 },
+      { capability: "Semantic Content Relations Understanding", count: 170, share: 43.8 },
+      { capability: "Lineage Tracing", count: 136, share: 35.1 },
+      { capability: "Heterogeneous File Understanding", count: 109, share: 28.1 }
     ]
+  },
+  dataset: {
+    meta: {
+      totalTasks: 388,
+      totalRubrics: 7399,
+      totalFiles: 3854,
+      fileTypes: 24
+    },
+    tasks: Array.isArray(window.WORKSPACE_BENCH_TASKS) ? window.WORKSPACE_BENCH_TASKS.slice() : []
   },
   examples: [
     {

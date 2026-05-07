@@ -1,39 +1,79 @@
 {
   "profiles": [
     {
-      "profile": "AI Product Manager",
-      "tasks": 42,
-      "avgFiles": 74,
-      "dependencyScore": 68.7,
-      "bestScore": 68.7
+      "profile": "Operations Manager",
+      "tasks": 92,
+      "share": 23.7
     },
     {
       "profile": "Logistics Manager",
-      "tasks": 116,
-      "avgFiles": 74,
-      "dependencyScore": 68.7,
-      "bestScore": 68.7
-    },
-    {
-      "profile": "Backend Developer",
-      "tasks": 44,
-      "avgFiles": 74,
-      "dependencyScore": 68.7,
-      "bestScore": 68.7
+      "tasks": 81,
+      "share": 20.9
     },
     {
       "profile": "Researcher",
-      "tasks": 66,
-      "avgFiles": 74,
-      "dependencyScore": 68.7,
-      "bestScore": 68.7
+      "tasks": 61,
+      "share": 15.7
     },
     {
-      "profile": "Operations Manager",
-      "tasks": 120,
-      "avgFiles": 74,
-      "dependencyScore": 68.7,
-      "bestScore": 68.7
+      "profile": "Backend Developer",
+      "tasks": 31,
+      "share": 8
+    },
+    {
+      "profile": "Operations Staff",
+      "tasks": 28,
+      "share": 7.2
+    },
+    {
+      "profile": "Product Manager",
+      "tasks": 25,
+      "share": 6.4
+    },
+    {
+      "profile": "Administrative / Logistics Staff",
+      "tasks": 19,
+      "share": 4.9
+    },
+    {
+      "profile": "Administrative/Logistics Staff",
+      "tasks": 15,
+      "share": 3.9
+    },
+    {
+      "profile": "Product Staff",
+      "tasks": 13,
+      "share": 3.4
+    },
+    {
+      "profile": "Developer",
+      "tasks": 12,
+      "share": 3.1
+    },
+    {
+      "profile": "Researchers",
+      "tasks": 4,
+      "share": 1
+    },
+    {
+      "profile": "product people",
+      "tasks": 3,
+      "share": 0.8
+    },
+    {
+      "profile": "researcher",
+      "tasks": 2,
+      "share": 0.5
+    },
+    {
+      "profile": "Operation staff",
+      "tasks": 1,
+      "share": 0.3
+    },
+    {
+      "profile": "Operations Specialist",
+      "tasks": 1,
+      "share": 0.3
     }
   ]
 }
