@@ -30,7 +30,23 @@ const requiredFiles = [
 ];
 
 const requiredText = {
-  'index.html': ['Workspace-Bench 1.0', '3,854', '7,399', '80.7%', '68.7%', '47.4%', 'Independent benchmark analysis', 'Workspace-Bench highlights', 'Latest benchmark updates'],
+  'index.html': [
+    'Workspace-Bench 1.0',
+    '3,854',
+    '7,399',
+    '80.7%',
+    '68.7%',
+    '47.4%',
+    'Independent benchmark analysis',
+    'Workspace-Bench highlights',
+    'Latest benchmark updates',
+    '2026.05.04',
+    '2026.05.05',
+    '2026.05.07',
+    'Benchmark release',
+    'arXiv paper',
+    'Public leaderboard'
+  ],
   'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Search systems, models, frameworks', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis'],
   'dataset.html': ['Dataset', 'Dataset intelligence', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
@@ -77,7 +93,15 @@ for (const [file, needles] of Object.entries(requiredText)) {
   }
   if (file !== 'citation.html' && /style="font-size:/.test(text)) fail(`${file} should not use inline font-size styling`);
   if (/RIP-Bench/.test(text)) fail(`${file} contains legacy text`);
-  if (/[鈫閳]/.test(text)) fail(`${file} contains garbled characters`);
+  if (/[\u95b3\u67cd\u922b]/.test(text)) fail(`${file} contains garbled characters`);
+  if (file === 'index.html' && text.includes('Workspace-Bench evaluates whether agents can operate over realistic digital workspaces')) {
+    fail('index.html still contains the removed benchmark tests paragraph');
+  }
+  if (file === 'index.html') {
+    for (const legacy of ['Workspace-Bench 1.0 released', '100-task evaluation split', 'Lite rankings and distribution figures released', 'Lite split introduced', 'Public data']) {
+      if (text.includes(legacy)) fail(`index.html still contains legacy timeline text: ${legacy}`);
+    }
+  }
 }
 
 for (const file of ['index.html', 'leaderboard.html', 'dataset.html', 'examples.html']) {
@@ -118,4 +142,3 @@ if (fs.existsSync(leaderboardPath)) {
 }
 
 if (!process.exitCode) console.log('Static site checks passed.');
-

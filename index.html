@@ -80,7 +80,6 @@
             <article class="aa-highlight-card">
               <div class="mini-kicker">Evaluation focus</div>
               <h3>What the benchmark tests</h3>
-              <p>Workspace-Bench evaluates whether agents can operate over realistic digital workspaces: navigating large heterogeneous file ecosystems, identifying task-supporting and result-providing files, understanding semantic and lineage dependencies, and producing outputs judged by fine-grained rubrics.</p>
               <div class="aa-mini-leaderboard">
                 <div class="aa-mini-row"><span class="rank">01</span><strong>Workspace Exploration</strong></div>
                 <div class="aa-mini-row"><span class="rank">02</span><strong>Task-Supporting Files Utilization</strong></div>
@@ -90,7 +89,7 @@
                 <div class="aa-mini-row"><span class="rank">06</span><strong>Lineage Tracing</strong></div>
               </div>
             </article>
-            <article class="aa-highlight-card">
+            <article class="aa-highlight-card aa-highlight-card-compact-gap">
               <div class="mini-kicker">Performance gap</div>
               <h3>Human reference remains ahead</h3>
               <p>Workspace-Bench reports a clear gap between human performance and current evaluated agents.</p>
@@ -115,40 +114,40 @@
           <div class="changelog-cards" id="releaseTimeline">
             <div class="changelog-row">
               <div class="changelog-dot"></div>
-              <div class="changelog-card">
+              <div class="changelog-card changelog-card-accent-indigo">
                 <div class="changelog-card-inner">
                   <div class="changelog-meta">
-                    <span class="changelog-date">2026-05</span>
-                    <span class="changelog-tag" style="background:#ede9fe;color:#6d28d9">Release</span>
+                    <span class="changelog-date">2026.05.04</span>
+                    <span class="changelog-tag changelog-tag-release">Release</span>
                   </div>
-                  <h3 class="changelog-title">Workspace-Bench 1.0 released</h3>
-                  <p class="changelog-desc">Paper and public repository made available. The latest public metadata release contains 388 tasks, 15 persona values, 3,854 manifest-listed files, and 7,399 rubric criteria.</p>
+                  <h3 class="changelog-title">Benchmark release</h3>
+                  <p class="changelog-desc">Workspace-Bench and Workspace-Bench-Lite were released together with the public repository, benchmark structure, task metadata, rubrics, and file-dependency information.</p>
                 </div>
               </div>
             </div>
             <div class="changelog-row">
               <div class="changelog-dot"></div>
-              <div class="changelog-card">
+              <div class="changelog-card changelog-card-accent-sky">
                 <div class="changelog-card-inner">
                   <div class="changelog-meta">
-                    <span class="changelog-date">Lite split</span>
-                    <span class="changelog-tag" style="background:#dbeafe;color:#1d4ed8">Feature</span>
+                    <span class="changelog-date">2026.05.05</span>
+                    <span class="changelog-tag changelog-tag-paper">Paper</span>
                   </div>
-                  <h3 class="changelog-title">100-task evaluation split</h3>
-                  <p class="changelog-desc">Lite split introduced, reducing evaluation cost by approximately 70% while preserving the official benchmark distribution across profiles, difficulty levels, and task abilities.</p>
+                  <h3 class="changelog-title">arXiv paper</h3>
+                  <p class="changelog-desc">The official paper introduced the benchmark design, workspace-learning evaluation dimensions, scoring protocol, Lite split, and public leaderboard framing.</p>
                 </div>
               </div>
             </div>
             <div class="changelog-row">
               <div class="changelog-dot changelog-dot-active"></div>
-              <div class="changelog-card changelog-card-active">
+              <div class="changelog-card changelog-card-active changelog-card-accent-emerald">
                 <div class="changelog-card-inner">
                   <div class="changelog-meta">
-                    <span class="changelog-date">Public data</span>
-                    <span class="changelog-tag" style="background:#dcfce7;color:#166534">Dataset</span>
+                    <span class="changelog-date">2026.05.07</span>
+                    <span class="changelog-tag changelog-tag-leaderboard">Leaderboard</span>
                   </div>
-                  <h3 class="changelog-title">Lite rankings and distribution figures released</h3>
-                  <p class="changelog-desc">Harness/model rows and official distribution figures published. Dataset on Hugging Face updated with task definitions, rubrics, and file dependency metadata.</p>
+                  <h3 class="changelog-title">Public leaderboard</h3>
+                  <p class="changelog-desc">The public Lite leaderboard was released with agent/model rankings, rubric pass rates, threshold markers, and distribution figures aligned with the released benchmark artifacts.</p>
                 </div>
               </div>
             </div>
@@ -160,14 +159,14 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Leaderboards</h2>
-              <p class="section-subtitle">Browse Workspace-Bench by full summary, Lite public systems, profile mix, difficulty, and ability dimensions.</p>
+              <h2>Explore Workspace-Bench</h2>
+              <p class="section-subtitle">Jump into the official leaderboard, dataset composition, and scoring methodology from a single entry section.</p>
             </div>
           </div>
           <div class="grid grid-3">
-            <a class="aa-highlight-card" href="./leaderboard.html"><div class="mini-kicker">Models</div><h3>Workspace-Bench-Lite</h3><p>Public harness x model combinations ranked by rubric pass rate.</p></a>
-            <a class="aa-highlight-card" href="./dataset.html"><div class="mini-kicker">Dataset</div><h3>Benchmark Composition</h3><p>Profile, difficulty, and ability views from official distribution data.</p></a>
-            <a class="aa-highlight-card" href="./methodology.html"><div class="mini-kicker">Evaluation</div><h3>Scoring Protocol</h3><p>Rubric-based scoring, reproducibility requirements, and submission structure.</p></a>
+            <a class="aa-highlight-card" href="./leaderboard.html"><div class="mini-kicker">Leaderboard</div><h3>Official rankings</h3><p>Browse public Lite systems, full-summary rows, threshold views, and capability-oriented leaderboard analysis.</p></a>
+            <a class="aa-highlight-card" href="./dataset.html"><div class="mini-kicker">Dataset</div><h3>Task composition</h3><p>Inspect worker profiles, collaboration types, rubric distributions, file dependency coverage, and task metadata structure.</p></a>
+            <a class="aa-highlight-card" href="./methodology.html"><div class="mini-kicker">Methodology</div><h3>Evaluation protocol</h3><p>Review the rubric-based scoring process, submission requirements, and how benchmark evidence is structured.</p></a>
           </div>
         </div>
       </section>
