@@ -885,6 +885,59 @@ p { margin: 0; }
   font-size: 0.78rem;
 }
 
+.leaderboard-title-row {
+  margin: 0;
+  align-items: center;
+}
+
+.leaderboard-title-row img {
+  width: 34px;
+  height: 34px;
+}
+
+.leaderboard-page-header {
+  padding: 26px 0 14px;
+}
+
+.leaderboard-page-lead {
+  max-width: 840px;
+}
+
+.leaderboard-hero-panel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--border);
+}
+
+.leaderboard-hero-stat {
+  background: var(--surface-2);
+  padding: 14px 16px;
+}
+
+.leaderboard-hero-stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 640;
+}
+
+.leaderboard-hero-stat strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.4rem;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.leaderboard-top-summary {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
 .leaderboard-module {
   border: 1px solid var(--border);
   border-radius: 24px;
@@ -1116,9 +1169,66 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 .wide-chart canvas { height: 360px !important; }
 
-/* Lite ranking chart - extra tall to fit icons and tilted labels below bars */
-.lite-ranking-chart-card { min-height: 1760px; height: 1760px; }
-.lite-ranking-chart-card canvas { height: 100% !important; }
+/* Lite ranking chart: canvas for bars, HTML rail for logo/label stack. */
+.lite-ranking-chart-card {
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.lite-ranking-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 18px 18px 22px 0;
+}
+
+.lite-ranking-canvas-wrap {
+  min-width: 1584px;
+  height: 520px;
+}
+
+.lite-ranking-canvas-wrap canvas {
+  height: 100% !important;
+}
+
+.lite-ranking-label-rail {
+  position: relative;
+  min-width: 1584px;
+  height: 188px;
+  padding: 18px 0 0;
+}
+
+.lite-ranking-label-item {
+  position: absolute;
+  top: 0;
+  width: 124px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.lite-ranking-agent-logo,
+.lite-ranking-llm-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.lite-ranking-slanted-label {
+  display: block;
+  width: 124px;
+  margin-top: 14px;
+  color: #555555;
+  font-size: 0.5rem;
+  font-style: italic;
+  line-height: 1;
+  text-align: center;
+  transform: rotate(-20deg);
+  transform-origin: center top;
+  white-space: nowrap;
+}
 
 .figure-panel {
   padding: 18px;
@@ -1236,6 +1346,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 
 @media (max-width: 960px) {
   .hero-inner { grid-template-columns: 1fr; padding-top: 42px; }
+  .leaderboard-hero-panel { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
   .aa-highlight-grid { grid-template-columns: 1fr; }
   .aa-metric-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1274,6 +1385,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 @media (max-width: 620px) {
   .container { width: min(100% - 24px, 1180px); }
   h1 { font-size: 2.55rem; }
+  .leaderboard-hero-panel { grid-template-columns: 1fr; }
   .section-head { align-items: start; flex-direction: column; }
   .timeline-item { grid-template-columns: 1fr; }
   .actions .button { width: 100%; }
@@ -1295,7 +1407,7 @@ body {
 }
 
 .container {
-  width: min(1440px, calc(100% - 48px));
+  width: min(1800px, calc(100% - 84px));
 }
 
 .site-header {

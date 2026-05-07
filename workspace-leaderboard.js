@@ -285,120 +285,66 @@ let costChart;
 let runtimeChart;
 let liteRankingChart;
 
-const liteRankingPlugin = {
-  id: "liteRanking",
-  afterDraw(chart) {
-    const { ctx, chartArea } = chart;
-    const labels = chart.data.labels || [];
-    const stackedLabels = chart.data.stackedLabels || [];
-    const agentIcons = window._liteRankingAgentIcons || {};
-    const llmIcons = window._liteRankingLlmIcons || {};
+function workspaceAgentIconName(agent) {
+  return agent.toLowerCase().replace(/\s+/g, "");
+}
 
-    ctx.save();
+function workspaceModelIconName(model) {
+  const normalized = model.toLowerCase();
+  if (/opus|claude|sonnet|haiku/.test(normalized)) return "claude";
+  if (/glm/.test(normalized)) return "glm";
+  if (/gpt|openai/.test(normalized)) return "gpt";
+  if (/minimax/.test(normalized)) return "minimax";
+  if (/kimi/.test(normalized)) return "kimi";
+  if (/seed/.test(normalized)) return "seed";
+  if (/gemini/.test(normalized)) return "gemini";
+  return normalized.replace(/[^a-z0-9]/g, "");
+}
 
-    const meta = chart.getDatasetMeta(0);
-    if (!meta || !meta.data || meta.data.length === 0) {
-      ctx.restore();
-      return;
-    }
+function workspaceRenderLiteRankingLabels(rows) {
+  const rail = document.getElementById("liteRankingLabelRail");
+  if (!rail) return;
+  rail.innerHTML = rows.map((row) => `
+    <div class="lite-ranking-label-item">
+      <img class="lite-ranking-agent-logo" src="./icons/${workspaceAgentIconName(row.agent)}.png" alt="${row.agent}">
+      <img class="lite-ranking-llm-logo" src="./icons/${workspaceModelIconName(row.model)}.png" alt="${row.model}">
+      <div class="lite-ranking-slanted-label">${row.agent} + ${row.model}</div>
+    </div>
+  `).join("");
+}
 
-    const iconSize = 20;
-    const iconSpacing = 8;
-    const belowBars = 18;
-
-    meta.data.forEach((bar, i) => {
-      const barCenterX = bar.x;
-      const label = labels[i] || "";
-      const stackedLabel = stackedLabels[i] || label;
-      const agentIconY = chartArea.bottom + belowBars;
-      const parts = label.split(" + ");
-      const agentName = (parts[0] || "").trim();
-      const llmName = (parts[parts.length - 1] || "").trim();
-
-      const agentImg = agentIcons[agentName];
-      if (agentImg && agentImg.complete && agentImg.naturalWidth > 0) {
-        ctx.drawImage(agentImg, barCenterX - iconSize / 2, agentIconY, iconSize, iconSize);
-      }
-
-      const llmIconY = agentIconY + iconSize + iconSpacing;
-      const llmImg = llmIcons[llmName];
-      if (llmImg && llmImg.complete && llmImg.naturalWidth > 0) {
-        ctx.drawImage(llmImg, barCenterX - iconSize / 2, llmIconY, iconSize, iconSize);
-      }
-
-      ctx.save();
-      ctx.translate(barCenterX - 12, llmIconY + iconSize + 14);
-      ctx.rotate(-Math.PI / 4);
-      ctx.fillStyle = "#4a433f";
-      ctx.font = "9px Inter, system-ui, sans-serif";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "top";
-      ctx.fillText(stackedLabel, 0, 0);
-      ctx.restore();
-    });
-    ctx.restore();
-  }
-};
+function workspaceSyncLiteRankingLabelPositions() {
+  if (!liteRankingChart) return;
+  const rail = document.getElementById("liteRankingLabelRail");
+  if (!rail) return;
+  const items = [...rail.querySelectorAll(".lite-ranking-label-item")];
+  const meta = liteRankingChart.getDatasetMeta(0);
+  if (!meta?.data?.length) return;
+  items.forEach((item, index) => {
+    const bar = meta.data[index];
+    if (!bar) return;
+    item.style.left = `${bar.x}px`;
+  });
+}
 
 function workspaceRenderLiteRankingChart(data) {
   if (typeof Chart === "undefined") return;
   const canvas = document.getElementById("liteRankingChart");
   if (!canvas) return;
   const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
+  const canvasWrap = canvas.closest(".lite-ranking-canvas-wrap");
+  const labelRail = document.getElementById("liteRankingLabelRail");
+  const columnWidth = 132;
+  const chartWidth = rows.length * columnWidth;
   if (liteRankingChart) liteRankingChart.destroy();
+  if (canvasWrap) canvasWrap.style.width = `${chartWidth}px`;
+  if (labelRail) labelRail.style.width = `${chartWidth}px`;
+  workspaceRenderLiteRankingLabels(rows);
 
-  // Preload agent icons
-  const agents = [...new Set(rows.map((r) => r.agent))];
-  window._liteRankingAgentIcons = {};
-  const agentImages = agents.map((agent) => {
-    const iconName = agent.toLowerCase().replace(/\s+/g, "") + ".png";
-    const img = new Image();
-    img.src = `./icons/${iconName}`;
-    window._liteRankingAgentIcons[agent] = img;
-    return img;
-  });
-
-  // Preload LLM icons (from model name)
-  const llms = [...new Set(rows.map((r) => r.model))];
-  window._liteRankingLlmIcons = {};
-  const llmImages = llms.map((model) => {
-    let iconName = model.toLowerCase();
-    // Map model family to icon filename
-    if (/opus|claude|sonnet|haiku/.test(iconName)) iconName = "claude";
-    else if (/glm/.test(iconName)) iconName = "glm";
-    else if (/gpt|openai/.test(iconName)) iconName = "gpt";
-    else if (/minimax/.test(iconName)) iconName = "minimax";
-    else if (/kimi/.test(iconName)) iconName = "kimi";
-    else if (/seed/.test(iconName)) iconName = "seed";
-    else if (/gemini/.test(iconName)) iconName = "gemini";
-    else iconName = iconName.replace(/[^a-z0-9]/g, "");
-    const img = new Image();
-    img.src = `./icons/${iconName}.png`;
-    window._liteRankingLlmIcons[model] = img;
-    return img;
-  });
-
-  // Wait for all icons to load (or fail) before rendering chart
-  Promise.all([
-    ...agentImages.map((img) => new Promise((resolve) => {
-      if (img.complete && img.naturalWidth > 0) { resolve(); return; }
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-      setTimeout(resolve, 2000); // fallback timeout
-    })),
-    ...llmImages.map((img) => new Promise((resolve) => {
-      if (img.complete && img.naturalWidth > 0) { resolve(); return; }
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-      setTimeout(resolve, 2000); // fallback timeout
-    }))
-  ]).then(() => {
-    liteRankingChart = new Chart(canvas, {
+  liteRankingChart = new Chart(canvas, {
       type: "bar",
-      plugins: [liteRankingPlugin],
       data: {
         labels: rows.map((r) => `${r.agent} + ${r.model}`),
-        stackedLabels: rows.map((r) => `${r.agent} Framework + ${r.model}`),
         datasets: [{
           label: "Rubric pass rate",
           data: rows.map((r) => r.rubric_pass_rate),
@@ -436,7 +382,8 @@ function workspaceRenderLiteRankingChart(data) {
           x: {
             ticks: { display: false },
             grid: { display: false },
-            border: { display: false }
+            border: { display: false },
+            offset: true
           },
           y: {
             max: 100,
@@ -448,12 +395,19 @@ function workspaceRenderLiteRankingChart(data) {
         },
         layout: {
           padding: {
-            bottom: 120
+            bottom: 4
+          }
+        },
+        datasets: {
+          bar: {
+            categoryPercentage: 0.58,
+            barPercentage: 0.7
           }
         }
       }
     });
-  });
+  requestAnimationFrame(() => workspaceSyncLiteRankingLabelPositions());
+  window.setTimeout(() => workspaceSyncLiteRankingLabelPositions(), 120);
 }
 
 function workspaceRenderNoDataPanel(panel, title, message, note) {

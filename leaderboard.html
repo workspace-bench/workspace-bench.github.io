@@ -6,18 +6,21 @@
     <title>Workspace-Bench Official Leaderboard</title>
     <meta name="description" content="Official leaderboard for Workspace-Bench, benchmarking AI agents on real workspace tasks.">
     <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./styles/workspace.css">
+    <link rel="stylesheet" href="./styles/workspace.css?v=20260507b">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <div data-workspace-header></div>
 
     <main>
-      <section class="page-header">
+      <section class="page-header leaderboard-page-header">
         <div class="container">
           <div class="eyebrow">Workspace-Bench Leaderboards</div>
-          <h1 class="aa-page-title">Official Leaderboard</h1>
-          <p class="page-lead aa-page-lead">
+          <div class="page-title-row leaderboard-title-row">
+            <img src="./workspace-bench.svg" alt="">
+            <div><h1 class="aa-page-title">Official Leaderboard</h1></div>
+          </div>
+          <p class="page-lead aa-page-lead leaderboard-page-lead">
             Workspace-Bench compares AI agents on realistic workspace tasks with large-scale file dependencies. Scores
             below combine task-level success and rubric-level grading. Rows marked <span class="badge badge-green">Verified</span>
             correspond to paper-reported or maintainers-verified results.
@@ -27,6 +30,22 @@
 
       <section class="section">
         <div class="container leaderboard-module">
+          <div class="leaderboard-top-summary">
+            <aside class="leaderboard-hero-panel" aria-label="Leaderboard snapshot">
+              <div class="leaderboard-hero-stat">
+                <span>Best public Lite score</span>
+                <strong>66.6%</strong>
+              </div>
+              <div class="leaderboard-hero-stat">
+                <span>Public Lite rows</span>
+                <strong>28</strong>
+              </div>
+              <div class="leaderboard-hero-stat">
+                <span>Lite tasks</span>
+                <strong>100</strong>
+              </div>
+            </aside>
+          </div>
           <p style="display:none">Overall Workspace-Bench-Lite By Worker Profile By Difficulty By Ability</p>
           <div class="source-note">
             <div>
@@ -44,13 +63,18 @@
             <div>
               <h2>Public Lite Rankings</h2>
               <p class="section-subtitle">
-                Rubric pass rates for all 28 evaluated harness/model combinations on the 100-task Lite split.
-                The top three all use Opus-4.7 as the backbone.
+                Default view shows the top 12 public Lite systems. Scroll horizontally to inspect the remaining evaluated
+                harness/model combinations without crowding the label rail.
               </p>
             </div>
           </div>
           <div class="card chart-card lite-ranking-chart-card">
-            <canvas id="liteRankingChart" aria-label="Workspace-Bench-Lite all rankings chart"></canvas>
+            <div class="lite-ranking-scroll">
+              <div class="lite-ranking-canvas-wrap">
+                <canvas id="liteRankingChart" aria-label="Workspace-Bench-Lite all rankings chart"></canvas>
+              </div>
+              <div id="liteRankingLabelRail" class="lite-ranking-label-rail" aria-label="Agent and model labels for public Lite rankings"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -176,9 +200,9 @@
 
     <div data-workspace-footer></div>
 
-    <script src="./workspace-data.js"></script>
-    <script src="./workspace-site.js"></script>
-    <script src="./workspace-charts.js"></script>
-    <script src="./workspace-leaderboard.js"></script>
+    <script src="./workspace-data.js?v=20260507b"></script>
+    <script src="./workspace-site.js?v=20260507b"></script>
+    <script src="./workspace-charts.js?v=20260507b"></script>
+    <script src="./workspace-leaderboard.js?v=20260507b"></script>
   </body>
 </html>
