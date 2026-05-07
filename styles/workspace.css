@@ -1195,12 +1195,13 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   min-height: 0;
   padding: 0;
   overflow: hidden;
+  padding-bottom: 0;
 }
 
 .lite-ranking-scroll {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 12px 14px 14px 8px;
+  padding: 10px 14px 8px 8px;
 }
 
 .lite-ranking-scroll-compact {
@@ -1210,7 +1211,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-canvas-wrap {
   width: 100%;
   min-width: 0;
-  height: 360px;
+  height: 400px;
 }
 
 .lite-ranking-canvas-wrap canvas {
@@ -1221,8 +1222,8 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   position: relative;
   width: 100%;
   min-width: 0;
-  height: 245px;
-  padding: 22px 0 0;
+  height: 180px;
+  padding: 8px 0 0;
 }
 
 .lite-ranking-label-item {
@@ -1232,7 +1233,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   transform: translateX(-50%);
 }
 
@@ -1246,7 +1247,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-slanted-label {
   display: block;
   width: 140px;
-  margin-top: 18px;
+  margin-top: 2px;
   color: #2f3441;
   font-size: 0.72rem;
   font-style: italic;
@@ -1257,6 +1258,14 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   transform: rotate(-48deg);
   transform-origin: center top;
   white-space: normal;
+}
+
+.chart-caption {
+  padding: 4px 12px 8px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .lite-ranking-slanted-label span {
