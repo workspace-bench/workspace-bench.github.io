@@ -368,6 +368,9 @@ function workspaceRenderLiteRankingChart(data) {
     return "#c7cedd";
   });
 
+  const maxScore = Math.max(...rows.map((r) => r.rubric_pass_rate));
+  const yMax = Math.ceil(maxScore / 10) * 10 + 10;
+
   liteRankingChart = new Chart(canvas, {
       type: "bar",
       data: {
@@ -379,7 +382,7 @@ function workspaceRenderLiteRankingChart(data) {
           borderColor: barColors,
           borderRadius: 3,
           borderSkipped: false,
-          maxBarThickness: 18
+          maxBarThickness: 32
         }]
       },
       options: {
@@ -409,7 +412,7 @@ function workspaceRenderLiteRankingChart(data) {
           },
           y: {
             min: 0,
-            max: 100,
+            max: yMax,
             ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0, stepSize: 10 },
             grid: { color: "rgba(17, 17, 17, 0.06)" },
             beginAtZero: true,
@@ -419,15 +422,15 @@ function workspaceRenderLiteRankingChart(data) {
         layout: {
           padding: {
             top: 18,
-            right: 10,
+            right: 14,
             bottom: 0,
-            left: 6
+            left: 10
           }
         },
         datasets: {
           bar: {
-            categoryPercentage: 0.98,
-            barPercentage: 0.42
+            categoryPercentage: 0.88,
+            barPercentage: 0.80
           }
         },
         animation: {

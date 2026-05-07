@@ -1210,7 +1210,7 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
 .lite-ranking-canvas-wrap {
   width: 100%;
   min-width: 0;
-  height: 356px;
+  height: 380px;
 }
 
 .lite-ranking-canvas-wrap canvas {
@@ -1221,45 +1221,47 @@ td.numeric, th.numeric { text-align: right; font-variant-numeric: tabular-nums; 
   position: relative;
   width: 100%;
   min-width: 0;
-  height: 204px;
-  padding: 18px 0 0;
+  height: 265px;
+  padding: 26px 0 0;
 }
 
 .lite-ranking-label-item {
   position: absolute;
   top: 0;
-  width: 78px;
+  width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   transform: translateX(-50%);
 }
 
 .lite-ranking-agent-logo,
 .lite-ranking-llm-logo {
-  width: 14px;
-  height: 14px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
 }
 
 .lite-ranking-slanted-label {
   display: block;
-  width: 92px;
-  margin-top: 14px;
-  color: #444444;
-  font-size: 0.52rem;
+  width: 140px;
+  margin-top: 18px;
+  color: #2f3441;
+  font-size: 0.72rem;
   font-style: italic;
-  font-weight: 760;
-  line-height: 1.06;
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: 0;
   text-align: center;
-  transform: rotate(-33deg);
+  transform: rotate(-48deg);
   transform-origin: center top;
   white-space: normal;
 }
 
 .lite-ranking-slanted-label span {
   display: block;
+  text-shadow: 0 0 0 currentColor;
 }
 
 .figure-panel {
