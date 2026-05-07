@@ -42,7 +42,8 @@ const workspaceSearchItems = [
   })),
   { title: "GitHub repository", href: "https://github.com/OpenDataBox/Workspace-Bench", type: "External" },
   { title: "arXiv paper", href: "https://arxiv.org/abs/2605.03596", type: "External" },
-  { title: "Hugging Face dataset", href: "https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench", type: "External" }
+  { title: "Workspace-Bench dataset", href: "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench", type: "External" },
+  { title: "Workspace-Bench-Lite dataset", href: "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite", type: "External" }
 ];
 
 function workspaceCurrentPage() {

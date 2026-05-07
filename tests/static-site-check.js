@@ -26,6 +26,8 @@ const requiredFiles = [
   'data/capability-results.json',
   'data/tasks.json',
   'data/tasks.js',
+  'data/tasks-lite.js',
+  'data/site-data.js',
   'data/examples.json'
 ];
 
@@ -139,6 +141,46 @@ if (fs.existsSync(leaderboardPath)) {
       if (!names.includes(expected)) fail(`leaderboard missing tab ${expected}`);
     }
   }
+}
+
+const datasetStatsPath = path.join(root, 'data/dataset-stats.json');
+if (fs.existsSync(datasetStatsPath)) {
+  const stats = JSON.parse(fs.readFileSync(datasetStatsPath, 'utf8'));
+  if (!stats.meta?.full || !stats.meta?.lite) fail('dataset-stats.json must contain full and lite meta blocks');
+  if (stats.meta.full.totalTasks !== 388) fail('dataset-stats.json full task count must be 388');
+  if (stats.meta.lite.totalTasks !== 100) fail('dataset-stats.json lite task count must be 100');
+}
+
+const profileResultsPath = path.join(root, 'data/profile-results.json');
+if (fs.existsSync(profileResultsPath)) {
+  const profileData = JSON.parse(fs.readFileSync(profileResultsPath, 'utf8'));
+  if (!profileData.full || !profileData.lite) fail('profile-results.json must contain full and lite sections');
+}
+
+const capabilityResultsPath = path.join(root, 'data/capability-results.json');
+if (fs.existsSync(capabilityResultsPath)) {
+  const capabilityData = JSON.parse(fs.readFileSync(capabilityResultsPath, 'utf8'));
+  if (!capabilityData.full || !capabilityData.lite) fail('capability-results.json must contain full and lite sections');
+}
+
+const workspaceDataScript = fs.readFileSync(path.join(root, 'workspace-data.js'), 'utf8');
+for (const marker of [
+  'Workspace-Bench/Workspace-Bench',
+  'Workspace-Bench/Workspace-Bench-Lite',
+  'fullDatasetStats',
+  'liteDatasetStats'
+]) {
+  if (!workspaceDataScript.includes(marker)) fail(`workspace-data.js missing marker: ${marker}`);
+}
+
+const fetchDatasetScript = fs.readFileSync(path.join(root, 'fetch-dataset.js'), 'utf8');
+for (const marker of [
+  'Workspace-Bench/Workspace-Bench',
+  'Workspace-Bench/Workspace-Bench-Lite',
+  'tasks_full_metadata_table.csv',
+  'tasks_lite_metadata_table.csv'
+]) {
+  if (!fetchDatasetScript.includes(marker)) fail(`fetch-dataset.js missing marker: ${marker}`);
 }
 
 if (!process.exitCode) console.log('Static site checks passed.');

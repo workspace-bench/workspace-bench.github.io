@@ -1,0 +1,29 @@
+{
+  "name": "workspace-bench.github.io",
+  "version": "1.0.0",
+  "description": "Static GitHub Pages website for Workspace-Bench 1.0.",
+  "main": "workspace-charts.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workspace-bench/workspace-bench.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/workspace-bench/workspace-bench.github.io/issues"
+  },
+  "homepage": "https://github.com/workspace-bench/workspace-bench.github.io#readme",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "datasets": "^0.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}

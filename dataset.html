@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dataset - Workspace-Bench</title>
-    <meta name="description" content="Dataset intelligence for Workspace-Bench: 388 tasks, 15 public persona values, 7,399 rubrics, and 3,854 manifest-listed files.">
+    <meta name="description" content="Dataset intelligence for Workspace-Bench and Workspace-Bench-Lite using the latest official HuggingFace full and lite splits.">
     <link rel="icon" href="./workspace-bench.svg" type="image/svg+xml">
     <link rel="stylesheet" href="./styles/workspace.css?v=20260507c">
   </head>
@@ -20,8 +20,10 @@
           </div>
           <p class="page-lead aa-page-lead">
             Data sourced from the
-            <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">official HuggingFace dataset</a>.
-            This page is aligned to the latest public task metadata from Hugging Face and shows only real static data.
+            <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener">official Workspace-Bench dataset</a>
+            and
+            <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite" target="_blank" rel="noopener">official Workspace-Bench-Lite dataset</a>.
+            This page is aligned to the latest public full and lite task metadata and shows only real static data.
           </p>
         </div>
       </section>
@@ -46,7 +48,7 @@
           <div class="section-head">
             <div>
               <h2>Worker Profile Distribution</h2>
-              <p class="section-subtitle">Distribution of 388 tasks across 15 public persona values from the official HuggingFace dataset.</p>
+              <p class="section-subtitle">Distribution of the full benchmark task metadata from the latest official HuggingFace full split, with Lite statistics shown in the API snapshot below.</p>
             </div>
             <span class="badge badge-green">Source: HuggingFace</span>
           </div>
@@ -218,27 +220,27 @@
 const api = window.WORKSPACE_BENCH_API;
 
 // Get current data snapshot
-api.getSnapshot()                        // &#36820;&#22238;&#20844;&#24320;&#38745;&#24577;&#32479;&#35745;&#12289;&#30011;&#20687;&#20998;&#24067;&#12289;&#21327;&#20316;&#31867;&#22411;&#12289; rubric &#20998;&#24067;&#21644;&#20803;&#25968;&#25454;
-api.getProfileDistribution()             // &#36820;&#22238; [{profile, tasks, share}, ...]
-api.getCollabTypes()                     // &#36820;&#22238; [{type, count}, ...]
-api.getRubricTypes()                     // &#36820;&#22238; [{type, count, share}, ...]
-api.getFileDepStats()                    // &#36820;&#22238; {withDeps, withoutDeps, share}
+api.getSnapshot()                        // 返回 Full / Lite 静态统计、任务分布、协作类型、rubric 分布和元数据
+api.getProfileDistribution()             // 返回 [{profile, tasks, share}, ...]
+api.getCollabTypes()                     // 返回 [{type, count}, ...]
+api.getRubricTypes()                     // 返回 [{type, count, share}, ...]
+api.getFileDepStats()                    // 返回 {withDeps, withoutDeps, share}
 
 // Get raw task list (paginated)
 api.getTasks({profile: 'Backend Developer', q: 'security', limit: 10, offset: 0})
-                                          // &#36820;&#22238; {tasks: [...], total, limit, offset}
+                                          // 返回 {tasks: [...], total, limit, offset}
 
 // Add a new task in the current browser session only
 api.addTask({persona, task, collaboration_type, rubric_types, file_count})
-                                          // &#36820;&#22238; {id, ...task}
+                                          // 返回 {id, ...task}
 
 // Update benchmark metadata
 api.updateMeta({totalTasks: 400, totalRubrics: 8000})
-                                          // &#36820;&#22238;&#26356;&#26032;&#21518;&#30340;&#20803;&#25968;&#25454;
+                                          // 返回更新后的元数据
 
 // Insert / update a leaderboard row
 api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
-                                          // &#36820;&#22238;&#37325;&#26032;&#25490;&#24207;&#21518;&#30340;&#27036;&#21333;&#32467;&#26524;</div>
+                                          // 返回重新排序后的榜单结果</div>
           </div>
         </div>
       </section>
@@ -253,8 +255,10 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
                 <strong>Data source</strong>
                 <p style="margin-top:4px">
                   All statistics on this page are computed from the official
-                  <a href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener">ShenYunTzr/Workspace-Bench</a>
-                  HuggingFace dataset. The dataset contains 388 task rows with fields such as absolute_id, persona, task, tested_capabilities, rubrics, rubric_types, file_dep_graph, and data_manifest.
+                  <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener">Workspace-Bench/Workspace-Bench</a>
+                  and
+                  <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite" target="_blank" rel="noopener">Workspace-Bench/Workspace-Bench-Lite</a>.
+                  The latest releases expose official <code>full</code> and <code>lite</code> splits with fields such as absolute_id, persona, task, task_diff, output_files, tested_capabilities, rubrics, rubric_types, file_dep_graph, and data_manifest.
                 </p>
               </div>
             </div>
@@ -284,8 +288,10 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       }
     </style>
 
-    <script src="./data/tasks.js?v=20260507d"></script>
-    <script src="./workspace-data.js?v=20260507d"></script>
+    <script src="./data/tasks.js?v=20260507e"></script>
+    <script src="./data/tasks-lite.js?v=20260507e"></script>
+    <script src="./data/site-data.js?v=20260507e"></script>
+    <script src="./workspace-data.js?v=20260507e"></script>
     <script src="./workspace-site.js?v=20260507d"></script>
     <script>
     // Dataset page controller
@@ -319,17 +325,21 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       const bb = data.leaderboardBreakdowns;
       return {
         meta: {
-          totalTasks: allTasks.length || stats?.meta?.totalTasks || 388,
-          totalRubrics: 7399,
-          totalFiles: stats?.meta?.totalFiles || 3854,
-          fileTypes: stats?.meta?.fileTypes || 24
+          totalTasks: allTasks.length || stats?.meta?.totalTasks || stats?.meta?.full?.totalTasks || 0,
+          totalRubrics: stats?.meta?.totalRubrics || stats?.meta?.full?.totalRubrics || 0,
+          totalFiles: stats?.meta?.totalFiles || stats?.meta?.full?.totalFiles || 0,
+          fileTypes: stats?.meta?.fileTypes || stats?.meta?.full?.fileTypes || 0,
+          full: stats?.meta?.full || null,
+          lite: stats?.meta?.lite || null
         },
         profiles: bb?.workerProfiles || [],
         collabTypes: stats?.collabTypes || [],
         rubricTypes: stats?.rubricTypes || [],
         fileDeps: stats?.fileDependencyCoverage || { withDeps: 375, withoutDeps: 13, share: 96.6 },
         fileCountDist: stats?.fileCountDist || [],
-        difficulty: bb?.difficulty || []
+        difficulty: bb?.difficulty || [],
+        fullDatasetStats: stats?.fullDatasetStats || null,
+        liteDatasetStats: stats?.liteDatasetStats || null
       };
     }
 
@@ -456,6 +466,28 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       set("metric-files", snap.meta.totalFiles.toLocaleString());
       set("metric-deps", `${snap.fileDeps.share}%`);
       set("metric-types", snap.meta.fileTypes);
+    }
+
+    function renderDatasetCopy() {
+      const snap = workspaceGetSnapshot();
+      if (!snap) return;
+      const lead = document.querySelector(".page-lead.aa-page-lead");
+      if (lead && snap.meta.full && snap.meta.lite) {
+        lead.innerHTML = `
+          Data sourced from the
+          <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener">official Workspace-Bench dataset</a>
+          and
+          <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite" target="_blank" rel="noopener">official Workspace-Bench-Lite dataset</a>.
+          This page is aligned to the latest public full and lite task metadata: ${snap.meta.full.totalTasks} full tasks and ${snap.meta.lite.totalTasks} lite tasks.
+        `;
+      }
+      const subtitles = document.querySelectorAll(".section-subtitle");
+      if (subtitles[0]) {
+        subtitles[0].textContent = `Distribution of the full benchmark task metadata from the latest official HuggingFace full split (${snap.meta.full?.totalTasks || snap.meta.totalTasks} tasks), with Lite statistics (${snap.meta.lite?.totalTasks || 0} tasks) exposed through the same data channel.`;
+      }
+      if (subtitles[2]) {
+        subtitles[2].textContent = `${snap.meta.totalRubrics.toLocaleString()} rubrics across the public evaluation-type values released in the full benchmark metadata.`;
+      }
     }
 
     function renderProfileTable() {
@@ -590,6 +622,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     }
 
     function renderAll() {
+      renderDatasetCopy();
       renderMetrics();
       renderProfileTable();
       renderCollabTable();
@@ -610,5 +643,3 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     </script>
   </body>
 </html>
-
-

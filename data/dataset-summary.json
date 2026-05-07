@@ -1,0 +1,34 @@
+{
+  "summary": [
+    {
+      "label": "Full Tasks",
+      "value": "388",
+      "description": "Tasks in the full Workspace-Bench split served from the official HuggingFace dataset viewer."
+    },
+    {
+      "label": "Lite Tasks",
+      "value": "100",
+      "description": "Tasks in the public Workspace-Bench-Lite split served from the official HuggingFace dataset viewer."
+    },
+    {
+      "label": "Full Files",
+      "value": "3,854",
+      "description": "Manifest-listed files referenced across the full Workspace-Bench task metadata."
+    },
+    {
+      "label": "Lite Files",
+      "value": "760",
+      "description": "Manifest-listed files referenced across the Workspace-Bench-Lite task metadata."
+    },
+    {
+      "label": "Full Rubrics",
+      "value": "7,399",
+      "description": "Rubric checks attached to the full Workspace-Bench release."
+    },
+    {
+      "label": "Lite Rubrics",
+      "value": "1,856",
+      "description": "Rubric checks attached to the Workspace-Bench-Lite release."
+    }
+  ]
+}

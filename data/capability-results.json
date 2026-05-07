@@ -30,5 +30,73 @@
       "count": 109,
       "share": 28.1
     }
-  ]
+  ],
+  "full": {
+    "capabilities": [
+      {
+        "capability": "Workspace Exploration",
+        "count": 278,
+        "share": 71.6
+      },
+      {
+        "capability": "Task-Providing File Utilization",
+        "count": 238,
+        "share": 61.3
+      },
+      {
+        "capability": "Result-Providing Files Utilization",
+        "count": 211,
+        "share": 54.4
+      },
+      {
+        "capability": "Semantic Content Relations Understanding",
+        "count": 170,
+        "share": 43.8
+      },
+      {
+        "capability": "Lineage Tracing",
+        "count": 136,
+        "share": 35.1
+      },
+      {
+        "capability": "Heterogeneous File Understanding",
+        "count": 109,
+        "share": 28.1
+      }
+    ]
+  },
+  "lite": {
+    "capabilities": [
+      {
+        "capability": "Workspace Exploration",
+        "count": 73,
+        "share": 73
+      },
+      {
+        "capability": "Task-Providing File Utilization",
+        "count": 58,
+        "share": 58
+      },
+      {
+        "capability": "Result-Providing Files Utilization",
+        "count": 49,
+        "share": 49
+      },
+      {
+        "capability": "Semantic Content Relations Understanding",
+        "count": 45,
+        "share": 45
+      },
+      {
+        "capability": "Lineage Tracing",
+        "count": 30,
+        "share": 30
+      },
+      {
+        "capability": "Heterogeneous File Understanding",
+        "count": 22,
+        "share": 22
+      }
+    ]
+  }
 }

@@ -357,55 +357,63 @@ async function workspaceInitHeroChart() {
   });
 }
 
+function workspacePrimaryStats(stats) {
+  if (!stats) return null;
+  return stats.fullDatasetStats || stats;
+}
+
 async function workspaceInitDatasetCharts() {
   if (!document.getElementById("fileTypeChart")) return;
   const stats = window.WORKSPACE_BENCH_DATA?.datasetStats || await workspaceFetchJson("./data/dataset-stats.json");
   const profileData = window.WORKSPACE_BENCH_DATA?.profileResults || await workspaceFetchJson("./data/profile-results.json");
   const capabilityData = window.WORKSPACE_BENCH_DATA?.capabilityResults || await workspaceFetchJson("./data/capability-results.json");
+  const primaryStats = workspacePrimaryStats(stats);
+  const primaryProfiles = profileData.full?.profiles || profileData.profiles || [];
+  const primaryCapabilities = capabilityData.full?.capabilities || capabilityData.capabilities || [];
 
   workspaceMakeDoughnutChart(
     "fileTypeChart",
-    stats.fileTypeGroups.map((item) => item.group),
-    stats.fileTypeGroups.map((item) => item.count),
+    primaryStats.fileTypeGroups.map((item) => item.group),
+    primaryStats.fileTypeGroups.map((item) => item.count),
     "File Type Distribution"
   );
 
   workspaceMakeBarChart(
     "taskComplexityChart",
-    stats.complexity.map((item) => item.bucket),
-    stats.complexity.map((item) => item.tasks),
+    primaryStats.complexity.map((item) => item.bucket),
+    primaryStats.complexity.map((item) => item.tasks),
     "Required Files per Task",
     "#5b3df5"
   );
 
   workspaceMakeBarChart(
     "workspaceSizeChart",
-    stats.fileCountDist.map((item) => item.bucket),
-    stats.fileCountDist.map((item) => item.count),
+    primaryStats.fileCountDist.map((item) => item.bucket),
+    primaryStats.fileCountDist.map((item) => item.count),
     "Files per Task",
     "#14b8a6"
   );
 
   workspaceMakeBarChart(
     "rubricCountChart",
-    stats.rubricCounts.map((item) => item.bucket),
-    stats.rubricCounts.map((item) => item.tasks),
-    "Task Count by File Bucket",
+    primaryStats.difficultyLevels.map((item) => item.level),
+    primaryStats.difficultyLevels.map((item) => item.tasks),
+    "Task Count by Difficulty",
     "#7c3aed"
   );
 
   workspaceMakeBarChart(
     "profileTaskChart",
-    profileData.profiles.map((item) => item.profile),
-    profileData.profiles.map((item) => item.tasks),
+    primaryProfiles.map((item) => item.profile),
+    primaryProfiles.map((item) => item.tasks),
     "Tasks by Worker Profile",
     "#d9a300"
   );
 
   workspaceMakeBarChart(
     "capabilityChart",
-    capabilityData.capabilities.map((item) => item.capability),
-    capabilityData.capabilities.map((item) => item.count),
+    primaryCapabilities.map((item) => item.capability),
+    primaryCapabilities.map((item) => item.count),
     "Tasks by Capability Tag",
     "#1f9d55"
   );

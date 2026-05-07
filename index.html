@@ -27,7 +27,8 @@
               <a class="button button-primary" href="./leaderboard.html">View Leaderboard</a>
               <a class="button" href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">GitHub</a>
               <a class="button" href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv</a>
-              <a class="button" href="https://huggingface.co/datasets/ShenYunTzr/Workspace-Bench" target="_blank" rel="noopener noreferrer">Hugging Face Dataset</a>
+              <a class="button" href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener noreferrer">Workspace-Bench</a>
+              <a class="button" href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite" target="_blank" rel="noopener noreferrer">Workspace-Bench-Lite</a>
               <a class="button" href="./dataset.html">Dataset</a>
               <a class="button" href="./submit.html">Submit Results</a>
             </div>
@@ -47,9 +48,9 @@
                 <div class="aa-mini-row"><span class="rank">#5</span><strong>Hermes + GLM-5.1</strong><span class="score">57.7%</span></div>
               </div>
               <div class="aa-hero-ranking-stats">
-                <div class="aa-hero-ranking-stat"><strong>28</strong><span>Public Lite rows</span></div>
-                <div class="aa-hero-ranking-stat"><strong>5</strong><span>Worker profiles</span></div>
-                <div class="aa-hero-ranking-stat"><strong>100</strong><span>Lite tasks</span></div>
+              <div class="aa-hero-ranking-stat"><strong id="heroPublicRows">28</strong><span>Public Lite rows</span></div>
+              <div class="aa-hero-ranking-stat"><strong id="heroLiteProfiles">5</strong><span>Worker profiles</span></div>
+              <div class="aa-hero-ranking-stat"><strong id="heroLiteTasks">100</strong><span>Lite tasks</span></div>
               </div>
             </div>
           </aside>
@@ -60,9 +61,9 @@
             <div class="aa-metric"><div class="aa-metric-value">80.7%</div><div class="aa-metric-label">Human reference</div></div>
             <div class="aa-metric"><div class="aa-metric-value">68.7%</div><div class="aa-metric-label">Best public agent</div></div>
             <div class="aa-metric"><div class="aa-metric-value">47.4%</div><div class="aa-metric-label">Average public agent</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">388</div><div class="aa-metric-label">Full benchmark tasks</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">3,854</div><div class="aa-metric-label">Manifest-listed files</div></div>
-            <div class="aa-metric"><div class="aa-metric-value">7,399</div><div class="aa-metric-label">Rubric criteria</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="heroFullTasks">388</div><div class="aa-metric-label">Full benchmark tasks</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="heroFullFiles">3,854</div><div class="aa-metric-label">Manifest-listed files</div></div>
+            <div class="aa-metric"><div class="aa-metric-value" id="heroFullRubrics">7,399</div><div class="aa-metric-label">Rubric criteria</div></div>
           </div>
         </div>
       </section>
@@ -248,8 +249,29 @@
 
     <div data-workspace-footer></div>
 
-    <script src="./workspace-data.js?v=20260507c"></script>
+    <script src="./data/site-data.js?v=20260507e"></script>
+    <script src="./workspace-data.js?v=20260507e"></script>
     <script src="./workspace-site.js?v=20260507c"></script>
     <script src="./workspace-charts.js?v=20260507c"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const data = window.WORKSPACE_BENCH_DATA;
+        const stats = data?.datasetStats;
+        const leaderboard = data?.leaderboard;
+        if (!stats || !leaderboard) return;
+        const fullMeta = stats.meta?.full || stats.meta || {};
+        const liteMeta = stats.meta?.lite || {};
+        const setText = (id, value) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value;
+        };
+        setText("heroPublicRows", String((leaderboard.litePublicResults || []).length));
+        setText("heroLiteProfiles", String(stats.liteDatasetStats?.profileTasks?.length || stats.liteSplit?.personas || 0));
+        setText("heroLiteTasks", String(liteMeta.totalTasks || stats.liteSplit?.tasks || 0));
+        setText("heroFullTasks", String(fullMeta.totalTasks || 0));
+        setText("heroFullFiles", Number(fullMeta.totalFiles || 0).toLocaleString());
+        setText("heroFullRubrics", Number(fullMeta.totalRubrics || 0).toLocaleString());
+      });
+    </script>
   </body>
 </html>
