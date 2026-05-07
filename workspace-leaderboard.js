@@ -285,45 +285,58 @@ let costChart;
 let runtimeChart;
 let liteRankingChart;
 
-const liteRankingIconPlugin = {
-  id: "liteRankingIcons",
-  afterDatasetsDraw(chart) {
-    const { ctx, chartArea, scales } = chart;
-    if (!chartArea || !scales.x || !scales.y) return;
-    const { top, bottom } = chartArea;
-    const data = chart.data.datasets[0]?.data || [];
+const liteRankingPlugin = {
+  id: "liteRanking",
+  afterDraw(chart) {
+    const { ctx, chartArea } = chart;
     const labels = chart.data.labels || [];
-    const colors = chart.data.datasets[0]?.backgroundColor || [];
+    const stackedLabels = chart.data.stackedLabels || [];
+    const agentIcons = window._liteRankingAgentIcons || {};
+    const llmIcons = window._liteRankingLlmIcons || {};
 
-    // Icon map: harness → emoji
-    const iconMap = {
-      "OpenClaw": "🦞",
-      "ClaudeCode": "🤖",
-      "Hermes": "⚡",
-      "DeepAgent": "🧪",
-    };
-    // Fallback framework emojis
-    const frameworkIcons = ["🔵", "🟢", "🟡", "🔴", "🟣", "🟠"];
+    ctx.save();
 
-    data.forEach((value, i) => {
-      const x = scales.x.getPixelForValue(value);
-      const barCenterX = scales.x.getPixelForValue(0) +
-        (x - scales.x.getPixelForValue(0)) / 2;
-      const y = scales.y.getPixelForValue(labels[i]);
+    const meta = chart.getDatasetMeta(0);
+    if (!meta || !meta.data || meta.data.length === 0) {
+      ctx.restore();
+      return;
+    }
 
-      // Determine icon
+    const iconSize = 20;
+    const iconSpacing = 8;
+    const belowBars = 18;
+
+    meta.data.forEach((bar, i) => {
+      const barCenterX = bar.x;
       const label = labels[i] || "";
-      let icon = iconMap[label.split(" + ")[0]];
-      if (!icon) icon = frameworkIcons[i % frameworkIcons.length];
+      const stackedLabel = stackedLabels[i] || label;
+      const agentIconY = chartArea.bottom + belowBars;
+      const parts = label.split(" + ");
+      const agentName = (parts[0] || "").trim();
+      const llmName = (parts[parts.length - 1] || "").trim();
 
-      // Draw icon above bar
+      const agentImg = agentIcons[agentName];
+      if (agentImg && agentImg.complete && agentImg.naturalWidth > 0) {
+        ctx.drawImage(agentImg, barCenterX - iconSize / 2, agentIconY, iconSize, iconSize);
+      }
+
+      const llmIconY = agentIconY + iconSize + iconSpacing;
+      const llmImg = llmIcons[llmName];
+      if (llmImg && llmImg.complete && llmImg.naturalWidth > 0) {
+        ctx.drawImage(llmImg, barCenterX - iconSize / 2, llmIconY, iconSize, iconSize);
+      }
+
       ctx.save();
-      ctx.font = "bold 16px sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
-      ctx.fillText(icon, barCenterX, top + 4);
+      ctx.translate(barCenterX - 12, llmIconY + iconSize + 14);
+      ctx.rotate(-Math.PI / 4);
+      ctx.fillStyle = "#4a433f";
+      ctx.font = "9px Inter, system-ui, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(stackedLabel, 0, 0);
       ctx.restore();
     });
+    ctx.restore();
   }
 };
 
@@ -334,68 +347,112 @@ function workspaceRenderLiteRankingChart(data) {
   const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
   if (liteRankingChart) liteRankingChart.destroy();
 
-  liteRankingChart = new Chart(canvas, {
-    type: "bar",
-    plugins: [liteRankingIconPlugin],
-    data: {
-      labels: rows.map((r) => `${r.agent} + ${r.model}`),
-      datasets: [{
-        label: "Rubric pass rate",
-        data: rows.map((r) => r.rubric_pass_rate),
-        backgroundColor: rows.map((r) => {
-          if (r.displayRank === 1) return "#1f9d55";
-          if (r.displayRank <= 3) return "#5b3df5";
-          if (r.displayRank <= 10) return "#0ea5e9";
-          return "#9ca3af";
-        }),
-        borderRadius: 4,
-        borderSkipped: false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: "#ffffff",
-          titleColor: "#111111",
-          bodyColor: "#5f6368",
-          borderColor: "#dddddd",
-          borderWidth: 1,
-          callbacks: {
-            title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
-            label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
+  // Preload agent icons
+  const agents = [...new Set(rows.map((r) => r.agent))];
+  window._liteRankingAgentIcons = {};
+  const agentImages = agents.map((agent) => {
+    const iconName = agent.toLowerCase().replace(/\s+/g, "") + ".png";
+    const img = new Image();
+    img.src = `./icons/${iconName}`;
+    window._liteRankingAgentIcons[agent] = img;
+    return img;
+  });
+
+  // Preload LLM icons (from model name)
+  const llms = [...new Set(rows.map((r) => r.model))];
+  window._liteRankingLlmIcons = {};
+  const llmImages = llms.map((model) => {
+    let iconName = model.toLowerCase();
+    // Map model family to icon filename
+    if (/opus|claude|sonnet|haiku/.test(iconName)) iconName = "claude";
+    else if (/glm/.test(iconName)) iconName = "glm";
+    else if (/gpt|openai/.test(iconName)) iconName = "gpt";
+    else if (/minimax/.test(iconName)) iconName = "minimax";
+    else if (/kimi/.test(iconName)) iconName = "kimi";
+    else if (/seed/.test(iconName)) iconName = "seed";
+    else if (/gemini/.test(iconName)) iconName = "gemini";
+    else iconName = iconName.replace(/[^a-z0-9]/g, "");
+    const img = new Image();
+    img.src = `./icons/${iconName}.png`;
+    window._liteRankingLlmIcons[model] = img;
+    return img;
+  });
+
+  // Wait for all icons to load (or fail) before rendering chart
+  Promise.all([
+    ...agentImages.map((img) => new Promise((resolve) => {
+      if (img.complete && img.naturalWidth > 0) { resolve(); return; }
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      setTimeout(resolve, 2000); // fallback timeout
+    })),
+    ...llmImages.map((img) => new Promise((resolve) => {
+      if (img.complete && img.naturalWidth > 0) { resolve(); return; }
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      setTimeout(resolve, 2000); // fallback timeout
+    }))
+  ]).then(() => {
+    liteRankingChart = new Chart(canvas, {
+      type: "bar",
+      plugins: [liteRankingPlugin],
+      data: {
+        labels: rows.map((r) => `${r.agent} + ${r.model}`),
+        stackedLabels: rows.map((r) => `${r.agent} Framework + ${r.model}`),
+        datasets: [{
+          label: "Rubric pass rate",
+          data: rows.map((r) => r.rubric_pass_rate),
+          backgroundColor: [
+            "#ef4444", "#f97316", "#f59e0b", "#eab308",
+            "#84cc16", "#22c55e", "#10b981", "#14b8a6",
+            "#06b6d4", "#0ea5e9", "#3b82f6", "#6366f1",
+            "#8b5cf6", "#a855f7", "#d946ef", "#ec4899",
+            "#f43f5e", "#fb7185", "#fbbf24", "#a3e635",
+            "#4ade80", "#2dd4bf", "#22d3ee", "#38bdf8",
+            "#818cf8", "#c084fc", "#e879f9", "#f0abfc"
+          ].slice(0, rows.length),
+          borderRadius: 4,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "#ffffff",
+            titleColor: "#111111",
+            bodyColor: "#5f6368",
+            borderColor: "#dddddd",
+            borderWidth: 1,
+            callbacks: {
+              title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
+              label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { display: false },
+            grid: { display: false },
+            border: { display: false }
+          },
+          y: {
+            max: 100,
+            ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
+            grid: { color: "rgba(17, 17, 17, 0.06)" },
+            beginAtZero: true,
+            title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
+          }
+        },
+        layout: {
+          padding: {
+            bottom: 120
           }
         }
-      },
-      scales: {
-        x: {
-          ticks: {
-            color: "#555555",
-            font: { size: 9 },
-            maxRotation: 45,
-            minRotation: 30,
-            callback: function(value) {
-              const label = this.getLabelForValue(value);
-              const parts = label.split(" + ");
-              if (parts.length >= 2) {
-                return `${parts[0].slice(0, 8)}\n${parts[1].slice(0, 10)}`;
-              }
-              return label.length > 18 ? `${label.slice(0, 18)}…` : label;
-            }
-          },
-          grid: { display: false }
-        },
-        y: {
-          max: 80,
-          ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0 },
-          grid: { color: "rgba(17, 17, 17, 0.08)" },
-          beginAtZero: true,
-          title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
-        }
       }
-    }
+    });
   });
 }
 
