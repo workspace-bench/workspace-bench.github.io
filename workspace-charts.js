@@ -13,6 +13,14 @@ function workspaceChartColors() {
 
 function workspaceSetCanvasHeight(canvas, aspectRatio) {
   if (!canvas || !aspectRatio) return;
+  if (
+    canvas.closest(".leaderboard-chart-card") ||
+    canvas.closest(".lite-ranking-canvas-wrap") ||
+    canvas.closest(".leaderboard-composition-card") ||
+    canvas.closest(".leaderboard-tall-card")
+  ) {
+    return;
+  }
   requestAnimationFrame(() => {
     canvas.height = Math.round(canvas.offsetWidth / aspectRatio);
   });

@@ -1,0 +1,13 @@
+# Node / tooling
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Local datasets / artifacts (do not publish raw pulls by default)
+*.csv
+
+# Local temp files
+.git-commit-temp.txt
+.commit-msg
+

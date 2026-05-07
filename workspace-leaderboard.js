@@ -29,7 +29,9 @@ function workspaceRowsForView(data, viewName) {
     return (data.litePublicResults || []).map((row) => ({
       ...row,
       overall_score: row.rubric_pass_rate,
-      task_success_rate: row.rubric_pass_rate >= 50 ? 1 : 0,
+      task_success_rate: null,
+      cost_usd: null,
+      runtime_minutes: null,
       workspace_size: "Lite",
       profile: "All profiles",
       capability: "Lite public leaderboard",
@@ -99,10 +101,10 @@ function workspaceRowsForView(data, viewName) {
       rank: index + 1,
       agent: row.ability,
       harness: "Official task ability count",
-      model: `${row.tasks} tasks`,
-      overall_score: row.tasks,
-      rubric_pass_rate: row.tasks,
-      task_success_rate: row.tasks,
+      model: `${row.count} tasks`,
+      overall_score: row.count,
+      rubric_pass_rate: row.count,
+      task_success_rate: row.count,
       workspace_size: "Full",
       profile: "All profiles",
       capability: row.ability,
@@ -476,7 +478,34 @@ function workspaceRenderAbilityInsightPanel() {
 
 function workspaceRenderLeaderboardCharts(rows) {
   if (typeof Chart === "undefined") return;
-  const agentRows = rows.filter((row) => row.model !== "Human");
+  const liteRows = (workspaceLeaderboardData?.litePublicResults || []).map((row) => ({
+    ...row,
+    overall_score: row.rubric_pass_rate
+  }));
+  const frameworkAverages = Array.from(
+    liteRows.reduce((map, row) => {
+      const current = map.get(row.agent) || { total: 0, count: 0 };
+      current.total += row.rubric_pass_rate;
+      current.count += 1;
+      map.set(row.agent, current);
+      return map;
+    }, new Map()).entries()
+  ).map(([framework, stats]) => ({
+    framework,
+    average: stats.total / stats.count
+  })).sort((a, b) => b.average - a.average);
+  const modelAverages = Array.from(
+    liteRows.reduce((map, row) => {
+      const current = map.get(row.model) || { total: 0, count: 0 };
+      current.total += row.rubric_pass_rate;
+      current.count += 1;
+      map.set(row.model, current);
+      return map;
+    }, new Map()).entries()
+  ).map(([model, stats]) => ({
+    model,
+    average: stats.total / stats.count
+  })).sort((a, b) => b.average - a.average);
   const labels = rows.map((row) => row.agent);
   const scores = rows.map((row) => row.overall_score);
   const costPanel = document.getElementById("scoreCostPanel");
@@ -484,34 +513,43 @@ function workspaceRenderLeaderboardCharts(rows) {
   if (costPanel) costPanel.innerHTML = workspaceChartPanelDefaults.scoreCostPanel;
   if (runtimePanel) runtimePanel.innerHTML = workspaceChartPanelDefaults.scoreRuntimePanel;
 
+  const distributionBuckets = [
+    { label: "60%+", min: 60, max: Infinity },
+    { label: "50-59%", min: 50, max: 60 },
+    { label: "40-49%", min: 40, max: 50 },
+    { label: "30-39%", min: 30, max: 40 },
+    { label: "<30%", min: -Infinity, max: 30 }
+  ];
+  const distributionCounts = distributionBuckets.map((bucket) =>
+    liteRows.filter((row) => row.rubric_pass_rate >= bucket.min && row.rubric_pass_rate < bucket.max).length
+  );
+
   if (scoreChart) scoreChart.destroy();
-  scoreChart = workspaceMakeBarChart("scoreChart", labels, scores, "Overall Score", "#5b3df5");
+  scoreChart = workspaceMakeDenseBarChart(
+    "scoreChart",
+    frameworkAverages.map((item) => item.framework),
+    frameworkAverages.map((item) => Number(item.average.toFixed(1))),
+    "Framework Average",
+    "#14b8a6"
+  );
 
   if (costChart) costChart.destroy();
-  const costPoints = agentRows.filter((row) => row.cost_usd !== null).map((row) => ({ x: row.cost_usd, y: row.overall_score, label: row.agent }));
-  if (costPoints.length > 0) {
-    costChart = workspaceMakeScatterChart("scoreCostChart", costPoints, "Score vs Cost", "Cost ($)", "Score (%)");
-  } else {
-    workspaceRenderNoDataPanel(
-      costPanel,
-      "No public cost data",
-      "Workspace-Bench public materials do not currently release per-system evaluation cost.",
-      "This panel will render a cost-efficiency chart when verified submissions include cost metadata."
-    );
-  }
+  costChart = workspaceMakeDenseBarChart(
+    "scoreCostChart",
+    modelAverages.map((item) => item.model),
+    modelAverages.map((item) => Number(item.average.toFixed(1))),
+    "Model Family Average",
+    "#7c3aed"
+  );
 
   if (runtimeChart) runtimeChart.destroy();
-  const runtimePoints = agentRows.filter((row) => row.runtime_minutes !== null).map((row) => ({ x: row.runtime_minutes, y: row.overall_score, label: row.agent }));
-  if (runtimePoints.length > 0) {
-    runtimeChart = workspaceMakeScatterChart("scoreRuntimeChart", runtimePoints, "Score vs Runtime", "Runtime (min)", "Score (%)");
-  } else {
-    workspaceRenderNoDataPanel(
-      runtimePanel,
-      "No public runtime data",
-      "Workspace-Bench public materials do not currently release per-system runtime or latency.",
-      "This panel will render a speed comparison once verified runs publish runtime metadata."
-    );
-  }
+  runtimeChart = workspaceMakeDenseBarChart(
+    "scoreRuntimeChart",
+    distributionBuckets.map((item) => item.label),
+    distributionCounts,
+    "Lite Score Distribution",
+    "#5b3df5"
+  );
 }
 
 function workspaceRenderInsightCards(data) {
@@ -520,13 +558,12 @@ function workspaceRenderInsightCards(data) {
   const lite = data.litePublicResults || [];
   const top = lite[0];
   const threshold60 = lite.filter((row) => row.rubric_pass_rate >= 60).length;
-  const frameworks = new Set(lite.map((row) => row.agent));
-  const models = new Set(lite.map((row) => row.model));
+  const averageLite = lite.length ? lite.reduce((sum, row) => sum + row.rubric_pass_rate, 0) / lite.length : null;
   container.innerHTML = `
     <div class="leaderboard-insight-card aa-summary-tile">
-      <div class="leaderboard-kicker">Human reference</div>
-      <div class="leaderboard-big-number">80.7%</div>
-      <p>Full benchmark reference score reported in the paper.</p>
+      <div class="leaderboard-kicker">Public Lite rows</div>
+      <div class="leaderboard-big-number">${lite.length}</div>
+      <p>Harness/model combinations publicly released in the official repository figure.</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Top Lite system</div>
@@ -534,14 +571,14 @@ function workspaceRenderInsightCards(data) {
       <p>${top ? `${top.agent} + ${top.model}` : "No public Lite row available."}</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
-      <div class="leaderboard-kicker">>= 60% Lite pass</div>
-      <div class="leaderboard-big-number">${threshold60}</div>
-      <p>Public Lite combinations clearing the strictest displayed threshold.</p>
+      <div class="leaderboard-kicker">Average Lite score</div>
+      <div class="leaderboard-big-number">${averageLite === null ? "-" : workspaceFormatNumber(averageLite, "%")}</div>
+      <p>Mean rubric pass rate across the publicly released Workspace-Bench-Lite rows.</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
-      <div class="leaderboard-kicker">Public matrix</div>
-      <div class="leaderboard-big-number">${frameworks.size} x ${models.size}</div>
-      <p>Framework and model families represented by released Lite rows.</p>
+      <div class="leaderboard-kicker">>= 60% Lite pass</div>
+      <div class="leaderboard-big-number">${threshold60}</div>
+      <p>Public Lite combinations clearing the 60% rubric pass-rate threshold.</p>
     </div>
   `;
 }

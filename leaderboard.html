@@ -34,8 +34,7 @@
             <div>
               <h2>Public Lite Rankings</h2>
               <p class="section-subtitle">
-                Public Lite harness/model rows shown in one compact research-style chart so the full ranking can be read
-                at a glance without switching views.
+                Public Workspace-Bench-Lite harness/model rows transcribed from the official repository figure.
               </p>
             </div>
           </div>
@@ -57,7 +56,7 @@
           <div class="section-head">
             <div>
               <h2>Workspace-Bench Leaderboards</h2>
-              <p id="leaderboardDescription" class="section-subtitle" style="visibility:hidden"></p>
+              <p id="leaderboardDescription" class="section-subtitle"></p>
             </div>
           </div>
 
@@ -121,7 +120,9 @@
             </div>
           </div>
           <div class="grid threshold-layout">
-            <div class="card chart-card leaderboard-chart-card leaderboard-tall-card"><canvas id="thresholdChart" aria-label="Threshold chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card leaderboard-tall-card">
+              <canvas id="thresholdChart" aria-label="Threshold chart"></canvas>
+            </div>
             <div class="card">
               <h3>Public threshold summary</h3>
               <div id="thresholdCards" class="grid"></div>
@@ -142,8 +143,12 @@
             </div>
           </div>
           <div class="grid composition-layout">
-            <div class="card chart-card leaderboard-chart-card leaderboard-composition-card"><canvas id="difficultyChart" aria-label="Difficulty chart"></canvas></div>
-            <div class="card chart-card leaderboard-chart-card leaderboard-composition-card"><canvas id="workspaceProfileChart" aria-label="Workspace profile chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card leaderboard-composition-card">
+              <canvas id="difficultyChart" aria-label="Difficulty chart"></canvas>
+            </div>
+            <div class="card chart-card leaderboard-chart-card leaderboard-composition-card">
+              <canvas id="workspaceProfileChart" aria-label="Workspace profile chart"></canvas>
+            </div>
             <div class="card leaderboard-text-panel" id="abilityInsightPanel"></div>
           </div>
         </div>
@@ -155,15 +160,21 @@
             <div>
               <h2>Leaderboard Analysis</h2>
               <p class="section-subtitle">
-                Use the charts below for quick comparison. When the public materials do not expose cost or runtime by system,
-                the page states that explicitly instead of implying nonexistent data.
+                Secondary analysis views below avoid repeating the headline ranking chart and instead summarize the
+                released public leaderboard from framework, model-family, and threshold-distribution angles.
               </p>
             </div>
           </div>
           <div class="grid grid-3">
-            <div class="card chart-card leaderboard-chart-card"><canvas id="scoreChart" aria-label="Overall score chart"></canvas></div>
-            <div class="card chart-card leaderboard-chart-card" id="scoreCostPanel"><canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas></div>
-            <div class="card chart-card leaderboard-chart-card" id="scoreRuntimePanel"><canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas></div>
+            <div class="card chart-card leaderboard-chart-card">
+              <canvas id="scoreChart" aria-label="Framework average chart"></canvas>
+            </div>
+            <div class="card chart-card leaderboard-chart-card" id="scoreCostPanel">
+              <canvas id="scoreCostChart" aria-label="Model family average chart"></canvas>
+            </div>
+            <div class="card chart-card leaderboard-chart-card" id="scoreRuntimePanel">
+              <canvas id="scoreRuntimeChart" aria-label="Lite score distribution chart"></canvas>
+            </div>
           </div>
         </div>
       </section>
