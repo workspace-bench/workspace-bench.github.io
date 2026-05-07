@@ -80,11 +80,14 @@
             <article class="aa-highlight-card">
               <div class="mini-kicker">Evaluation focus</div>
               <h3>What the benchmark tests</h3>
-              <p>Workspace learning: discovering hidden file dependencies, cross-file reasoning, and rubric-graded deliverable quality.</p>
+              <p>Workspace-Bench evaluates whether agents can operate over realistic digital workspaces: navigating large heterogeneous file ecosystems, identifying task-supporting and result-providing files, understanding semantic and lineage dependencies, and producing outputs judged by fine-grained rubrics.</p>
               <div class="aa-mini-leaderboard">
-                <div class="aa-mini-row"><span class="rank">01</span><strong>File Discovery</strong></div>
-                <div class="aa-mini-row"><span class="rank">02</span><strong>Cross-file Reasoning</strong></div>
-                <div class="aa-mini-row"><span class="rank">03</span><strong>Deliverable Quality</strong></div>
+                <div class="aa-mini-row"><span class="rank">01</span><strong>Workspace Exploration</strong></div>
+                <div class="aa-mini-row"><span class="rank">02</span><strong>Task-Supporting Files Utilization</strong></div>
+                <div class="aa-mini-row"><span class="rank">03</span><strong>Result-Providing Files Utilization</strong></div>
+                <div class="aa-mini-row"><span class="rank">04</span><strong>Content Relations Understanding</strong></div>
+                <div class="aa-mini-row"><span class="rank">05</span><strong>Semantic Heterogeneous File Understanding</strong></div>
+                <div class="aa-mini-row"><span class="rank">06</span><strong>Lineage Tracing</strong></div>
               </div>
             </article>
             <article class="aa-highlight-card">
@@ -198,11 +201,13 @@
               </p>
             </div>
           </div>
-          <div class="grid grid-4">
-            <div class="card"><h3>File Dependency Discovery</h3><p>Finds relevant files even when the critical signal is not exposed at the task root.</p></div>
-            <div class="card"><h3>Cross-file Reasoning</h3><p>Combines evidence across notes, data tables, code, policy documents, and metadata.</p></div>
-            <div class="card"><h3>Adaptive Decision Making</h3><p>Chooses whether to inspect, modify, summarize, validate, or preserve artifacts based on workspace state.</p></div>
-            <div class="card"><h3>Deliverable Quality</h3><p>Scores the final artifact against detailed rubrics instead of only a single pass or fail condition.</p></div>
+          <div class="grid grid-3">
+            <div class="card"><h3>Workspace Exploration</h3><p>Navigating deeply nested directory structures and identifying relevant files from noisy candidates.</p></div>
+            <div class="card"><h3>Task-Supporting Files Utilization</h3><p>Finding files that provide essential context, references, and domain knowledge needed to complete a task.</p></div>
+            <div class="card"><h3>Result-Providing Files Utilization</h3><p>Aggregating result files that contain required outputs, formats, and baseline information.</p></div>
+            <div class="card"><h3>Content Relations Understanding</h3><p>Tracing explicit references, semantic connections, and contextual links between related documents.</p></div>
+            <div class="card"><h3>Semantic Heterogeneous File Understanding</h3><p>Connecting information across diverse modalities including documents, spreadsheets, presentations, and code.</p></div>
+            <div class="card"><h3>Lineage Tracing</h3><p>Understanding file versions, revisions, and derivation relationships (e.g., report_v1, report_final).</p></div>
           </div>
         </div>
       </section>
