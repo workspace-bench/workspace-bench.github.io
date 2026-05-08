@@ -1,17 +1,24 @@
 let workspaceLeaderboardData = null;
 let workspaceActiveLeaderboard = "Workspace-Bench-Lite";
 const workspaceSort = { field: "rubric_pass_rate", direction: "desc" };
-let thresholdChart;
-let difficultyChart;
-let workspaceProfileChart;
-const workspaceChartPanelDefaults = {
-  scoreCostPanel: '<canvas id="scoreCostChart" aria-label="Score versus cost chart"></canvas>',
-  scoreRuntimePanel: '<canvas id="scoreRuntimeChart" aria-label="Score versus runtime chart"></canvas>'
+const workspaceLeaderboardState = {
+  query: "",
+  framework: "all",
+  model: "all",
+  threshold: "all"
 };
+
+let thresholdChart;
+let abilityFullChart;
+let abilityLiteChart;
+let scoreChart;
+let costChart;
+let runtimeChart;
+let liteRankingChart;
 
 async function workspaceLoadLeaderboardData() {
   if (workspaceLeaderboardData) return workspaceLeaderboardData;
-  if (window.WORKSPACE_BENCH_DATA && window.WORKSPACE_BENCH_DATA.leaderboard) {
+  if (window.WORKSPACE_BENCH_DATA?.leaderboard) {
     workspaceLeaderboardData = window.WORKSPACE_BENCH_DATA.leaderboard;
     return workspaceLeaderboardData;
   }
@@ -23,98 +30,31 @@ function workspaceGetActiveLeaderboard(data) {
   return data.leaderboards.find((item) => item.name === workspaceActiveLeaderboard) || data.leaderboards[0];
 }
 
-function workspaceRowsForView(data, viewName) {
-  if (viewName === "Overall") return data.fullSummaryRows || [];
-  if (viewName === "Workspace-Bench-Lite") {
-    return (data.litePublicResults || []).map((row) => ({
-      ...row,
-      overall_score: row.rubric_pass_rate,
-      task_success_rate: null,
-      cost_usd: null,
-      runtime_minutes: null,
-      workspace_size: "Lite",
-      profile: "All profiles",
-      capability: "Lite public leaderboard",
-      date: "2026-05-05",
-      verified: true
-    }));
+function workspaceGetLeaderboardRows(data) {
+  if (workspaceActiveLeaderboard === "Overall") return data.fullSummaryRows || [];
+  return (data.litePublicResults || []).map((row) => ({
+    ...row,
+    overall_score: row.rubric_pass_rate,
+    task_success_rate: null,
+    workspace_size: "Lite",
+    date: "2026-05-07",
+    verified: true,
+    source: row.source || "repository-figure"
+  }));
+}
+
+function workspaceSetSort(field) {
+  if (workspaceSort.field === field) {
+    workspaceSort.direction = workspaceSort.direction === "asc" ? "desc" : "asc";
+  } else {
+    workspaceSort.field = field;
+    workspaceSort.direction = ["rank", "date"].includes(field) ? "asc" : "desc";
   }
-  if (viewName === "Threshold Views") {
-    return (data.thresholds || []).map((threshold, index) => {
-      const hits = (data.litePublicResults || []).filter((row) => row.rubric_pass_rate >= threshold.value).length;
-      return {
-        rank: index + 1,
-        agent: threshold.label,
-        harness: "Public Lite leaderboard count",
-        model: `${hits} systems`,
-        overall_score: hits,
-        rubric_pass_rate: threshold.value,
-        task_success_rate: hits,
-        workspace_size: "Lite",
-        profile: "All profiles",
-        capability: "Threshold count",
-        date: "2026-05-05",
-        verified: true,
-        source: "repository-figure",
-        report_url: "https://github.com/OpenDataBox/Workspace-Bench"
-      };
-    });
-  }
-  if (viewName === "By Worker Profile") {
-    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.workerProfiles || []).map((row, index) => ({
-      rank: index + 1,
-      agent: row.profile,
-      harness: "Official benchmark composition",
-      model: `${row.tasks} tasks`,
-      overall_score: row.share,
-      rubric_pass_rate: row.share,
-      task_success_rate: row.tasks,
-      workspace_size: "Full",
-      profile: row.profile,
-      capability: "Workspace profile distribution",
-      date: "2026-05-05",
-      verified: true,
-      source: "repository-reported",
-      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
-    }));
-  }
-  if (viewName === "By Difficulty") {
-    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.difficulty || []).map((row, index) => ({
-      rank: index + 1,
-      agent: row.level,
-      harness: "Public file-count bucket split",
-      model: `${row.tasks} tasks`,
-      overall_score: row.share,
-      rubric_pass_rate: row.share,
-      task_success_rate: row.tasks,
-      workspace_size: "Full",
-      profile: "All profiles",
-      capability: "Task file-count distribution",
-      date: "2026-05-05",
-      verified: true,
-      source: "repository-reported",
-      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
-    }));
-  }
-  if (viewName === "By Ability") {
-    return (window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns.abilities || []).map((row, index) => ({
-      rank: index + 1,
-      agent: row.ability,
-      harness: "Official task ability count",
-      model: `${row.count} tasks`,
-      overall_score: row.count,
-      rubric_pass_rate: row.count,
-      task_success_rate: row.count,
-      workspace_size: "Full",
-      profile: "All profiles",
-      capability: row.ability,
-      date: "2026-05-05",
-      verified: true,
-      source: "repository-reported",
-      report_url: "https://github.com/OpenDataBox/Workspace-Bench"
-    }));
-  }
-  return [];
+}
+
+function workspaceSortLabel(label, field) {
+  if (workspaceSort.field !== field) return label;
+  return `${label} ${workspaceSort.direction === "asc" ? "^" : "v"}`;
 }
 
 function workspaceSortRows(rows) {
@@ -129,20 +69,6 @@ function workspaceSortRows(rows) {
     }
     return String(av || "").localeCompare(String(bv || "")) * direction;
   });
-}
-
-function workspaceSetSort(field) {
-  if (workspaceSort.field === field) {
-    workspaceSort.direction = workspaceSort.direction === "asc" ? "desc" : "asc";
-  } else {
-    workspaceSort.field = field;
-    workspaceSort.direction = ["cost_usd", "runtime_minutes", "date", "rank"].includes(field) ? "asc" : "desc";
-  }
-}
-
-function workspaceSortLabel(label, field) {
-  if (workspaceSort.field !== field) return label;
-  return `${label} ${workspaceSort.direction === "asc" ? "^" : "v"}`;
 }
 
 function workspaceRenderTabs(data) {
@@ -162,58 +88,78 @@ function workspaceRenderTabs(data) {
   });
 }
 
-function workspaceFilterRows(rows) {
-  const profile = document.getElementById("profileFilter")?.value || "all";
-  const framework = document.getElementById("frameworkFilter")?.value || "all";
-  const model = document.getElementById("modelFilter")?.value || "all";
-  const source = document.getElementById("sourceFilter")?.value || "all";
-  const verified = document.getElementById("verifiedFilter")?.value || "all";
-  const query = document.getElementById("leaderboardSearch")?.value || "";
-  const filtered = rows.filter((row) => {
-    if (profile !== "all" && row.profile !== profile) return false;
-    if (framework !== "all" && row.agent !== framework) return false;
-    if (model !== "all" && row.model !== model) return false;
-    if (source !== "all" && row.source !== source) return false;
-    if (verified !== "all" && String(row.verified) !== verified) return false;
-    return true;
-  });
-  return workspaceSearchRows(filtered, query);
-}
+function workspaceRenderControls(data) {
+  const container = document.getElementById("leaderboardControls");
+  if (!container) return;
+  const activeRows = workspaceGetLeaderboardRows(data);
+  if (workspaceActiveLeaderboard === "Overall") {
+    container.innerHTML = `
+      <div class="leaderboard-static-note">
+        <span class="badge badge-blue">Paper summary</span>
+        <span class="table-note">The paper only exposes aggregate full-benchmark summary rows, so no finer public filters are available yet.</span>
+      </div>
+    `;
+    return;
+  }
 
-function workspaceSearchRows(rows, query) {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return rows;
-  return rows.filter((row) => {
-    const haystack = [
-      row.agent,
-      row.harness,
-      row.model,
-      row.profile,
-      row.capability,
-      row.workspace_size,
-      row.source
-    ].filter(Boolean).join(" ").toLowerCase();
-    return haystack.includes(needle);
+  const frameworks = Array.from(new Set(activeRows.map((row) => row.agent))).sort();
+  const models = Array.from(new Set(activeRows.map((row) => row.model))).sort((a, b) => {
+    const maxA = Math.max(...activeRows.filter((row) => row.model === a).map((row) => row.rubric_pass_rate));
+    const maxB = Math.max(...activeRows.filter((row) => row.model === b).map((row) => row.rubric_pass_rate));
+    return maxB - maxA;
   });
-}
 
-function workspaceRenderFilters(rows) {
-  const profileFilter = document.getElementById("profileFilter");
-  const frameworkFilter = document.getElementById("frameworkFilter");
-  const modelFilter = document.getElementById("modelFilter");
-  if (!profileFilter || profileFilter.dataset.ready) return;
-  const profiles = Array.from(new Set(rows.map((row) => row.profile).filter(Boolean)));
-  const frameworks = Array.from(new Set(rows.map((row) => row.agent).filter(Boolean)));
-  const models = Array.from(new Set(rows.map((row) => row.model).filter(Boolean)));
-  profileFilter.innerHTML = `<option value="all">All profiles</option>${profiles.map((profile) => `<option value="${profile}">${profile}</option>`).join("")}`;
-  frameworkFilter.innerHTML = `<option value="all">All frameworks</option>${frameworks.map((framework) => `<option value="${framework}">${framework}</option>`).join("")}`;
-  modelFilter.innerHTML = `<option value="all">All models</option>${models.map((model) => `<option value="${model}">${model}</option>`).join("")}`;
-  [profileFilter, frameworkFilter, modelFilter, document.getElementById("sourceFilter"), document.getElementById("verifiedFilter"), document.getElementById("leaderboardSearch")].forEach((control) => {
-    if (control) control.addEventListener("change", () => workspaceRenderLeaderboard().catch(console.error));
-  });
+  container.innerHTML = `
+    <input id="leaderboardSearch" class="aa-table-search" type="search" placeholder="Search frameworks or models" aria-label="Search frameworks or models" value="${workspaceLeaderboardState.query}">
+    <select id="frameworkFilter" aria-label="Filter by framework">
+      <option value="all">All frameworks</option>
+      ${frameworks.map((framework) => `<option value="${framework}" ${workspaceLeaderboardState.framework === framework ? "selected" : ""}>${framework}</option>`).join("")}
+    </select>
+    <select id="modelFilter" aria-label="Filter by model">
+      <option value="all">All models</option>
+      ${models.map((model) => `<option value="${model}" ${workspaceLeaderboardState.model === model ? "selected" : ""}>${model}</option>`).join("")}
+    </select>
+  `;
+
   const search = document.getElementById("leaderboardSearch");
-  if (search) search.addEventListener("input", () => workspaceRenderLeaderboard().catch(console.error));
-  profileFilter.dataset.ready = "true";
+  const framework = document.getElementById("frameworkFilter");
+  const model = document.getElementById("modelFilter");
+
+  if (search) {
+    search.addEventListener("input", () => {
+      workspaceLeaderboardState.query = search.value;
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+  }
+  if (framework) {
+    framework.addEventListener("change", () => {
+      workspaceLeaderboardState.framework = framework.value;
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+  }
+  if (model) {
+    model.addEventListener("change", () => {
+      workspaceLeaderboardState.model = model.value;
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+  }
+}
+
+function workspaceFilterRows(rows) {
+  let filtered = rows.slice();
+  if (workspaceActiveLeaderboard !== "Overall") {
+    if (workspaceLeaderboardState.framework !== "all") {
+      filtered = filtered.filter((row) => row.agent === workspaceLeaderboardState.framework);
+    }
+    if (workspaceLeaderboardState.model !== "all") {
+      filtered = filtered.filter((row) => row.model === workspaceLeaderboardState.model);
+    }
+    const query = workspaceLeaderboardState.query.trim().toLowerCase();
+    if (query) {
+      filtered = filtered.filter((row) => `${row.agent} ${row.model} ${row.harness || ""}`.toLowerCase().includes(query));
+    }
+  }
+  return filtered;
 }
 
 function workspaceRenderTable(rows) {
@@ -222,55 +168,71 @@ function workspaceRenderTable(rows) {
   const sorted = workspaceSortRows(rows);
   const visibleCount = sorted.length;
   const topScore = Math.max(...sorted.map((row) => Number(row.overall_score) || 0), 1);
+
+  const isOverall = workspaceActiveLeaderboard === "Overall";
+  const headers = isOverall
+    ? `
+      <th data-sort="rank">${workspaceSortLabel("Rank", "rank")}</th>
+      <th data-sort="agent">${workspaceSortLabel("Reference", "agent")}</th>
+      <th data-sort="model">${workspaceSortLabel("System", "model")}</th>
+      <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Overall Score", "overall_score")}</th>
+      <th class="numeric" data-sort="rubric_pass_rate">${workspaceSortLabel("Rubric Pass Rate", "rubric_pass_rate")}</th>
+      <th>Source</th>
+    `
+    : `
+      <th data-sort="rank">${workspaceSortLabel("Rank", "rank")}</th>
+      <th data-sort="agent">${workspaceSortLabel("Framework", "agent")}</th>
+      <th data-sort="model">${workspaceSortLabel("Model", "model")}</th>
+      <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Rubric Pass Rate", "overall_score")}</th>
+      <th>Harness</th>
+      <th>Source</th>
+    `;
+
+  const body = sorted.map((row, index) => {
+    if (isOverall) {
+      return `
+        <tr>
+          <td class="rank">#${row.rank || index + 1}</td>
+          <td><strong>${row.agent}</strong><br><span class="badge">${row.harness}</span></td>
+          <td>${row.model}</td>
+          <td class="numeric score">${workspaceFormatNumber(row.overall_score, "%")}</td>
+          <td class="numeric">${workspaceFormatNumber(row.rubric_pass_rate, "%")}</td>
+          <td><a href="${row.report_url}" target="_blank" rel="noopener noreferrer">${row.source}</a></td>
+        </tr>
+      `;
+    }
+    return `
+      <tr>
+        <td class="rank">#${row.rank || index + 1}</td>
+        <td><strong>${row.agent}</strong></td>
+        <td>${row.model}</td>
+        <td class="numeric score">
+          <span class="matrix-score">${workspaceFormatNumber(row.overall_score, "%")}</span>
+          <div class="rank-bar-track" aria-hidden="true"><span class="rank-bar" style="width:${Math.max(4, (Number(row.overall_score) || 0) / topScore * 100)}%"></span></div>
+        </td>
+        <td><span class="badge">${row.harness}</span></td>
+        <td><a href="${row.report_url}" target="_blank" rel="noopener noreferrer">${row.source}</a></td>
+      </tr>
+    `;
+  }).join("");
+
+  const note = isOverall
+    ? "Overall rows are taken directly from the public paper summary because no full per-system table has been released yet."
+    : "Lite rows are real public framework/model combinations transcribed from the official repository figure.";
+
   container.innerHTML = `
     <div class="toolbar" style="margin-top:0;margin-bottom:10px">
-      <div class="table-note">Showing ${visibleCount} row${visibleCount === 1 ? "" : "s"} from the current leaderboard view.</div>
+      <div class="table-note">Showing ${visibleCount} row${visibleCount === 1 ? "" : "s"} in the current view.</div>
     </div>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>
-            <th data-sort="rank">${workspaceSortLabel("Rank", "rank")}</th>
-            <th data-sort="agent">${workspaceSortLabel("Agent / Harness", "agent")}</th>
-            <th data-sort="model">${workspaceSortLabel("Backbone Model", "model")}</th>
-            <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Overall Score", "overall_score")}</th>
-            <th class="numeric" data-sort="rubric_pass_rate">${workspaceSortLabel("Rubric Pass Rate", "rubric_pass_rate")}</th>
-            <th class="numeric" data-sort="task_success_rate">${workspaceSortLabel("Task Success Rate", "task_success_rate")}</th>
-            <th class="numeric" data-sort="cost_usd">${workspaceSortLabel("Cost", "cost_usd")}</th>
-            <th class="numeric" data-sort="runtime_minutes">${workspaceSortLabel("Runtime", "runtime_minutes")}</th>
-            <th data-sort="workspace_size">${workspaceSortLabel("Workspace", "workspace_size")}</th>
-            <th data-sort="date">${workspaceSortLabel("Date", "date")}</th>
-            <th>Verified</th>
-            <th>Report</th>
-          </tr>
+          <tr>${headers}</tr>
         </thead>
-        <tbody>
-          ${sorted.map((row, index) => `
-            <tr>
-              <td class="rank">#${row.rank || index + 1}</td>
-              <td>
-                <strong>${row.agent}</strong><br>
-                <span class="badge">${row.harness}</span>
-              </td>
-              <td>${row.model}</td>
-              <td class="numeric score">
-                <span class="matrix-score">${workspaceFormatNumber(row.overall_score, "%")}</span>
-                <div class="rank-bar-track" aria-hidden="true"><span class="rank-bar" style="width:${Math.max(4, (Number(row.overall_score) || 0) / topScore * 100)}%"></span></div>
-              </td>
-              <td class="numeric">${row.rubric_pass_rate === null ? "-" : workspaceFormatNumber(row.rubric_pass_rate, "%")}</td>
-              <td class="numeric">${row.task_success_rate === null ? "-" : workspaceFormatNumber(row.task_success_rate, "%")}</td>
-              <td class="numeric">${row.cost_usd === null ? "-" : `$${workspaceFormatNumber(row.cost_usd)}`}</td>
-              <td class="numeric">${row.runtime_minutes === null ? "-" : `${workspaceFormatNumber(row.runtime_minutes)}m`}</td>
-              <td><span class="badge badge-blue">${row.workspace_size}</span></td>
-              <td>${row.date}</td>
-              <td>${row.verified ? '<span class="badge badge-green">Verified</span>' : '<span class="badge">Pending</span>'}</td>
-              <td><a href="${row.report_url}" target="_blank" rel="noopener noreferrer">${row.source}</a></td>
-            </tr>
-          `).join("")}
-        </tbody>
+        <tbody>${body}</tbody>
       </table>
     </div>
-    <p class="table-note">Rows use public Workspace-Bench aggregate information unless a future submission is marked with a maintainer-provided report.</p>
+    <p class="table-note">${note}</p>
   `;
 
   container.querySelectorAll("th[data-sort]").forEach((header) => {
@@ -281,11 +243,6 @@ function workspaceRenderTable(rows) {
     });
   });
 }
-
-let scoreChart;
-let costChart;
-let runtimeChart;
-let liteRankingChart;
 
 const workspaceLiteRankingValuePlugin = {
   id: "workspaceLiteRankingValuePlugin",
@@ -301,8 +258,7 @@ const workspaceLiteRankingValuePlugin = {
     meta.data.forEach((bar, index) => {
       const value = Math.round(Number(values[index]) || 0);
       ctx.fillStyle = index < 3 ? "#111111" : "#334155";
-      const textY = bar.y - 10;
-      ctx.fillText(String(value), bar.x, textY);
+      ctx.fillText(String(value), bar.x, bar.y - 10);
     });
     ctx.restore();
   }
@@ -374,182 +330,65 @@ function workspaceRenderLiteRankingChart(data) {
   const yMax = Math.ceil(maxScore / 10) * 10 + 10;
 
   liteRankingChart = new Chart(canvas, {
-      type: "bar",
-      data: {
-        labels: rows.map((r) => `${r.agent} + ${r.model}`),
-        datasets: [{
-          label: "Rubric pass rate",
-          data: rows.map((r) => r.rubric_pass_rate),
-          backgroundColor: barColors,
-          borderColor: barColors,
-          borderRadius: 3,
-          borderSkipped: false,
-          maxBarThickness: 32
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: "#ffffff",
-            titleColor: "#111111",
-            bodyColor: "#5f6368",
-            borderColor: "#dddddd",
-            borderWidth: 1,
-            callbacks: {
-              title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
-              label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
-            }
-          },
-          workspaceLiteRankingValuePlugin: {}
-        },
-        scales: {
-          x: {
-            ticks: { display: false },
-            grid: { display: false },
-            border: { display: false },
-            offset: true
-          },
-          y: {
-            min: 0,
-            max: yMax,
-            ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0, stepSize: 10 },
-            grid: { color: "rgba(17, 17, 17, 0.06)" },
-            beginAtZero: true,
-            title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
-          }
-        },
-        layout: {
-          padding: {
-            top: 18,
-            right: 14,
-            bottom: 0,
-            left: 10
-          }
-        },
-        datasets: {
-          bar: {
-            categoryPercentage: 0.88,
-            barPercentage: 0.80
-          }
-        },
-        animation: {
-          duration: 0
-        }
-      }
+    type: "bar",
+    data: {
+      labels: rows.map((r) => `${r.agent} + ${r.model}`),
+      datasets: [{
+        label: "Rubric pass rate",
+        data: rows.map((r) => r.rubric_pass_rate),
+        backgroundColor: barColors,
+        borderColor: barColors,
+        borderRadius: 3,
+        borderSkipped: false,
+        maxBarThickness: 34
+      }]
     },
-    [workspaceLiteRankingValuePlugin]);
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#ffffff",
+          titleColor: "#111111",
+          bodyColor: "#5f6368",
+          borderColor: "#dddddd",
+          borderWidth: 1,
+          callbacks: {
+            title: (ctx) => `#${ctx[0].dataIndex + 1} ${ctx[0].label}`,
+            label: (ctx) => ` Rubric pass rate: ${ctx.raw}%`
+          }
+        },
+        workspaceLiteRankingValuePlugin: {}
+      },
+      scales: {
+        x: {
+          ticks: { display: false },
+          grid: { display: false },
+          border: { display: false },
+          offset: true
+        },
+        y: {
+          min: 0,
+          max: yMax,
+          ticks: { color: "#555555", callback: (v) => `${v}%`, precision: 0, stepSize: 10 },
+          grid: { color: "rgba(17, 17, 17, 0.06)" },
+          beginAtZero: true,
+          title: { display: true, text: "Rubric pass rate (%)", color: "#555555" }
+        }
+      },
+      layout: {
+        padding: { top: 18, right: 14, bottom: 0, left: 10 }
+      },
+      datasets: {
+        bar: { categoryPercentage: 0.88, barPercentage: 0.86 }
+      },
+      animation: { duration: 0 }
+    }
+  }, [workspaceLiteRankingValuePlugin]);
+
   requestAnimationFrame(() => workspaceSyncLiteRankingLabelPositions());
   window.setTimeout(() => workspaceSyncLiteRankingLabelPositions(), 120);
-}
-
-function workspaceRenderNoDataPanel(panel, title, message, note) {
-  if (!panel) return;
-  panel.innerHTML = `
-    <div class="no-data-panel">
-      <span class="badge">Public data pending</span>
-      <h3>${title}</h3>
-      <p>${message}</p>
-      <p class="table-note">${note}</p>
-    </div>
-  `;
-}
-
-function workspaceRenderAbilityInsightPanel() {
-  const panel = document.getElementById("abilityInsightPanel");
-  const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
-  if (!panel || !breakdowns?.abilities) return;
-  panel.innerHTML = `
-    <div class="mini-kicker">Ability composition</div>
-    <h3>Task Abilities</h3>
-    <p class="table-note" style="margin-bottom:10px">Official ability counts from the public distribution figure.</p>
-    <div class="ability-insight-list">
-      ${breakdowns.abilities.map((item) => `
-        <div class="ability-insight-row">
-          <strong>${item.ability}</strong>
-          <span class="score">${item.count}</span>
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-function workspaceRenderLeaderboardCharts(rows) {
-  if (typeof Chart === "undefined") return;
-  const liteRows = (workspaceLeaderboardData?.litePublicResults || []).map((row) => ({
-    ...row,
-    overall_score: row.rubric_pass_rate
-  }));
-  const frameworkAverages = Array.from(
-    liteRows.reduce((map, row) => {
-      const current = map.get(row.agent) || { total: 0, count: 0 };
-      current.total += row.rubric_pass_rate;
-      current.count += 1;
-      map.set(row.agent, current);
-      return map;
-    }, new Map()).entries()
-  ).map(([framework, stats]) => ({
-    framework,
-    average: stats.total / stats.count
-  })).sort((a, b) => b.average - a.average);
-  const modelAverages = Array.from(
-    liteRows.reduce((map, row) => {
-      const current = map.get(row.model) || { total: 0, count: 0 };
-      current.total += row.rubric_pass_rate;
-      current.count += 1;
-      map.set(row.model, current);
-      return map;
-    }, new Map()).entries()
-  ).map(([model, stats]) => ({
-    model,
-    average: stats.total / stats.count
-  })).sort((a, b) => b.average - a.average);
-  const labels = rows.map((row) => row.agent);
-  const scores = rows.map((row) => row.overall_score);
-  const costPanel = document.getElementById("scoreCostPanel");
-  const runtimePanel = document.getElementById("scoreRuntimePanel");
-  if (costPanel) costPanel.innerHTML = workspaceChartPanelDefaults.scoreCostPanel;
-  if (runtimePanel) runtimePanel.innerHTML = workspaceChartPanelDefaults.scoreRuntimePanel;
-
-  const distributionBuckets = [
-    { label: "60%+", min: 60, max: Infinity },
-    { label: "50-59%", min: 50, max: 60 },
-    { label: "40-49%", min: 40, max: 50 },
-    { label: "30-39%", min: 30, max: 40 },
-    { label: "<30%", min: -Infinity, max: 30 }
-  ];
-  const distributionCounts = distributionBuckets.map((bucket) =>
-    liteRows.filter((row) => row.rubric_pass_rate >= bucket.min && row.rubric_pass_rate < bucket.max).length
-  );
-
-  if (scoreChart) scoreChart.destroy();
-  scoreChart = workspaceMakeDenseBarChart(
-    "scoreChart",
-    frameworkAverages.map((item) => item.framework),
-    frameworkAverages.map((item) => Number(item.average.toFixed(1))),
-    "Framework Average",
-    "#14b8a6"
-  );
-
-  if (costChart) costChart.destroy();
-  costChart = workspaceMakeDenseBarChart(
-    "scoreCostChart",
-    modelAverages.map((item) => item.model),
-    modelAverages.map((item) => Number(item.average.toFixed(1))),
-    "Model Family Average",
-    "#7c3aed"
-  );
-
-  if (runtimeChart) runtimeChart.destroy();
-  runtimeChart = workspaceMakeDenseBarChart(
-    "scoreRuntimeChart",
-    distributionBuckets.map((item) => item.label),
-    distributionCounts,
-    "Lite Score Distribution",
-    "#5b3df5"
-  );
 }
 
 function workspaceRenderInsightCards(data) {
@@ -563,7 +402,7 @@ function workspaceRenderInsightCards(data) {
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Public Lite rows</div>
       <div class="leaderboard-big-number">${lite.length}</div>
-      <p>Harness/model combinations publicly released in the official repository figure.</p>
+      <p>Public framework/model combinations currently released for Workspace-Bench-Lite.</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Top Lite system</div>
@@ -573,7 +412,7 @@ function workspaceRenderInsightCards(data) {
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Average Lite score</div>
       <div class="leaderboard-big-number">${averageLite === null ? "-" : workspaceFormatNumber(averageLite, "%")}</div>
-      <p>Mean rubric pass rate across the publicly released Workspace-Bench-Lite rows.</p>
+      <p>Mean rubric pass rate across the released Lite combinations.</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">>= 60% Lite pass</div>
@@ -593,7 +432,13 @@ function workspaceRenderFrameworkMatrix(data) {
     const bestB = Math.max(...rows.filter((row) => row.model === b).map((row) => row.rubric_pass_rate));
     return bestB - bestA;
   });
-  const lookup = new Map(rows.map((row) => [`${row.agent}__${row.model}`, row.rubric_pass_rate]));
+  const lookup = new Map();
+  rows.forEach((row) => {
+    const key = `${row.agent}__${row.model}`;
+    const current = lookup.get(key);
+    if (current === undefined || row.rubric_pass_rate > current) lookup.set(key, row.rubric_pass_rate);
+  });
+
   container.innerHTML = `
     <div class="matrix-grid">
       <table class="matrix-table">
@@ -617,88 +462,189 @@ function workspaceRenderFrameworkMatrix(data) {
         </tbody>
       </table>
     </div>
-    <p class="table-note">Scores are public Workspace-Bench-Lite rubric pass rates, not fabricated full-benchmark per-system results.</p>
+    <p class="table-note">Blank cells mean the paper or repository figure does not expose that framework/model combination.</p>
   `;
 }
 
-function workspaceRenderThresholdViews() {
-  const data = window.WORKSPACE_BENCH_DATA.leaderboard;
-  const thresholdRows = data.thresholds.map((threshold) => ({
-    threshold: threshold.label,
-    hits: data.litePublicResults.filter((row) => row.rubric_pass_rate >= threshold.value).length
+function workspaceRenderThresholdViews(data) {
+  const rows = (data.thresholds || []).map((threshold) => ({
+    value: threshold.value,
+    label: threshold.label,
+    hits: (data.litePublicResults || []).filter((row) => row.rubric_pass_rate >= threshold.value).length
   }));
+
+  const thresholdFilter = document.getElementById("thresholdFocusFilter");
+  if (thresholdFilter && !thresholdFilter.dataset.ready) {
+    thresholdFilter.innerHTML = `<option value="all">All thresholds</option>${rows.map((row) => `<option value="${row.value}">${row.label}</option>`).join("")}`;
+    thresholdFilter.value = workspaceLeaderboardState.threshold;
+    thresholdFilter.addEventListener("change", () => {
+      workspaceLeaderboardState.threshold = thresholdFilter.value;
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+    thresholdFilter.dataset.ready = "true";
+  }
+
+  const filteredRows = workspaceLeaderboardState.threshold === "all"
+    ? rows
+    : rows.filter((row) => String(row.value) === workspaceLeaderboardState.threshold);
 
   if (thresholdChart) thresholdChart.destroy();
   thresholdChart = workspaceMakeDenseBarChart(
     "thresholdChart",
-    thresholdRows.map((item) => item.threshold),
-    thresholdRows.map((item) => item.hits),
+    filteredRows.map((item) => item.label),
+    filteredRows.map((item) => item.hits),
     "Systems Clearing Each Threshold",
     "#0ea5e9"
   );
 
   const cards = document.getElementById("thresholdCards");
   if (cards) {
-    cards.innerHTML = thresholdRows.map((item) => `
+    cards.innerHTML = filteredRows.map((item) => `
       <div class="leaderboard-stat-item">
-        <div class="leaderboard-kicker">${item.threshold}</div>
+        <div class="leaderboard-kicker">${item.label}</div>
         <div class="leaderboard-big-number">${item.hits}</div>
-        <p>Public Lite systems at or above this rubric pass-rate threshold.</p>
+        <p>Public Lite systems at or above this pass-rate threshold.</p>
       </div>
     `).join("");
   }
 }
 
-function workspaceRenderCompositionCharts() {
-  const breakdowns = window.WORKSPACE_BENCH_DATA.leaderboardBreakdowns;
+function workspaceRenderAbilityInsightPanel() {
+  const panel = document.getElementById("abilityInsightPanel");
+  const fullCapabilities = window.WORKSPACE_BENCH_DATA?.capabilityResults?.full?.capabilities || [];
+  const liteCapabilities = window.WORKSPACE_BENCH_DATA?.capabilityResults?.lite?.capabilities || [];
+  if (!panel) return;
 
-  if (difficultyChart) difficultyChart.destroy();
-  difficultyChart = workspaceMakeLargeDoughnutChart(
-    "difficultyChart",
-    breakdowns.difficulty.map((item) => item.level),
-    breakdowns.difficulty.map((item) => item.tasks),
-    "Files per Task"
+  const merged = fullCapabilities.map((item) => ({
+    ability: item.capability,
+    full: item.count,
+    lite: liteCapabilities.find((candidate) => candidate.capability === item.capability)?.count || 0
+  }));
+
+  panel.innerHTML = `
+    <div class="mini-kicker">Ability comparison</div>
+    <h3>Full vs Lite</h3>
+    <p class="table-note" style="margin-bottom:10px">Counts are derived from the latest official full and lite metadata analysis, not from mock benchmark slices.</p>
+    <div class="ability-insight-list">
+      ${merged.map((item) => `
+        <div class="ability-insight-row">
+          <strong>${item.ability}</strong>
+          <span class="score">${item.full} / ${item.lite}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function workspaceRenderCompositionCharts() {
+  const fullCapabilities = window.WORKSPACE_BENCH_DATA?.capabilityResults?.full?.capabilities || [];
+  const liteCapabilities = window.WORKSPACE_BENCH_DATA?.capabilityResults?.lite?.capabilities || [];
+
+  if (abilityFullChart) abilityFullChart.destroy();
+  abilityFullChart = workspaceMakeDenseBarChart(
+    "abilityFullChart",
+    fullCapabilities.map((item) => item.capability.replace(" Utilization", "").replace(" Understanding", "")),
+    fullCapabilities.map((item) => item.count),
+    "Full split ability counts",
+    "#14b8a6"
   );
 
-  if (workspaceProfileChart) workspaceProfileChart.destroy();
-  workspaceProfileChart = workspaceMakeLargeDoughnutChart(
-    "workspaceProfileChart",
-    breakdowns.workerProfiles.map((item) => item.profile),
-    breakdowns.workerProfiles.map((item) => item.tasks),
-    "Task per Workspace"
+  if (abilityLiteChart) abilityLiteChart.destroy();
+  abilityLiteChart = workspaceMakeDenseBarChart(
+    "abilityLiteChart",
+    liteCapabilities.map((item) => item.capability.replace(" Utilization", "").replace(" Understanding", "")),
+    liteCapabilities.map((item) => item.count),
+    "Lite split ability counts",
+    "#7c3aed"
   );
 
   workspaceRenderAbilityInsightPanel();
+}
+
+function workspaceRenderLeaderboardCharts(data) {
+  if (typeof Chart === "undefined") return;
+  const liteRows = (data.litePublicResults || []).map((row) => ({
+    ...row,
+    overall_score: row.rubric_pass_rate
+  }));
+  const frameworkAverages = Array.from(
+    liteRows.reduce((map, row) => {
+      const current = map.get(row.agent) || { total: 0, count: 0 };
+      current.total += row.rubric_pass_rate;
+      current.count += 1;
+      map.set(row.agent, current);
+      return map;
+    }, new Map()).entries()
+  ).map(([framework, stats]) => ({
+    framework,
+    average: stats.total / stats.count
+  })).sort((a, b) => b.average - a.average);
+
+  const modelAverages = Array.from(
+    liteRows.reduce((map, row) => {
+      const current = map.get(row.model) || { total: 0, count: 0 };
+      current.total += row.rubric_pass_rate;
+      current.count += 1;
+      map.set(row.model, current);
+      return map;
+    }, new Map()).entries()
+  ).map(([model, stats]) => ({
+    model,
+    average: stats.total / stats.count
+  })).sort((a, b) => b.average - a.average);
+
+  const profiles = window.WORKSPACE_BENCH_DATA?.leaderboardBreakdowns?.workerProfiles || [];
+  const costPanel = document.getElementById("scoreCostPanel");
+  const runtimePanel = document.getElementById("scoreRuntimePanel");
+  if (costPanel) costPanel.innerHTML = '<canvas id="scoreCostChart" aria-label="Model family average chart"></canvas>';
+  if (runtimePanel) runtimePanel.innerHTML = '<canvas id="scoreRuntimeChart" aria-label="Worker profile distribution chart"></canvas>';
+
+  if (scoreChart) scoreChart.destroy();
+  scoreChart = workspaceMakeDenseBarChart(
+    "scoreChart",
+    frameworkAverages.map((item) => item.framework),
+    frameworkAverages.map((item) => Number(item.average.toFixed(1))),
+    "Framework average Lite pass rate",
+    "#14b8a6"
+  );
+
+  if (costChart) costChart.destroy();
+  costChart = workspaceMakeDenseBarChart(
+    "scoreCostChart",
+    modelAverages.map((item) => item.model),
+    modelAverages.map((item) => Number(item.average.toFixed(1))),
+    "Model average Lite pass rate",
+    "#7c3aed"
+  );
+
+  if (runtimeChart) runtimeChart.destroy();
+  runtimeChart = workspaceMakeDenseBarChart(
+    "scoreRuntimeChart",
+    profiles.map((item) => item.profile),
+    profiles.map((item) => item.tasks),
+    "Full split worker-profile task count",
+    "#2563eb"
+  );
 }
 
 async function workspaceRenderLeaderboard() {
   const data = await workspaceLoadLeaderboardData();
   workspaceRenderInsightCards(data);
   workspaceRenderTabs(data);
+  workspaceRenderControls(data);
+
   const leaderboard = workspaceGetActiveLeaderboard(data);
-  const allRows = workspaceRowsForView(data, leaderboard.name);
-  const filterRows = [
-    ...workspaceRowsForView(data, "Overall"),
-    ...workspaceRowsForView(data, "Workspace-Bench-Lite"),
-    ...workspaceRowsForView(data, "Threshold Views"),
-    ...workspaceRowsForView(data, "By Worker Profile"),
-    ...workspaceRowsForView(data, "By Difficulty"),
-    ...workspaceRowsForView(data, "By Ability")
-  ];
-  workspaceRenderFilters(filterRows);
+  const allRows = workspaceGetLeaderboardRows(data);
   const rows = workspaceFilterRows(allRows);
 
   const description = document.getElementById("leaderboardDescription");
-  if (description) {
-    description.textContent = leaderboard.description;
-    description.style.visibility = "";
-  }
+  if (description) description.textContent = leaderboard.description;
 
   workspaceRenderTable(rows);
   workspaceRenderFrameworkMatrix(data);
-  workspaceRenderLeaderboardCharts(rows);
-  workspaceRenderThresholdViews();
+  workspaceRenderThresholdViews(data);
   workspaceRenderCompositionCharts();
+  workspaceRenderLeaderboardCharts(data);
   workspaceRenderLiteRankingChart(data);
 }
 

@@ -62,30 +62,9 @@
 
           <div class="tabs" id="leaderboardTabs" aria-label="Leaderboard tabs"></div>
 
-          <div class="toolbar">
-            <div class="filters">
-              <input id="leaderboardSearch" class="aa-table-search" type="search" placeholder="Search systems, models, frameworks" aria-label="Search systems, models, frameworks">
-              <select id="profileFilter" aria-label="Filter by profile"></select>
-              <select id="frameworkFilter" aria-label="Filter by framework">
-                <option value="all">All frameworks</option>
-              </select>
-              <select id="modelFilter" aria-label="Filter by model">
-                <option value="all">All models</option>
-              </select>
-              <select id="sourceFilter" aria-label="Filter by source">
-                <option value="all">All sources</option>
-                <option value="paper-reported">Paper reported</option>
-                <option value="repository-reported">Repository reported</option>
-                <option value="paper-described">Paper described</option>
-              </select>
-              <select id="verifiedFilter" aria-label="Filter by verification">
-                <option value="all">Verified and pending</option>
-                <option value="true">Verified only</option>
-                <option value="false">Pending only</option>
-              </select>
-            </div>
+          <div class="toolbar leaderboard-toolbar">
+            <div id="leaderboardControls" class="filters leaderboard-controls"></div>
             <div class="actions" style="margin-top:0">
-              <a class="button button-primary" href="./submit.html">Submit Results</a>
               <a class="button" href="./methodology.html">Scoring Rules</a>
             </div>
           </div>
@@ -118,6 +97,11 @@
                 Compare how many public Lite system combinations clear different rubric pass-rate thresholds.
               </p>
             </div>
+            <div class="filters">
+              <select id="thresholdFocusFilter" aria-label="Threshold focus">
+                <option value="all">All thresholds</option>
+              </select>
+            </div>
           </div>
           <div class="grid threshold-layout">
             <div class="card chart-card leaderboard-chart-card leaderboard-tall-card">
@@ -137,17 +121,16 @@
             <div>
               <h2>Composition Analysis</h2>
               <p class="section-subtitle">
-                These views are drawn from the official benchmark distribution figure and make it easier to read the
-                benchmark through the same lenses people use when comparing research leaderboards.
+                Compare full and Lite task-ability composition directly from the latest official metadata analysis.
               </p>
             </div>
           </div>
           <div class="grid composition-layout">
             <div class="card chart-card leaderboard-chart-card leaderboard-composition-card">
-              <canvas id="difficultyChart" aria-label="Difficulty chart"></canvas>
+              <canvas id="abilityFullChart" aria-label="Full ability chart"></canvas>
             </div>
             <div class="card chart-card leaderboard-chart-card leaderboard-composition-card">
-              <canvas id="workspaceProfileChart" aria-label="Workspace profile chart"></canvas>
+              <canvas id="abilityLiteChart" aria-label="Lite ability chart"></canvas>
             </div>
             <div class="card leaderboard-text-panel" id="abilityInsightPanel"></div>
           </div>
@@ -160,8 +143,7 @@
             <div>
               <h2>Leaderboard Analysis</h2>
               <p class="section-subtitle">
-                Secondary analysis views below avoid repeating the headline ranking chart and instead summarize the
-                released public leaderboard from framework, model-family, and threshold-distribution angles.
+                Real secondary views derived from released Lite leaderboard rows and benchmark metadata.
               </p>
             </div>
           </div>
@@ -173,7 +155,7 @@
               <canvas id="scoreCostChart" aria-label="Model family average chart"></canvas>
             </div>
             <div class="card chart-card leaderboard-chart-card" id="scoreRuntimePanel">
-              <canvas id="scoreRuntimeChart" aria-label="Lite score distribution chart"></canvas>
+              <canvas id="scoreRuntimeChart" aria-label="Worker profile distribution chart"></canvas>
             </div>
           </div>
         </div>
@@ -186,6 +168,6 @@
     <script src="./workspace-data.js?v=20260507e"></script>
     <script src="./workspace-site.js?v=20260507c"></script>
     <script src="./workspace-charts.js?v=20260507c"></script>
-    <script src="./workspace-leaderboard.js?v=20260507c"></script>
+    <script src="./workspace-leaderboard.js?v=20260508a"></script>
   </body>
 </html>

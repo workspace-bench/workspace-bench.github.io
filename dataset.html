@@ -28,7 +28,6 @@
         </div>
       </section>
 
-      <!-- Key metrics -->
       <section class="section">
         <div class="container">
           <div id="keyMetrics" class="aa-metric-strip" aria-label="Dataset key metrics">
@@ -42,13 +41,12 @@
         </div>
       </section>
 
-      <!-- Worker profile distribution -->
       <section class="section">
         <div class="container">
           <div class="section-head">
             <div>
               <h2>Worker Profile Distribution</h2>
-              <p class="section-subtitle">Distribution of the full benchmark task metadata from the latest official HuggingFace full split, with Lite statistics shown in the API snapshot below.</p>
+              <p class="section-subtitle">Distribution of the full benchmark task metadata from the latest official HuggingFace full split, with Lite statistics shown in the static bundle below.</p>
             </div>
             <span class="badge badge-green">Source: HuggingFace</span>
           </div>
@@ -72,7 +70,6 @@
         </div>
       </section>
 
-      <!-- Collaboration types -->
       <section class="section">
         <div class="container">
           <div class="section-head">
@@ -100,13 +97,12 @@
         </div>
       </section>
 
-      <!-- Rubric types -->
       <section class="section">
         <div class="container">
           <div class="section-head">
             <div>
               <h2>Rubric Evaluation Types</h2>
-              <p class="section-subtitle">7,399 rubrics across the public evaluation-type values released in the task metadata.</p>
+              <p class="section-subtitle">Rubric labels from the official metadata normalized into the three public reporting groups used on this site.</p>
             </div>
           </div>
           <div class="card">
@@ -128,19 +124,18 @@
         </div>
       </section>
 
-      <!-- Task browse -->
       <section class="section">
         <div class="container">
           <div class="section-head">
             <div>
               <h2>Task Browser</h2>
-              <p class="section-subtitle">Browse all tasks from the dataset. Powered by the <code>WORKSPACE_BENCH_API</code>.</p>
+              <p class="section-subtitle">Browse local static task snapshots derived from the latest official full split.</p>
             </div>
             <div class="filters">
               <select id="taskProfileFilter" onchange="datasetFilterTasks()">
                 <option value="">All profiles</option>
               </select>
-              <input id="taskSearchInput" type="text" placeholder="Search tasks... oninput="datasetFilterTasks()" style="min-width:200px">
+              <input id="taskSearchInput" type="text" placeholder="Search tasks..." oninput="datasetFilterTasks()" style="min-width:200px">
             </div>
           </div>
           <div class="card">
@@ -164,88 +159,27 @@
         </div>
       </section>
 
-      <!-- API playground -->
       <section class="section">
         <div class="container">
           <div class="section-head">
             <div>
               <h2>API Playground</h2>
-              <p class="section-subtitle">Inspect the public static dataset snapshot and test local session-only extensions via <code>WORKSPACE_BENCH_API</code>.</p>
+              <p class="section-subtitle">This module is temporarily marked and will be reopened after the public dataset interaction contract is finalized.</p>
             </div>
           </div>
-          <div class="grid grid-2">
-            <!-- Add task form -->
-            <div class="card">
-              <h3 class="dataset-h3">Add a task</h3>
-              <form id="addTaskForm" onsubmit="datasetAddTask(event)">
-                <div class="form-group">
-                  <label>Persona / Worker profile</label>
-                  <input type="text" id="taskPersona" placeholder="e.g. Operations Manager" required style="width:100%">
-                </div>
-                <div class="form-group">
-                  <label>Task description</label>
-                  <textarea id="taskDesc" rows="4" placeholder="Describe what the agent must do..." required style="width:100%;resize:vertical"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Collaboration types (comma-separated)</label>
-                  <input type="text" id="taskCollab" placeholder="e.g. Workspace Exploration, Result-Providing Files Utilization">
-                </div>
-                <div class="form-group">
-                  <label>Rubric types (comma-separated)</label>
-                  <input type="text" id="taskRubricTypes" placeholder="e.g. Outcome Evaluation, Basic Evaluation">
-                </div>
-                <div class="form-group">
-                  <label>File dependency count</label>
-                  <input type="number" id="taskFileCount" value="0" min="0" style="width:100%">
-                </div>
-                <button type="submit" class="button button-primary" style="width:100%">Add task</button>
-              </form>
-            </div>
-            <!-- Live API log -->
-            <div class="card">
-              <h3 class="dataset-h3">API log</h3>
-              <div id="apiLog" class="dataset-api-log"></div>
-              <div style="margin-top:10px;display:flex;gap:8px">
-                <button class="button" onclick="datasetExportData()">Export JSON</button>
-                <button class="button" onclick="datasetClearLog()">Clear log</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- API reference -->
-          <div class="card" style="margin-top:16px">
-            <h3 class="dataset-h3">API Reference</h3>
-            <div class="code-block dataset-code-block">
-// Load the API (already available on this page)
-const api = window.WORKSPACE_BENCH_API;
-
-// Get current data snapshot
-api.getSnapshot()                        // 返回 Full / Lite 静态统计、任务分布、协作类型、rubric 分布和元数据
-api.getProfileDistribution()             // 返回 [{profile, tasks, share}, ...]
-api.getCollabTypes()                     // 返回 [{type, count}, ...]
-api.getRubricTypes()                     // 返回 [{type, count, share}, ...]
-api.getFileDepStats()                    // 返回 {withDeps, withoutDeps, share}
-
-// Get raw task list (paginated)
-api.getTasks({profile: 'Backend Developer', q: 'security', limit: 10, offset: 0})
-                                          // 返回 {tasks: [...], total, limit, offset}
-
-// Add a new task in the current browser session only
-api.addTask({persona, task, collaboration_type, rubric_types, file_count})
-                                          // 返回 {id, ...task}
-
-// Update benchmark metadata
-api.updateMeta({totalTasks: 400, totalRubrics: 8000})
-                                          // 返回更新后的元数据
-
-// Insert / update a leaderboard row
-api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
-                                          // 返回重新排序后的榜单结果</div>
+          <div class="card coming-soon-card">
+            <span class="badge badge-violet">Marked</span>
+            <h3 class="dataset-h3">Coming soon</h3>
+            <p>The site currently exposes only audited static benchmark statistics. Interactive API testing, custom task insertion, and session-side dataset mutation are disabled for now.</p>
+            <div class="code-block dataset-code-block">Planned scope:
+- public read-only snapshot explorer
+- split-aware task filtering
+- documented response schema
+- reproducible dataset version tags</div>
           </div>
         </div>
       </section>
 
-      <!-- Data source -->
       <section class="section">
         <div class="container">
           <div class="source-note">
@@ -258,7 +192,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
                   <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener">Workspace-Bench/Workspace-Bench</a>
                   and
                   <a href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite" target="_blank" rel="noopener">Workspace-Bench/Workspace-Bench-Lite</a>.
-                  The latest releases expose official <code>full</code> and <code>lite</code> splits with fields such as absolute_id, persona, task, task_diff, output_files, tested_capabilities, rubrics, rubric_types, file_dep_graph, and data_manifest.
+                  The latest releases expose official <code>full</code> and <code>lite</code> splits with fields such as <code>absolute_id</code>, <code>persona</code>, <code>task</code>, <code>task_diff</code>, <code>output_files</code>, <code>tested_capabilities</code>, <code>rubrics</code>, <code>rubric_types</code>, <code>file_dep_graph</code>, and <code>data_manifest</code>.
                 </p>
               </div>
             </div>
@@ -270,22 +204,7 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     <div data-workspace-footer></div>
 
     <style>
-      .form-group { margin-bottom: 12px; }
-      .form-group label { display: block; margin-bottom: 4px; font-size: 0.88rem; font-weight: 600; color: var(--text); }
-      .form-group input, .form-group textarea, .form-group select {
-        width: 100%;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px 10px;
-        font: inherit;
-        background: var(--surface);
-        color: var(--text);
-        box-sizing: border-box;
-      }
-      .form-group input:focus, .form-group textarea:focus {
-        outline: 2px solid var(--primary);
-        border-color: var(--primary);
-      }
+      .coming-soon-card { min-height: 0; }
     </style>
 
     <script src="./data/tasks.js?v=20260507e"></script>
@@ -294,30 +213,8 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     <script src="./workspace-data.js?v=20260507e"></script>
     <script src="./workspace-site.js?v=20260507d"></script>
     <script>
-    // Dataset page controller
-
-    // Live task list (loaded from WORKSPACE_BENCH_DATA or fetched from HF)
     let allTasks = [];
 
-    function apiLog(msg) {
-      const el = document.getElementById("apiLog");
-      if (!el) return;
-      const ts = new Date().toLocaleTimeString();
-      el.textContent += `[${ts}] ${msg}\n`;
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function datasetClearLog() {
-      const el = document.getElementById("apiLog");
-      if (el) el.textContent = "";
-    }
-
-    // WORKSPACE_BENCH_API extensions
-
-    /**
-     * Get a complete snapshot of all dataset statistics.
-     * @returns {Object} Dataset snapshot
-     */
     function workspaceGetSnapshot() {
       const data = window.WORKSPACE_BENCH_DATA;
       if (!data) return null;
@@ -335,130 +232,62 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
         profiles: bb?.workerProfiles || [],
         collabTypes: stats?.collabTypes || [],
         rubricTypes: stats?.rubricTypes || [],
-        fileDeps: stats?.fileDependencyCoverage || { withDeps: 375, withoutDeps: 13, share: 96.6 },
-        fileCountDist: stats?.fileCountDist || [],
-        difficulty: bb?.difficulty || [],
-        fullDatasetStats: stats?.fullDatasetStats || null,
-        liteDatasetStats: stats?.liteDatasetStats || null
+        fileDeps: stats?.fileDependencyCoverage || { withDeps: 375, withoutDeps: 13, share: 96.6 }
       };
     }
 
-    /**
-     * Get worker profile distribution.
-     * @returns {Array} Profile distribution rows
-     */
     function workspaceGetProfileDistribution() {
       return workspaceGetSnapshot()?.profiles || [];
     }
 
-    /**
-     * Get collaboration type distribution.
-     * @returns {Array} Collaboration type rows
-     */
     function workspaceGetCollabTypes() {
       return workspaceGetSnapshot()?.collabTypes || [];
     }
 
-    /**
-     * Get rubric type distribution.
-     * @returns {Array} Rubric type rows
-     */
     function workspaceGetRubricTypes() {
-      return workspaceGetSnapshot()?.rubricTypes || [];
+      const raw = workspaceGetSnapshot()?.rubricTypes || [];
+      const total = raw.reduce((sum, item) => sum + item.count, 0);
+      const groups = {
+        "Outcome Evaluation": ["Outcome Evaluation", "Result Evaluation", "Results Assessment"],
+        "Basic Evaluation": ["Basic Evaluation", "Basic Assessment"],
+        "Process Evaluation": ["Process Evaluation", "Process Assessment"]
+      };
+      return Object.entries(groups).map(([label, members]) => {
+        const count = members.reduce((sum, member) => sum + (raw.find((item) => item.type === member)?.count || 0), 0);
+        return {
+          type: label,
+          count,
+          share: total ? Number((count / total * 100).toFixed(1)) : 0
+        };
+      }).filter((item) => item.count > 0);
     }
 
-    /**
-     * Get file dependency statistics.
-     * @returns {Object} Dependency stats
-     */
     function workspaceGetFileDepStats() {
       return workspaceGetSnapshot()?.fileDeps || {};
     }
 
-    /**
-     * Get tasks with optional filtering and pagination.
-     * @param {Object} opts - {profile, q (search), limit, offset}
-     * @returns {Object} {tasks, total, limit, offset}
-     */
     function workspaceGetTasks(opts = {}) {
       const { profile = "", q = "", limit = 50, offset = 0 } = opts;
       let tasks = allTasks.length ? allTasks : [];
-      if (profile) {
-        tasks = tasks.filter(t => t.persona === profile);
-      }
+      if (profile) tasks = tasks.filter((task) => task.persona === profile);
       if (q) {
         const lq = q.toLowerCase();
-        tasks = tasks.filter(t =>
-          (t.persona || "").toLowerCase().includes(lq) ||
-          (t.task || "").toLowerCase().includes(lq) ||
-          (t.collaboration_type || []).join(" ").toLowerCase().includes(lq)
+        tasks = tasks.filter((task) =>
+          (task.persona || "").toLowerCase().includes(lq) ||
+          (task.task || "").toLowerCase().includes(lq) ||
+          (task.collaboration_type || []).join(" ").toLowerCase().includes(lq)
         );
       }
       const total = tasks.length;
-      const page = tasks.slice(offset, offset + limit);
-      return { tasks: page, total, limit, offset };
+      return { tasks: tasks.slice(offset, offset + limit), total, limit, offset };
     }
-
-    /**
-     * Add a new task to the live dataset.
-     * @param {Object} taskObj - {persona, task, collaboration_type, rubric_types, file_count}
-     * @returns {Object} The added task with assigned ID
-     */
-    function workspaceAddTask(taskObj) {
-      const id = allTasks.length + 1;
-      const task = {
-        absolute_id: id,
-        persona: taskObj.persona || "Unknown",
-        task: taskObj.task || "",
-        collaboration_type: Array.isArray(taskObj.collaboration_type)
-          ? taskObj.collaboration_type
-          : (taskObj.collaboration_type || "").split(",").map(s => s.trim()).filter(Boolean),
-        rubric_types: Array.isArray(taskObj.rubric_types)
-          ? taskObj.rubric_types
-          : (taskObj.rubric_types || "").split(",").map(s => s.trim()).filter(Boolean),
-        file_count: Number(taskObj.file_count) || 0
-      };
-      allTasks.push(task);
-      apiLog(`addTask(): id=${id}, persona="${task.persona}"`);
-      renderAll();
-      return task;
-    }
-
-    /**
-     * Update benchmark metadata.
-     * @param {Object} meta - Key-value pairs to merge into meta
-     */
-    function workspaceDatasetUpdateMeta(meta) {
-      const snap = workspaceGetSnapshot();
-      if (snap) {
-        Object.assign(snap.meta, meta);
-        apiLog(`updateMeta(): ${JSON.stringify(meta)}`);
-      }
-      renderMetrics();
-    }
-
-    // Export all methods onto WORKSPACE_BENCH_API
-    Object.assign(window.WORKSPACE_BENCH_API, {
-      getSnapshot: workspaceGetSnapshot,
-      getProfileDistribution: workspaceGetProfileDistribution,
-      getCollabTypes: workspaceGetCollabTypes,
-      getRubricTypes: workspaceGetRubricTypes,
-      getFileDepStats: workspaceGetFileDepStats,
-      getTasks: workspaceGetTasks,
-      addTask: workspaceAddTask,
-      updateMeta: workspaceDatasetUpdateMeta
-    });
-
-    // Build default task list from stats
-
-    // Render functions
 
     function renderMetrics() {
       const snap = workspaceGetSnapshot();
       if (!snap) return;
-      const set = (id, val) => {
+      const set = (id, value) => {
         const el = document.getElementById(id);
-        if (el) el.textContent = val;
+        if (el) el.textContent = value;
       };
       set("metric-tasks", snap.meta.totalTasks.toLocaleString());
       set("metric-profiles", snap.profiles.length);
@@ -483,10 +312,10 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       }
       const subtitles = document.querySelectorAll(".section-subtitle");
       if (subtitles[0]) {
-        subtitles[0].textContent = `Distribution of the full benchmark task metadata from the latest official HuggingFace full split (${snap.meta.full?.totalTasks || snap.meta.totalTasks} tasks), with Lite statistics (${snap.meta.lite?.totalTasks || 0} tasks) exposed through the same data channel.`;
+        subtitles[0].textContent = `Distribution of the full benchmark task metadata from the latest official HuggingFace full split (${snap.meta.full?.totalTasks || snap.meta.totalTasks} tasks), with Lite statistics (${snap.meta.lite?.totalTasks || 0} tasks) exposed through the same static bundle.`;
       }
       if (subtitles[2]) {
-        subtitles[2].textContent = `${snap.meta.totalRubrics.toLocaleString()} rubrics across the public evaluation-type values released in the full benchmark metadata.`;
+        subtitles[2].textContent = `${snap.meta.totalRubrics.toLocaleString()} rubrics normalized into three public reporting categories from the official benchmark metadata.`;
       }
     }
 
@@ -494,131 +323,77 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
       const rows = workspaceGetProfileDistribution();
       const tbody = document.getElementById("profileTableBody");
       if (!tbody) return;
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = rows.map((r, i) =>
-        `<tr>
-          <td class="rank">${String(i + 1).padStart(2, "0")}</td>
-          <td><strong>${r.profile}</strong></td>
-          <td class="numeric">${r.tasks}</td>
-          <td class="numeric score">${r.share}%</td>
-        </tr>`
-      ).join("");
+      tbody.innerHTML = rows.length ? rows.map((row, index) => `
+        <tr>
+          <td class="rank">${String(index + 1).padStart(2, "0")}</td>
+          <td><strong>${row.profile}</strong></td>
+          <td class="numeric">${row.tasks}</td>
+          <td class="numeric score">${row.share}%</td>
+        </tr>
+      `).join("") : `<tr><td colspan="4" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
     }
 
     function renderCollabTable() {
       const rows = workspaceGetCollabTypes();
       const tbody = document.getElementById("collabTableBody");
       if (!tbody) return;
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = rows.map((r, i) =>
-        `<tr>
-          <td class="rank">${String(i + 1).padStart(2, "0")}</td>
-          <td><strong>${r.type}</strong></td>
-          <td class="numeric">${r.count}</td>
-        </tr>`
-      ).join("");
+      tbody.innerHTML = rows.length ? rows.map((row, index) => `
+        <tr>
+          <td class="rank">${String(index + 1).padStart(2, "0")}</td>
+          <td><strong>${row.type}</strong></td>
+          <td class="numeric">${row.count}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
     }
 
     function renderRubricTable() {
       const rows = workspaceGetRubricTypes();
       const tbody = document.getElementById("rubricTableBody");
       if (!tbody) return;
-      if (!rows.length) {
-        tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = rows.map(r =>
-        `<tr>
-          <td><strong>${r.type}</strong></td>
-          <td class="numeric">${r.count.toLocaleString()}</td>
-          <td class="numeric score">${r.share}%</td>
-        </tr>`
-      ).join("");
+      tbody.innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td><strong>${row.type}</strong></td>
+          <td class="numeric">${row.count.toLocaleString()}</td>
+          <td class="numeric score">${row.share}%</td>
+        </tr>
+      `).join("") : `<tr><td colspan="3" style="color:var(--muted);text-align:center;padding:24px">No data</td></tr>`;
+    }
+
+    function escHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
     }
 
     function renderTaskTable(opts = {}) {
-      const { profile = "", q = "", limit = 50, offset = 0 } = opts;
-      const result = workspaceGetTasks({ profile, q, limit, offset });
+      const result = workspaceGetTasks(opts);
       const tbody = document.getElementById("taskTableBody");
       if (!tbody) return;
-      if (!result.tasks.length) {
-        tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No tasks found</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = result.tasks.map(t =>
-        `<tr>
-          <td class="rank">${t.absolute_id}</td>
-          <td><strong>${t.persona}</strong></td>
-          <td class="dataset-task-desc" title="${escHtml(t.task)}">${escHtml(t.task)}</td>
-          <td class="numeric">${(t.rubric_types || []).length}</td>
-          <td class="numeric">${t.file_count || 0}</td>
-        </tr>`
-      ).join("");
-      // Pagination info
-      const info = document.getElementById("taskTableInfo");
-      if (info) {
-        info.textContent = `Showing ${offset + 1}...{Math.min(offset + limit, result.total)} of ${result.total} tasks`;
-      }
+      tbody.innerHTML = result.tasks.length ? result.tasks.map((task) => `
+        <tr>
+          <td class="rank">${task.absolute_id}</td>
+          <td><strong>${task.persona}</strong></td>
+          <td class="dataset-task-desc" title="${escHtml(task.task)}">${escHtml(task.task)}</td>
+          <td class="numeric">${(task.rubric_types || []).length}</td>
+          <td class="numeric">${task.file_count || 0}</td>
+        </tr>
+      `).join("") : `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No tasks found</td></tr>`;
     }
 
     function renderProfileFilter() {
       const sel = document.getElementById("taskProfileFilter");
       if (!sel) return;
       const rows = workspaceGetProfileDistribution();
-      sel.innerHTML = `<option value="">All profiles</option>` +
-        rows.map(r => `<option value="${escHtml(r.profile)}">${r.profile}</option>`).join("");
+      sel.innerHTML = `<option value="">All profiles</option>${rows.map((row) => `<option value="${escHtml(row.profile)}">${row.profile}</option>`).join("")}`;
     }
 
     function datasetFilterTasks() {
-      const sel = document.getElementById("taskProfileFilter");
-      const inp = document.getElementById("taskSearchInput");
       renderTaskTable({
-        profile: sel ? sel.value : "",
-        q: inp ? inp.value.trim() : ""
+        profile: document.getElementById("taskProfileFilter")?.value || "",
+        q: document.getElementById("taskSearchInput")?.value.trim() || ""
       });
-    }
-
-    function datasetAddTask(e) {
-      e.preventDefault();
-      const taskObj = {
-        persona: document.getElementById("taskPersona").value.trim(),
-        task: document.getElementById("taskDesc").value.trim(),
-        collaboration_type: document.getElementById("taskCollab").value.trim(),
-        rubric_types: document.getElementById("taskRubricTypes").value.trim(),
-        file_count: Number(document.getElementById("taskFileCount").value) || 0
-      };
-      const added = workspaceAddTask(taskObj);
-      apiLog(`addTask(): #${added.absolute_id} "${added.persona}"`);
-      e.target.reset();
-      datasetFilterTasks();
-    }
-
-    function datasetExportData() {
-      const snap = workspaceGetSnapshot();
-      if (!snap) return;
-      const blob = new Blob([JSON.stringify(snap, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "workspace-bench-snapshot.json";
-      a.click();
-      URL.revokeObjectURL(url);
-      apiLog("Export: downloaded workspace-bench-snapshot.json");
-    }
-
-    function escHtml(str) {
-      if (!str) return "";
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
     }
 
     function renderAll() {
@@ -634,11 +409,14 @@ api.upsertRow({agent, harness, model, rubric_pass_rate: 55.2})
     document.addEventListener("DOMContentLoaded", () => {
       allTasks = Array.isArray(window.WORKSPACE_BENCH_TASKS) ? window.WORKSPACE_BENCH_TASKS.slice() : [];
       renderAll();
-      apiLog("WORKSPACE_BENCH_API ready");
-      apiLog(`getSnapshot(): ${allTasks.length} tasks loaded`);
-      apiLog(`getProfileDistribution(): ${workspaceGetProfileDistribution().length} profiles`);
-      apiLog(`getCollabTypes(): ${workspaceGetCollabTypes().length} types`);
-      apiLog(`getRubricTypes(): ${workspaceGetRubricTypes().length} rubric types`);
+      window.WORKSPACE_BENCH_API = Object.assign(window.WORKSPACE_BENCH_API || {}, {
+        getSnapshot: workspaceGetSnapshot,
+        getProfileDistribution: workspaceGetProfileDistribution,
+        getCollabTypes: workspaceGetCollabTypes,
+        getRubricTypes: workspaceGetRubricTypes,
+        getFileDepStats: workspaceGetFileDepStats,
+        getTasks: workspaceGetTasks
+      });
     });
     </script>
   </body>

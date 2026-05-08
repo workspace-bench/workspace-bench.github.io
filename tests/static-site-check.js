@@ -49,11 +49,11 @@ const requiredText = {
     'arXiv paper',
     'Public leaderboard'
   ],
-  'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Search systems, models, frameworks', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis'],
-  'dataset.html': ['Dataset', 'Dataset intelligence', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
+  'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis'],
+  'dataset.html': ['Dataset', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
-  'examples.html': ['Representative Tasks', 'Hidden Dependencies', 'Rubric Examples', 'Task intelligence feed', 'Evidence path'],
-  'submit.html': ['Submission', 'Result JSON Schema', 'Verified Results'],
+  'examples.html': ['Representative Tasks', 'Task intelligence feed', 'Coming soon', 'Evidence path'],
+  'submit.html': ['Submission', 'Coming soon', 'Submission portal is being prepared'],
   'contact.html': ['Citation & Contact', '2605.03596', 'OpenDataBox/Workspace-Bench'],
   'citation.html': ['Citation', 'contact.html', 'Citation &amp; Contact']
 };
@@ -73,8 +73,11 @@ for (const token of ['--bg: #ffffff', '--surface-2: #f5f5f5', '--pill-dark: #111
 }
 
 const leaderboardScript = fs.readFileSync(path.join(root, 'workspace-leaderboard.js'), 'utf8');
-for (const marker of ['workspaceRenderFrameworkMatrix', 'workspaceRenderInsightCards', 'workspaceRenderNoDataPanel', 'leaderboardSearch', 'workspaceSearchRows']) {
+for (const marker of ['workspaceRenderFrameworkMatrix', 'workspaceRenderInsightCards', 'workspaceRenderThresholdViews', 'leaderboardSearch', 'workspaceRenderCompositionCharts']) {
   if (!leaderboardScript.includes(marker)) fail(`workspace-leaderboard.js missing renderer: ${marker}`);
+}
+for (const marker of ['Search frameworks or models', 'All frameworks', 'All models']) {
+  if (!leaderboardScript.includes(marker)) fail(`workspace-leaderboard.js missing control text: ${marker}`);
 }
 
 const chartsScript = fs.readFileSync(path.join(root, 'workspace-charts.js'), 'utf8');

@@ -19,8 +19,7 @@
             <div><h1 class="aa-page-title">Methodology</h1></div>
           </div>
           <p class="page-lead aa-page-lead">
-            Workspace-Bench defines workspace learning as the ability to identify, reason over, update, and validate
-            dependencies among large collections of files while producing task-correct deliverables.
+            Workspace-Bench evaluates workspace learning: whether an agent can discover, connect, update, and validate information across realistic file ecosystems while producing rubric-graded deliverables.
           </p>
         </div>
       </section>
@@ -30,7 +29,7 @@
           <div class="analysis-shell">
             <div class="analysis-shell-header">
               <div class="analysis-shell-title"><span class="status-dot"></span>Evaluation pipeline</div>
-              <span class="badge badge-blue">Reproducible workflow</span>
+              <span class="badge badge-blue">Paper-aligned protocol</span>
             </div>
             <div class="analysis-shell-body">
               <div class="compact-data-table">
@@ -38,32 +37,32 @@
                   <thead>
                     <tr>
                       <th>Stage</th>
-                      <th>Input</th>
-                      <th>Output</th>
+                      <th>Benchmark object</th>
+                      <th>What is measured</th>
                       <th>Failure mode</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td><strong>Workspace Setup</strong></td><td>Selected split and task files</td><td>Controlled workspace state</td><td>Wrong benchmark context</td></tr>
-                    <tr><td><strong>Agent Execution</strong></td><td>Harness, model, tools, limits</td><td>Logs and intermediate actions</td><td>Undeclared runtime conditions</td></tr>
-                    <tr><td><strong>Output Collection</strong></td><td>Modified artifacts and answer</td><td>Deliverable bundle</td><td>Missing evidence trail</td></tr>
-                    <tr><td><strong>Rubric Evaluation</strong></td><td>Deliverables and rubrics</td><td>Task and overall scores</td><td>Unverifiable scoring basis</td></tr>
-                    <tr><td><strong>Verification</strong></td><td>Configs, logs, cost, runtime</td><td>Maintainer-reviewable report</td><td>Non-reproducible submission</td></tr>
+                    <tr><td><strong>Task initialization</strong></td><td>Split, task metadata, workspace files</td><td>Correct benchmark context and starting state</td><td>Wrong split, wrong workspace snapshot</td></tr>
+                    <tr><td><strong>Workspace interaction</strong></td><td>Agent actions over heterogeneous files</td><td>Search, reading, editing, tracing, synthesis</td><td>Shallow lookup or missed dependencies</td></tr>
+                    <tr><td><strong>Deliverable production</strong></td><td>Output files and final answer</td><td>Task completion and artifact correctness</td><td>Partial, inconsistent, or malformed output</td></tr>
+                    <tr><td><strong>Rubric grading</strong></td><td>Rubrics attached to each task</td><td>Fine-grained pass/fail evidence per requirement</td><td>Unverified claims or incomplete evidence</td></tr>
+                    <tr><td><strong>Score aggregation</strong></td><td>Task outcomes across a split</td><td>Rubric pass rate and task-level success</td><td>Over-reading one metric without the other</td></tr>
                   </tbody>
                 </table>
               </div>
               <div class="analysis-side">
                 <div class="analysis-note">
                   <strong>Workspace Learning</strong>
-                  <p>Success depends on explicit and implicit file relationship understanding, not just direct answer lookup.</p>
+                  <p>The benchmark is not simple QA over one document. Success depends on navigating file ecosystems and linking implicit evidence.</p>
                 </div>
                 <div class="analysis-note">
                   <strong>Rubric-based Scoring</strong>
-                  <p>Evaluation checks correctness, evidence use, completeness, policy adherence, and consistency.</p>
+                  <p>Rubrics make partial failures visible: correctness, completeness, evidence use, constraint satisfaction, and output quality are checked separately.</p>
                 </div>
                 <div class="analysis-note">
                   <strong>Full vs Lite Benchmark</strong>
-                  <p>388 full tasks in the official <code>full</code> split; 100 Lite tasks in the official <code>lite</code> split for lower-cost repeated measurement.</p>
+                  <p>The official release currently exposes 388 full tasks and 100 Lite tasks. Lite is the public repeated-measurement slice used for the current leaderboard.</p>
                 </div>
               </div>
             </div>
@@ -76,41 +75,39 @@
           <div class="section-head">
             <div>
               <h2>Scoring Dimensions</h2>
-              <p class="section-subtitle">
-                Scoring dimensions are intentionally separable so benchmark failures reveal where a system breaks down.
-              </p>
+              <p class="section-subtitle">The paper separates workspace ability into interpretable dimensions so leaderboard numbers can be explained by concrete capability gaps.</p>
             </div>
           </div>
           <div class="grid grid-3">
             <div class="card">
               <div class="mini-kicker">Dimension 01</div>
               <h3>Workspace Exploration</h3>
-              <p>Navigating deeply nested directory structures and identifying relevant files from noisy candidates.</p>
+              <p>Can the system search large workspaces, identify relevant folders and files, and avoid getting trapped by irrelevant surface matches.</p>
             </div>
             <div class="card">
               <div class="mini-kicker">Dimension 02</div>
-              <h3>Task-Supporting Files Utilization</h3>
-              <p>Finding files that provide essential context, references, and domain knowledge needed to complete a task.</p>
+              <h3>Task-Providing File Utilization</h3>
+              <p>Can it find files that define requirements, constraints, policies, or context needed to understand what the task really asks for.</p>
             </div>
             <div class="card">
               <div class="mini-kicker">Dimension 03</div>
               <h3>Result-Providing Files Utilization</h3>
-              <p>Aggregating result files that contain required outputs, formats, and baseline information.</p>
+              <p>Can it retrieve data-bearing files whose contents must be extracted, merged, summarized, or transformed into the final deliverable.</p>
             </div>
             <div class="card">
               <div class="mini-kicker">Dimension 04</div>
-              <h3>Content Relations Understanding</h3>
-              <p>Tracing explicit references, semantic connections, and contextual links between related documents.</p>
+              <h3>Semantic Content Relations Understanding</h3>
+              <p>Can it connect semantically related files even when names differ, references are indirect, or information is distributed across sources.</p>
             </div>
             <div class="card">
               <div class="mini-kicker">Dimension 05</div>
-              <h3>Semantic Heterogeneous File Understanding</h3>
-              <p>Connecting information across diverse modalities including documents, spreadsheets, presentations, and code.</p>
+              <h3>Heterogeneous File Understanding</h3>
+              <p>Can it reason across documents, spreadsheets, code, slides, PDFs, images, and mixed-format work products in one task flow.</p>
             </div>
             <div class="card">
               <div class="mini-kicker">Dimension 06</div>
               <h3>Lineage Tracing</h3>
-              <p>Understanding file versions, revisions, and derivation relationships (e.g., report_v1, report_final).</p>
+              <p>Can it identify version relationships, derived artifacts, and update chains such as drafts, summaries, exports, and later revisions.</p>
             </div>
           </div>
         </div>
@@ -120,17 +117,23 @@
         <div class="container">
           <div class="section-head">
             <div>
-              <h2>Evaluation Pipeline</h2>
-              <p class="section-subtitle">A verified run needs an inspectable workflow, not just a final score.</p>
+              <h2>Public Metrics</h2>
+              <p class="section-subtitle">The current public site and leaderboard rely on the released paper summary and Lite rubric-pass rows, so the metric definitions need to stay explicit.</p>
             </div>
           </div>
-          <div class="pipeline-grid">
-            <div class="pipeline-step"><div class="pipeline-step-number">1</div><h3>Initialize</h3><p>Prepare benchmark split, workspace constraints, and selected task environment.</p></div>
-            <div class="pipeline-step"><div class="pipeline-step-number">2</div><h3>Execute</h3><p>Run the declared harness and model with stable tool access and budget settings.</p></div>
-            <div class="pipeline-step"><div class="pipeline-step-number">3</div><h3>Collect</h3><p>Capture logs, edited files, generated outputs, and task metadata.</p></div>
-            <div class="pipeline-step"><div class="pipeline-step-number">4</div><h3>Grade</h3><p>Apply rubric-based evaluation and aggregate per-task outcomes into benchmark metrics.</p></div>
-            <div class="pipeline-step"><div class="pipeline-step-number">5</div><h3>Verify</h3><p>Attach runtime configuration, versioning, cost, and latency metadata.</p></div>
-            <div class="pipeline-step"><div class="pipeline-step-number">6</div><h3>Release</h3><p>Publish a stable report link that maintainers can inspect or replay.</p></div>
+          <div class="grid grid-3">
+            <div class="card">
+              <h3>Rubric pass rate</h3>
+              <p>The share of released rubric checks satisfied by a system. This is the main public metric exposed in the Lite leaderboard figure.</p>
+            </div>
+            <div class="card">
+              <h3>Task success rate</h3>
+              <p>Task-level completion derived from rubric outcomes or paper aggregation. It is reported in the paper summary but not yet released as a full public per-system table.</p>
+            </div>
+            <div class="card">
+              <h3>Verification status</h3>
+              <p>Rows on this site are limited to paper-reported or repository-released public results. Submission-based verification is not open yet.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -139,9 +142,7 @@
         <div class="container">
           <div class="source-note">
             <div>
-              <strong>Reproducibility Requirements.</strong> Verified submissions should include the benchmark split,
-              harness name, model identifier, runtime configuration, workspace constraints, logs, final outputs, cost
-              and latency summary, and a stable report link that lets maintainers replay or inspect the run.
+              <strong>Reproducibility Requirements.</strong> A future verified submission should declare split, benchmark version, harness name, model identifier, runtime configuration, workspace constraints, logs, final outputs, and a stable report link or replay route. Until that contract is published, the official site is restricted to released public benchmark artifacts.
             </div>
           </div>
         </div>

@@ -210,10 +210,10 @@
     },
     {
       "rank": 24,
-      "agent": "DeepAgent",
-      "harness": "DeepAgent",
+      "agent": "OpenClaw",
+      "harness": "OpenClaw",
       "model": "Gemini-3.1-Pro",
-      "rubric_pass_rate": 37,
+      "rubric_pass_rate": 37.0,
       "source": "repository-figure",
       "report_url": "https://github.com/OpenDataBox/Workspace-Bench"
     },
