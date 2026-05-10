@@ -3,7 +3,6 @@ const workspaceNavItems = [
   ["leaderboard.html", "Leaderboard"],
   ["dataset.html", "Dataset"],
   ["methodology.html", "Methodology"],
-  ["examples.html", "Examples"],
   ["submit.html", "Submit"],
   ["citation.html", "Citation"],
   ["contact.html", "Contact"]
@@ -21,8 +20,7 @@ const workspaceNavGroups = [
   {
     label: "Research",
     items: [
-      ["methodology.html", "Methodology"],
-      ["examples.html", "Examples"]
+      ["methodology.html", "Methodology"]
     ]
   },
   {
