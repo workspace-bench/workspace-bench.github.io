@@ -75,6 +75,10 @@ function workspaceRenderShell() {
             </nav>
             <div class="nav-actions" aria-label="Workspace-Bench utilities">
               <button class="aa-icon-button aa-search-button" type="button" aria-label="Search site">Search</button>
+              <a class="aa-icon-button aa-dataset-button" href="https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench" target="_blank" rel="noopener noreferrer" aria-label="Open Workspace-Bench dataset on HuggingFace">
+                <span class="aa-button-icon" aria-hidden="true">HF</span>
+                <span>Dataset</span>
+              </a>
               <a class="aa-icon-button" href="https://github.com/OpenDataBox/Workspace-Bench" target="_blank" rel="noopener noreferrer">GitHub</a>
               <a class="aa-icon-button" href="https://arxiv.org/abs/2605.03596" target="_blank" rel="noopener noreferrer">arXiv</a>
             </div>

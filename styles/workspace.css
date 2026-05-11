@@ -1571,6 +1571,24 @@ body {
   font-weight: 600;
 }
 
+.aa-dataset-button {
+  gap: 7px;
+}
+
+.aa-button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  background: #ffcc4d;
+  color: #111111;
+  font-size: 0.64rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .aa-icon-button:hover,
 .aa-toolbar-button:hover,
 .aa-search-button:hover {
