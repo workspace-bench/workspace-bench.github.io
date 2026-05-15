@@ -28,6 +28,7 @@
   window.WORKSPACE_BENCH_DATA = siteData || {
     summary: [],
     leaderboard: null,
+    detailedRubricsResults: null,
     leaderboardBreakdowns: {
       workerProfiles: [],
       difficulty: [],
@@ -64,6 +65,7 @@
   async function workspaceFetchPublic(path) {
     if (window.WORKSPACE_BENCH_DATA) {
       if (path.includes("leaderboard")) return window.WORKSPACE_BENCH_DATA.leaderboard;
+      if (path.includes("detailed-rubrics-results")) return window.WORKSPACE_BENCH_DATA.detailedRubricsResults;
       if (path.includes("dataset-stats")) return window.WORKSPACE_BENCH_DATA.datasetStats;
       if (path.includes("profile-results")) return window.WORKSPACE_BENCH_DATA.profileResults;
       if (path.includes("capability-results")) return window.WORKSPACE_BENCH_DATA.capabilityResults;

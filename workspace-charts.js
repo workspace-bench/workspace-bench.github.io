@@ -292,18 +292,16 @@ async function workspaceInitHeroChart() {
   const canvas = document.getElementById("heroLiteChart");
   if (!canvas || typeof Chart === "undefined") return;
   const colors = workspaceChartColors();
-  const topResults = [
-    { agent: "OpenClaw", model: "Opus-4.7", score: 66.6 },
-    { agent: "ClaudeCode", model: "Opus-4.7", score: 64.4 },
-    { agent: "Hermes", model: "Opus-4.7", score: 64.3 },
-    { agent: "DeepAgent", model: "GLM-5.1", score: 60.8 },
-    { agent: "Hermes", model: "GLM-5.1", score: 57.7 },
-    { agent: "OpenClaw", model: "GLM-5.1", score: 57.5 },
-    { agent: "ClaudeCode", model: "MiniMax-M2.7", score: 54.6 },
-    { agent: "DeepAgent", model: "Opus-4.7", score: 54.3 },
-    { agent: "ClaudeCode", model: "GLM-5.1", score: 52.4 },
-    { agent: "Hermes", model: "MiniMax-M2.7", score: 52.3 }
-  ];
+  const leaderboard = window.WORKSPACE_BENCH_DATA?.leaderboard || await workspaceFetchJson("./data/leaderboard.json");
+  const detailedRows = window.WORKSPACE_BENCH_DATA?.detailedRubricsResults?.rows || [];
+  const topResults = (detailedRows.length ? detailedRows : (leaderboard.litePublicResults || []))
+    .slice(0, 10)
+    .map((row) => ({
+      agent: row.agent,
+      model: row.model,
+      score: row.rubric_pass_rate ?? row.total_rubrics_accuracy
+    }));
+  if (!topResults.length) return;
   new Chart(canvas, {
     type: "bar",
     data: {

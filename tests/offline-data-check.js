@@ -3,6 +3,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const required = [
   'workspace-data.js',
+  'data/detailed-rubrics-results.json',
   'assets/Distribution.png',
   'assets/rubrics_success.png',
   'assets/Framework.png'

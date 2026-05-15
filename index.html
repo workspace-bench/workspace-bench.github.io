@@ -37,18 +37,12 @@
           <aside class="hero-panel analysis-shell aa-hero-ranking" aria-label="Benchmark analysis preview">
             <div class="analysis-shell-header">
               <div class="analysis-shell-title"><span class="status-dot"></span>Workspace-Bench-Lite public ranking</div>
-              <span class="badge badge-green">Repository figure</span>
+              <span class="badge badge-green">Detailed runs</span>
             </div>
             <div class="aa-hero-ranking-body">
-              <div class="aa-mini-leaderboard" id="heroMiniLeaderboard">
-                <div class="aa-mini-row"><span class="rank">#1</span><strong>OpenClaw + Opus-4.7</strong><span class="score">66.6%</span></div>
-                <div class="aa-mini-row"><span class="rank">#2</span><strong>ClaudeCode + Opus-4.7</strong><span class="score">64.4%</span></div>
-                <div class="aa-mini-row"><span class="rank">#3</span><strong>Hermes + Opus-4.7</strong><span class="score">64.3%</span></div>
-                <div class="aa-mini-row"><span class="rank">#4</span><strong>DeepAgent + GLM-5.1</strong><span class="score">60.8%</span></div>
-                <div class="aa-mini-row"><span class="rank">#5</span><strong>Hermes + GLM-5.1</strong><span class="score">57.7%</span></div>
-              </div>
+              <div class="aa-mini-leaderboard" id="heroMiniLeaderboard"></div>
               <div class="aa-hero-ranking-stats">
-              <div class="aa-hero-ranking-stat"><strong id="heroPublicRows">28</strong><span>Public Lite rows</span></div>
+              <div class="aa-hero-ranking-stat"><strong id="heroPublicRows">45</strong><span>Public Lite rows</span></div>
               <div class="aa-hero-ranking-stat"><strong id="heroLiteProfiles">5</strong><span>Worker profiles</span></div>
               <div class="aa-hero-ranking-stat"><strong id="heroLiteTasks">100</strong><span>Lite tasks</span></div>
               </div>
@@ -270,6 +264,18 @@
         setText("heroFullTasks", String(fullMeta.totalTasks || 0));
         setText("heroFullFiles", Number(fullMeta.totalFiles || 0).toLocaleString());
         setText("heroFullRubrics", Number(fullMeta.totalRubrics || 0).toLocaleString());
+
+        const heroMiniLeaderboard = document.getElementById("heroMiniLeaderboard");
+        const liteRows = data?.detailedRubricsResults?.rows?.length ? data.detailedRubricsResults.rows : (leaderboard.litePublicResults || []);
+        if (heroMiniLeaderboard && liteRows.length) {
+          heroMiniLeaderboard.innerHTML = liteRows.slice(0, 5).map((row, index) => `
+            <div class="aa-mini-row">
+              <span class="rank">#${index + 1}</span>
+              <strong>${row.agent} + ${row.model}</strong>
+              <span class="score">${Number(row.rubric_pass_rate).toFixed(1)}%</span>
+            </div>
+          `).join("");
+        }
       });
     </script>
   </body>

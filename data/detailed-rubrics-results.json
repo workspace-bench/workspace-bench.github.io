@@ -1,6 +1,9 @@
 {
-  "note": "Workspace-Bench-Lite leaderboard rows are generated from detailed_rubrics_pass_table_all_runs.csv, a detailed rubrics pass table for the latest public Lite experiments.",
-  "litePublicResults": [
+  "sourceFile": "detailed_rubrics_pass_table_all_runs.csv",
+  "generatedFromCsv": true,
+  "rowCount": 45,
+  "splitName": "Test-Rubrics-Checked",
+  "rows": [
     {
       "rank": 1,
       "setting_name": "OpenClaw--Opus-4.7--Test-Rubrics-Checked",
@@ -1489,6 +1492,20 @@
   ],
   "thresholds": [
     {
+      "label": "Pass >= 10%",
+      "value": 10,
+      "averagePassedTasks": 82.1,
+      "bestPassedTasks": 97,
+      "systemsWithAnyPass": 45
+    },
+    {
+      "label": "Pass >= 20%",
+      "value": 20,
+      "averagePassedTasks": 71.8,
+      "bestPassedTasks": 94,
+      "systemsWithAnyPass": 45
+    },
+    {
       "label": "Pass >= 30%",
       "value": 30,
       "averagePassedTasks": 62.9,
@@ -1545,80 +1562,112 @@
       "systemsWithAnyPass": 44
     }
   ],
-  "fullSummaryRows": [
+  "frameworkAverages": [
     {
-      "rank": 1,
-      "agent": "Human + Tools",
-      "harness": "Human reference",
-      "model": "Human",
-      "overall_score": 80.7,
-      "task_success_rate": 80.7,
-      "rubric_pass_rate": 80.7,
-      "workspace_size": "Full",
-      "profile": "All profiles",
-      "capability": "Overall",
-      "date": "2026-05-05",
-      "verified": true,
-      "source": "paper-reported",
-      "report_url": "https://arxiv.org/abs/2605.03596"
+      "framework": "ClaudeCode",
+      "average": 50.6,
+      "best": 64.7,
+      "runs": 8
     },
     {
-      "rank": 2,
-      "agent": "Best public agent",
-      "harness": "Best evaluated harness",
-      "model": "Best evaluated model",
-      "overall_score": 68.7,
-      "task_success_rate": 68.7,
-      "rubric_pass_rate": 68.7,
-      "workspace_size": "Full",
-      "profile": "All profiles",
-      "capability": "Overall",
-      "date": "2026-05-05",
-      "verified": true,
-      "source": "paper-reported",
-      "report_url": "https://arxiv.org/abs/2605.03596"
+      "framework": "OpenClaw",
+      "average": 46.8,
+      "best": 66.7,
+      "runs": 10
     },
     {
-      "rank": 3,
-      "agent": "Average public agent",
-      "harness": "Mean across evaluated agents",
-      "model": "4 harnesses / 7 foundation models",
-      "overall_score": 47.4,
-      "task_success_rate": 47.4,
-      "rubric_pass_rate": 47.4,
-      "workspace_size": "Full",
-      "profile": "All profiles",
-      "capability": "Overall",
-      "date": "2026-05-05",
-      "verified": true,
-      "source": "paper-reported",
-      "report_url": "https://arxiv.org/abs/2605.03596"
+      "framework": "Hermes",
+      "average": 46.7,
+      "best": 64.5,
+      "runs": 10
+    },
+    {
+      "framework": "Codex",
+      "average": 43.8,
+      "best": 53.1,
+      "runs": 7
+    },
+    {
+      "framework": "DeepAgent",
+      "average": 39.9,
+      "best": 61,
+      "runs": 10
     }
   ],
-  "leaderboards": [
+  "modelAverages": [
     {
-      "name": "Overall",
-      "description": "Full Workspace-Bench paper summary. Detailed full-benchmark per-system tables are not public yet."
+      "model": "Opus-4.7",
+      "average": 62.6,
+      "best": 66.7,
+      "runs": 4
     },
     {
-      "name": "Workspace-Bench-Lite",
-      "description": "Latest public Workspace-Bench-Lite detailed rubric results generated from the released experiment table."
+      "model": "GLM-5.1",
+      "average": 56.4,
+      "best": 61,
+      "runs": 5
     },
     {
-      "name": "Threshold Views",
-      "description": "Inspect how many public Lite system combinations clear each rubric pass-rate threshold."
+      "model": "Qwen-3.6-Plus",
+      "average": 48.3,
+      "best": 55.6,
+      "runs": 4
     },
     {
-      "name": "By Worker Profile",
-      "description": "Official benchmark composition by workspace profile from the public distribution figure."
+      "model": "MiniMax-M2.7",
+      "average": 47.8,
+      "best": 54.6,
+      "runs": 5
     },
     {
-      "name": "By Difficulty",
-      "description": "Official task difficulty split from the public distribution figure."
+      "model": "Kimi-2.5",
+      "average": 46.1,
+      "best": 49.1,
+      "runs": 5
     },
     {
-      "name": "By Ability",
-      "description": "Official task ability counts from the public distribution figure."
+      "model": "Seed-2.0-Lite",
+      "average": 45.4,
+      "best": 53,
+      "runs": 4
+    },
+    {
+      "model": "GPT-5.4",
+      "average": 45.4,
+      "best": 51.8,
+      "runs": 5
+    },
+    {
+      "model": "Seed-2.0-Code",
+      "average": 38.9,
+      "best": 42.3,
+      "runs": 4
+    },
+    {
+      "model": "Gemini-3.1-Pro",
+      "average": 33.1,
+      "best": 37.5,
+      "runs": 5
+    },
+    {
+      "model": "Grok-4.3",
+      "average": 30.3,
+      "best": 36.9,
+      "runs": 4
+    }
+  ],
+  "difficultyAverages": [
+    {
+      "difficulty": "Easy",
+      "average": 54.5
+    },
+    {
+      "difficulty": "Medium",
+      "average": 47.9
+    },
+    {
+      "difficulty": "Hard",
+      "average": 37.9
     }
   ]
 }

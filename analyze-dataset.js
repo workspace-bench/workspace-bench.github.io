@@ -4,6 +4,7 @@ const axios = require("axios");
 
 const ROOT = __dirname;
 const DATA_DIR = path.join(ROOT, "data");
+const DETAILED_RUBRICS_CSV = path.join(ROOT, "detailed_rubrics_pass_table_all_runs.csv");
 const SOURCES = {
   full: {
     label: "Workspace-Bench",
@@ -75,6 +76,12 @@ function parseJsonArray(value) {
 function round(value, digits = 1) {
   const factor = 10 ** digits;
   return Math.round(value * factor) / factor;
+}
+
+function toNumber(value, digits = null) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return null;
+  return digits === null ? number : round(number, digits);
 }
 
 function bucketFileCount(count) {
@@ -351,6 +358,114 @@ function readJson(filename, fallback) {
   return JSON.parse(fs.readFileSync(target, "utf8"));
 }
 
+function loadDetailedRubricsResults() {
+  if (!fs.existsSync(DETAILED_RUBRICS_CSV)) {
+    return {
+      sourceFile: null,
+      generatedFromCsv: false,
+      rows: [],
+      thresholds: [],
+      frameworkAverages: [],
+      modelAverages: [],
+      difficultyAverages: []
+    };
+  }
+
+  const csvContent = fs.readFileSync(DETAILED_RUBRICS_CSV, "utf8");
+  const parsedRows = parseCSV(csvContent);
+  const headers = parsedRows[0].map((header) => String(header).replace(/^\uFEFF/, "").trim());
+  const headerIndex = Object.fromEntries(headers.map((header, index) => [header, index]));
+
+  const rows = parsedRows.slice(1)
+    .filter((row) => row.length > 1)
+    .map((row) => ({
+      setting_name: String(row[headerIndex.setting_name] || "").trim(),
+      agent: String(row[headerIndex.harness] || "").trim(),
+      harness: String(row[headerIndex.harness] || "").trim(),
+      model: String(row[headerIndex.llm] || "").trim(),
+      split_name: String(row[headerIndex.split_name] || "").trim(),
+      easy_rubrics_accuracy: toNumber(row[headerIndex.easy_rubrics_accuracy], 1),
+      medium_rubrics_accuracy: toNumber(row[headerIndex.medium_rubrics_accuracy], 1),
+      hard_rubrics_accuracy: toNumber(row[headerIndex.hard_rubrics_accuracy], 1),
+      total_rubrics_accuracy: toNumber(row[headerIndex.total_rubrics_accuracy], 1),
+      pass_at: {
+        "10": toNumber(row[headerIndex.pass_at_10], 0),
+        "20": toNumber(row[headerIndex.pass_at_20], 0),
+        "30": toNumber(row[headerIndex.pass_at_30], 0),
+        "40": toNumber(row[headerIndex.pass_at_40], 0),
+        "50": toNumber(row[headerIndex.pass_at_50], 0),
+        "60": toNumber(row[headerIndex.pass_at_60], 0),
+        "70": toNumber(row[headerIndex.pass_at_70], 0),
+        "80": toNumber(row[headerIndex.pass_at_80], 0),
+        "90": toNumber(row[headerIndex.pass_at_90], 0),
+        "100": toNumber(row[headerIndex.pass_at_100], 0)
+      },
+      source: "detailed-rubrics-pass-table",
+      report_url: "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite",
+      verified: true,
+      date: "2026-05-14"
+    }))
+    .sort((a, b) => b.total_rubrics_accuracy - a.total_rubrics_accuracy)
+    .map((row, index) => ({
+      rank: index + 1,
+      ...row,
+      rubric_pass_rate: row.total_rubrics_accuracy,
+      overall_score: row.total_rubrics_accuracy,
+      workspace_size: "Lite",
+      profile: "All profiles",
+      capability: "Rubric pass rate"
+    }));
+
+  const thresholds = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((value) => ({
+    label: `Pass >= ${value}%`,
+    value,
+    averagePassedTasks: round(rows.reduce((sum, row) => sum + (row.pass_at[String(value)] || 0), 0) / Math.max(rows.length, 1), 1),
+    bestPassedTasks: Math.max(...rows.map((row) => row.pass_at[String(value)] || 0)),
+    systemsWithAnyPass: rows.filter((row) => (row.pass_at[String(value)] || 0) > 0).length
+  }));
+
+  function averageBy(key, outputKey) {
+    return [...rows.reduce((map, row) => {
+      const name = row[key];
+      const current = map.get(name) || { total: 0, count: 0, best: 0 };
+      current.total += row.rubric_pass_rate;
+      current.count += 1;
+      current.best = Math.max(current.best, row.rubric_pass_rate);
+      map.set(name, current);
+      return map;
+    }, new Map()).entries()]
+      .map(([name, stats]) => ({
+        [outputKey]: name,
+        average: round(stats.total / stats.count, 1),
+        best: round(stats.best, 1),
+        runs: stats.count
+      }))
+      .sort((a, b) => b.average - a.average);
+  }
+
+  const difficultyAverages = ["easy", "medium", "hard"].map((difficulty) => {
+    const field = `${difficulty}_rubrics_accuracy`;
+    const valid = rows.map((row) => row[field]).filter((value) => value !== null);
+    const total = valid.reduce((sum, value) => sum + value, 0);
+    return {
+      difficulty: difficulty[0].toUpperCase() + difficulty.slice(1),
+      average: valid.length ? round(total / valid.length, 1) : 0
+    };
+  });
+
+  return {
+    sourceFile: "detailed_rubrics_pass_table_all_runs.csv",
+    generatedFromCsv: true,
+    rowCount: rows.length,
+    splitName: rows[0]?.split_name || null,
+    rows,
+    thresholds,
+    frameworkAverages: averageBy("agent", "framework"),
+    modelAverages: averageBy("model", "model"),
+    difficultyAverages
+  };
+}
+
 async function main() {
   await ensureSources();
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -419,11 +534,27 @@ async function main() {
     "utf8"
   );
 
+  const detailedRubricsResults = loadDetailedRubricsResults();
+  writeJson("detailed-rubrics-results.json", detailedRubricsResults);
+
   const leaderboard = readJson("leaderboard.json", {});
+  if (detailedRubricsResults.rows.length) {
+    leaderboard.note = "Workspace-Bench-Lite leaderboard rows are generated from detailed_rubrics_pass_table_all_runs.csv, a detailed rubrics pass table for the latest public Lite experiments.";
+    leaderboard.litePublicResults = detailedRubricsResults.rows;
+    leaderboard.thresholds = detailedRubricsResults.thresholds.filter((threshold) => threshold.value >= 30 && threshold.value <= 100);
+    if (Array.isArray(leaderboard.leaderboards)) {
+      const lite = leaderboard.leaderboards.find((item) => item.name === "Workspace-Bench-Lite");
+      if (lite) lite.description = "Latest public Workspace-Bench-Lite detailed rubric results generated from the released experiment table.";
+      const threshold = leaderboard.leaderboards.find((item) => item.name === "Threshold Views");
+      if (threshold) threshold.description = "Inspect how many public Lite system combinations clear each rubric pass-rate threshold.";
+    }
+  }
+  writeJson("leaderboard.json", leaderboard);
   const examples = readJson("examples.json", { examples: [] }).examples || [];
   const siteData = {
     summary,
     leaderboard,
+    detailedRubricsResults,
     leaderboardBreakdowns: {
       workerProfiles: fullStats.profileTasks,
       difficulty: fullStats.fileCountDist.map(({ bucket, count, share }) => ({ level: bucket, tasks: count, share })),

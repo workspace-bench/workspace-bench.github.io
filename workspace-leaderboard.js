@@ -13,8 +13,23 @@ let abilityFullChart;
 let abilityLiteChart;
 let scoreChart;
 let costChart;
-let runtimeChart;
 let liteRankingChart;
+let difficultyChart;
+
+function workspaceGetDetailedRubrics(data) {
+  return window.WORKSPACE_BENCH_DATA?.detailedRubricsResults || data.detailedRubricsResults || null;
+}
+
+function workspaceGetLiteResults(data) {
+  const detailedRows = workspaceGetDetailedRubrics(data)?.rows || [];
+  return detailedRows.length ? detailedRows : (data.litePublicResults || []);
+}
+
+function workspaceAverageMetric(rows, field) {
+  const values = rows.map((row) => Number(row[field])).filter((value) => Number.isFinite(value));
+  if (!values.length) return 0;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
 
 async function workspaceLoadLeaderboardData() {
   if (workspaceLeaderboardData) return workspaceLeaderboardData;
@@ -32,14 +47,14 @@ function workspaceGetActiveLeaderboard(data) {
 
 function workspaceGetLeaderboardRows(data) {
   if (workspaceActiveLeaderboard === "Overall") return data.fullSummaryRows || [];
-  return (data.litePublicResults || []).map((row) => ({
+  return workspaceGetLiteResults(data).map((row) => ({
     ...row,
-    overall_score: row.rubric_pass_rate,
+    overall_score: row.rubric_pass_rate ?? row.total_rubrics_accuracy,
     task_success_rate: null,
     workspace_size: "Lite",
-    date: "2026-05-07",
+    date: row.date || "2026-05-14",
     verified: true,
-    source: row.source || "repository-figure"
+    source: row.source || "detailed-rubrics-pass-table"
   }));
 }
 
@@ -183,7 +198,10 @@ function workspaceRenderTable(rows) {
       <th data-sort="rank">${workspaceSortLabel("Rank", "rank")}</th>
       <th data-sort="agent">${workspaceSortLabel("Framework", "agent")}</th>
       <th data-sort="model">${workspaceSortLabel("Model", "model")}</th>
-      <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Rubric Pass Rate", "overall_score")}</th>
+      <th class="numeric" data-sort="overall_score">${workspaceSortLabel("Total", "overall_score")}</th>
+      <th class="numeric" data-sort="easy_rubrics_accuracy">${workspaceSortLabel("Easy", "easy_rubrics_accuracy")}</th>
+      <th class="numeric" data-sort="medium_rubrics_accuracy">${workspaceSortLabel("Medium", "medium_rubrics_accuracy")}</th>
+      <th class="numeric" data-sort="hard_rubrics_accuracy">${workspaceSortLabel("Hard", "hard_rubrics_accuracy")}</th>
       <th>Harness</th>
       <th>Source</th>
     `;
@@ -210,6 +228,9 @@ function workspaceRenderTable(rows) {
           <span class="matrix-score">${workspaceFormatNumber(row.overall_score, "%")}</span>
           <div class="rank-bar-track" aria-hidden="true"><span class="rank-bar" style="width:${Math.max(4, (Number(row.overall_score) || 0) / topScore * 100)}%"></span></div>
         </td>
+        <td class="numeric">${workspaceFormatNumber(row.easy_rubrics_accuracy, "%")}</td>
+        <td class="numeric">${workspaceFormatNumber(row.medium_rubrics_accuracy, "%")}</td>
+        <td class="numeric">${workspaceFormatNumber(row.hard_rubrics_accuracy, "%")}</td>
         <td><span class="badge">${row.harness}</span></td>
         <td><a href="${row.report_url}" target="_blank" rel="noopener noreferrer">${row.source}</a></td>
       </tr>
@@ -218,7 +239,7 @@ function workspaceRenderTable(rows) {
 
   const note = isOverall
     ? "Overall rows are taken directly from the public paper summary because no full per-system table has been released yet."
-    : "Lite rows are real public framework/model combinations transcribed from the official repository figure.";
+    : "Lite rows are generated from detailed_rubrics_pass_table_all_runs.csv and expose total, easy, medium, hard, and pass-threshold metrics.";
 
   container.innerHTML = `
     <div class="toolbar" style="margin-top:0;margin-bottom:10px">
@@ -272,6 +293,8 @@ function workspaceModelIconName(model) {
   const normalized = model.toLowerCase();
   if (/opus|claude|sonnet|haiku/.test(normalized)) return "claude";
   if (/glm/.test(normalized)) return "glm";
+  if (/grok/.test(normalized)) return "grok";
+  if (/qwen/.test(normalized)) return "qwen";
   if (/gpt|openai/.test(normalized)) return "gpt";
   if (/minimax/.test(normalized)) return "minimax";
   if (/kimi/.test(normalized)) return "kimi";
@@ -285,8 +308,8 @@ function workspaceRenderLiteRankingLabels(rows) {
   if (!rail) return;
   rail.innerHTML = rows.map((row) => `
     <div class="lite-ranking-label-item">
-      <img class="lite-ranking-agent-logo" src="./icons/${workspaceAgentIconName(row.agent)}.png" alt="${row.agent}">
-      <img class="lite-ranking-llm-logo" src="./icons/${workspaceModelIconName(row.model)}.png" alt="${row.model}">
+      <img class="lite-ranking-agent-logo" src="./icons/${workspaceAgentIconName(row.agent)}.png" alt="${row.agent}" onerror="this.src='./workspace-bench.svg'">
+      <img class="lite-ranking-llm-logo" src="./icons/${workspaceModelIconName(row.model)}.png" alt="${row.model}" onerror="this.src='./workspace-bench.svg'">
       <div class="lite-ranking-slanted-label"><span>${row.agent}</span><span>${row.model}</span></div>
     </div>
   `).join("");
@@ -310,7 +333,7 @@ function workspaceRenderLiteRankingChart(data) {
   if (typeof Chart === "undefined") return;
   const canvas = document.getElementById("liteRankingChart");
   if (!canvas) return;
-  const rows = (data.litePublicResults || []).map((r, i) => ({ ...r, displayRank: i + 1 }));
+  const rows = workspaceGetLiteResults(data).map((r, i) => ({ ...r, displayRank: i + 1 }));
   const canvasWrap = canvas.closest(".lite-ranking-canvas-wrap");
   const labelRail = document.getElementById("liteRankingLabelRail");
   if (liteRankingChart) liteRankingChart.destroy();
@@ -394,7 +417,7 @@ function workspaceRenderLiteRankingChart(data) {
 function workspaceRenderInsightCards(data) {
   const container = document.getElementById("leaderboardInsightCards");
   if (!container) return;
-  const lite = data.litePublicResults || [];
+  const lite = workspaceGetLiteResults(data);
   const top = lite[0];
   const threshold60 = lite.filter((row) => row.rubric_pass_rate >= 60).length;
   const averageLite = lite.length ? lite.reduce((sum, row) => sum + row.rubric_pass_rate, 0) / lite.length : null;
@@ -402,7 +425,7 @@ function workspaceRenderInsightCards(data) {
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Public Lite rows</div>
       <div class="leaderboard-big-number">${lite.length}</div>
-      <p>Public framework/model combinations currently released for Workspace-Bench-Lite.</p>
+      <p>Framework/model combinations in the latest detailed Lite experiment table.</p>
     </div>
     <div class="leaderboard-insight-card aa-summary-tile">
       <div class="leaderboard-kicker">Top Lite system</div>
@@ -425,7 +448,7 @@ function workspaceRenderInsightCards(data) {
 function workspaceRenderFrameworkMatrix(data) {
   const container = document.getElementById("frameworkModelMatrix");
   if (!container) return;
-  const rows = data.litePublicResults || [];
+  const rows = workspaceGetLiteResults(data);
   const frameworks = Array.from(new Set(rows.map((row) => row.agent))).sort();
   const models = Array.from(new Set(rows.map((row) => row.model))).sort((a, b) => {
     const bestA = Math.max(...rows.filter((row) => row.model === a).map((row) => row.rubric_pass_rate));
@@ -462,15 +485,20 @@ function workspaceRenderFrameworkMatrix(data) {
         </tbody>
       </table>
     </div>
-    <p class="table-note">Blank cells mean the paper or repository figure does not expose that framework/model combination.</p>
+    <p class="table-note">Blank cells mean that framework/model combination is not present in the latest detailed Lite result table.</p>
   `;
 }
 
 function workspaceRenderThresholdViews(data) {
-  const rows = (data.thresholds || []).map((threshold) => ({
+  const detailed = workspaceGetDetailedRubrics(data);
+  const liteRows = workspaceGetLiteResults(data);
+  const thresholds = detailed?.thresholds?.length ? detailed.thresholds : (data.thresholds || []);
+  const rows = thresholds.map((threshold) => ({
     value: threshold.value,
     label: threshold.label,
-    hits: (data.litePublicResults || []).filter((row) => row.rubric_pass_rate >= threshold.value).length
+    hits: threshold.averagePassedTasks ?? liteRows.filter((row) => row.rubric_pass_rate >= threshold.value).length,
+    best: threshold.bestPassedTasks ?? null,
+    systems: threshold.systemsWithAnyPass ?? liteRows.filter((row) => row.rubric_pass_rate >= threshold.value).length
   }));
 
   const thresholdFilter = document.getElementById("thresholdFocusFilter");
@@ -493,7 +521,7 @@ function workspaceRenderThresholdViews(data) {
     "thresholdChart",
     filteredRows.map((item) => item.label),
     filteredRows.map((item) => item.hits),
-    "Systems Clearing Each Threshold",
+    detailed?.thresholds?.length ? "Average tasks passing each threshold" : "Systems Clearing Each Threshold",
     "#0ea5e9"
   );
 
@@ -503,7 +531,7 @@ function workspaceRenderThresholdViews(data) {
       <div class="leaderboard-stat-item">
         <div class="leaderboard-kicker">${item.label}</div>
         <div class="leaderboard-big-number">${item.hits}</div>
-        <p>Public Lite systems at or above this pass-rate threshold.</p>
+        <p>${item.best === null ? "Latest Lite systems at or above this total rubric pass-rate threshold." : `Average passed tasks; best system passes ${item.best} tasks and ${item.systems} systems pass at least one task.`}</p>
       </div>
     `).join("");
   }
@@ -563,11 +591,12 @@ function workspaceRenderCompositionCharts() {
 
 function workspaceRenderLeaderboardCharts(data) {
   if (typeof Chart === "undefined") return;
-  const liteRows = (data.litePublicResults || []).map((row) => ({
+  const detailed = workspaceGetDetailedRubrics(data);
+  const liteRows = workspaceGetLiteResults(data).map((row) => ({
     ...row,
     overall_score: row.rubric_pass_rate
   }));
-  const frameworkAverages = Array.from(
+  const frameworkAverages = detailed?.frameworkAverages?.length ? detailed.frameworkAverages : Array.from(
     liteRows.reduce((map, row) => {
       const current = map.get(row.agent) || { total: 0, count: 0 };
       current.total += row.rubric_pass_rate;
@@ -580,7 +609,7 @@ function workspaceRenderLeaderboardCharts(data) {
     average: stats.total / stats.count
   })).sort((a, b) => b.average - a.average);
 
-  const modelAverages = Array.from(
+  const modelAverages = detailed?.modelAverages?.length ? detailed.modelAverages : Array.from(
     liteRows.reduce((map, row) => {
       const current = map.get(row.model) || { total: 0, count: 0 };
       current.total += row.rubric_pass_rate;
@@ -593,11 +622,15 @@ function workspaceRenderLeaderboardCharts(data) {
     average: stats.total / stats.count
   })).sort((a, b) => b.average - a.average);
 
-  const profiles = window.WORKSPACE_BENCH_DATA?.leaderboardBreakdowns?.workerProfiles || [];
+  const difficultyAverages = detailed?.difficultyAverages?.length ? detailed.difficultyAverages : [
+    { difficulty: "Easy", average: workspaceAverageMetric(liteRows, "easy_rubrics_accuracy") },
+    { difficulty: "Medium", average: workspaceAverageMetric(liteRows, "medium_rubrics_accuracy") },
+    { difficulty: "Hard", average: workspaceAverageMetric(liteRows, "hard_rubrics_accuracy") }
+  ];
   const costPanel = document.getElementById("scoreCostPanel");
   const runtimePanel = document.getElementById("scoreRuntimePanel");
   if (costPanel) costPanel.innerHTML = '<canvas id="scoreCostChart" aria-label="Model family average chart"></canvas>';
-  if (runtimePanel) runtimePanel.innerHTML = '<canvas id="scoreRuntimeChart" aria-label="Worker profile distribution chart"></canvas>';
+  if (runtimePanel) runtimePanel.innerHTML = '<canvas id="scoreRuntimeChart" aria-label="Difficulty average chart"></canvas>';
 
   if (scoreChart) scoreChart.destroy();
   scoreChart = workspaceMakeDenseBarChart(
@@ -617,12 +650,12 @@ function workspaceRenderLeaderboardCharts(data) {
     "#7c3aed"
   );
 
-  if (runtimeChart) runtimeChart.destroy();
-  runtimeChart = workspaceMakeDenseBarChart(
+  if (difficultyChart) difficultyChart.destroy();
+  difficultyChart = workspaceMakeDenseBarChart(
     "scoreRuntimeChart",
-    profiles.map((item) => item.profile),
-    profiles.map((item) => item.tasks),
-    "Full split worker-profile task count",
+    difficultyAverages.map((item) => item.difficulty),
+    difficultyAverages.map((item) => Number(item.average.toFixed(1))),
+    "Average pass rate by difficulty",
     "#2563eb"
   );
 }
@@ -656,4 +689,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(error);
     });
   }
+});
+
+window.addEventListener("resize", () => {
+  window.requestAnimationFrame(() => workspaceSyncLiteRankingLabelPositions());
 });

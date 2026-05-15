@@ -28,7 +28,9 @@ const requiredFiles = [
   'data/tasks.js',
   'data/tasks-lite.js',
   'data/site-data.js',
-  'data/examples.json'
+  'data/examples.json',
+  'data/detailed-rubrics-results.json',
+  'detailed_rubrics_pass_table_all_runs.csv'
 ];
 
 const requiredText = {
@@ -138,12 +140,22 @@ const leaderboardPath = path.join(root, 'data/leaderboard.json');
 if (fs.existsSync(leaderboardPath)) {
   const data = JSON.parse(fs.readFileSync(leaderboardPath, 'utf8'));
   if (!Array.isArray(data.leaderboards)) fail('leaderboard.json must contain leaderboards array');
+  if (!Array.isArray(data.litePublicResults) || data.litePublicResults.length !== 45) fail('leaderboard.json must contain 45 detailed Lite result rows');
+  if (data.litePublicResults?.[0]?.agent !== 'OpenClaw' || data.litePublicResults?.[0]?.model !== 'Opus-4.7') fail('leaderboard.json top Lite row must match detailed rubrics CSV');
   else {
     const names = data.leaderboards.map((item) => item.name);
     for (const expected of ['Overall', 'Workspace-Bench-Lite', 'By Worker Profile', 'By Ability']) {
       if (!names.includes(expected)) fail(`leaderboard missing tab ${expected}`);
     }
   }
+}
+
+const detailedRubricsPath = path.join(root, 'data/detailed-rubrics-results.json');
+if (fs.existsSync(detailedRubricsPath)) {
+  const detailed = JSON.parse(fs.readFileSync(detailedRubricsPath, 'utf8'));
+  if (detailed.sourceFile !== 'detailed_rubrics_pass_table_all_runs.csv') fail('detailed rubrics results must record the source CSV');
+  if (!Array.isArray(detailed.rows) || detailed.rows.length !== 45) fail('detailed rubrics results must contain 45 rows');
+  if (!Array.isArray(detailed.thresholds) || detailed.thresholds.length !== 10) fail('detailed rubrics results must contain pass_at thresholds from 10 to 100');
 }
 
 const datasetStatsPath = path.join(root, 'data/dataset-stats.json');

@@ -6,8 +6,9 @@ yarn.lock
 
 # Local datasets / artifacts (do not publish raw pulls by default)
 *.csv
+!detailed_rubrics_pass_table_all_runs.csv
 
 # Local temp files
 .git-commit-temp.txt
 .commit-msg
-
+.chrome-check/
