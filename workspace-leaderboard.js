@@ -15,6 +15,19 @@ let scoreChart;
 let costChart;
 let liteRankingChart;
 let difficultyChart;
+const workspaceLiteRankingState = {
+  harnesses: [],
+  models: []
+};
+
+const workspaceLobeHubIconMap = {
+  claude: "./icons/lobehub/claude.png",
+  gemini: "./icons/lobehub/gemini.png",
+  glm: "./icons/lobehub/glm.png",
+  minimax: "./icons/lobehub/minimax.png",
+  qwen: "./icons/lobehub/qwen.png",
+  seed: "./icons/lobehub/seed.png"
+};
 
 function workspaceGetDetailedRubrics(data) {
   return window.WORKSPACE_BENCH_DATA?.detailedRubricsResults || data.detailedRubricsResults || null;
@@ -23,6 +36,27 @@ function workspaceGetDetailedRubrics(data) {
 function workspaceGetLiteResults(data) {
   const detailedRows = workspaceGetDetailedRubrics(data)?.rows || [];
   return detailedRows.length ? detailedRows : (data.litePublicResults || []);
+}
+
+function workspaceEnsureLiteRankingState(rows) {
+  const harnesses = Array.from(new Set(rows.map((row) => row.agent))).sort();
+  const models = Array.from(new Set(rows.map((row) => row.model))).sort((a, b) => {
+    const maxA = Math.max(...rows.filter((row) => row.model === a).map((row) => row.rubric_pass_rate));
+    const maxB = Math.max(...rows.filter((row) => row.model === b).map((row) => row.rubric_pass_rate));
+    return maxB - maxA;
+  });
+  if (!workspaceLiteRankingState.harnesses.length) workspaceLiteRankingState.harnesses = harnesses.slice();
+  if (!workspaceLiteRankingState.models.length) workspaceLiteRankingState.models = models.slice();
+  workspaceLiteRankingState.harnesses = workspaceLiteRankingState.harnesses.filter((item) => harnesses.includes(item));
+  workspaceLiteRankingState.models = workspaceLiteRankingState.models.filter((item) => models.includes(item));
+  if (!workspaceLiteRankingState.harnesses.length) workspaceLiteRankingState.harnesses = harnesses.slice();
+  if (!workspaceLiteRankingState.models.length) workspaceLiteRankingState.models = models.slice();
+  return { harnesses, models };
+}
+
+function workspaceLiteRankingIconUrl(name, fallbackPath) {
+  const url = workspaceLobeHubIconMap[name];
+  return url || fallbackPath;
 }
 
 function workspaceAverageMetric(rows, field) {
@@ -303,13 +337,56 @@ function workspaceModelIconName(model) {
   return normalized.replace(/[^a-z0-9]/g, "");
 }
 
+function workspaceRenderLiteRankingFilters(rows) {
+  const harnessContainer = document.getElementById("liteRankingHarnessFilter");
+  const modelContainer = document.getElementById("liteRankingModelFilter");
+  if (!harnessContainer || !modelContainer) return;
+
+  const { harnesses, models } = workspaceEnsureLiteRankingState(rows);
+  harnessContainer.innerHTML = harnesses.map((harness) => `
+    <label class="lite-ranking-check">
+      <input type="checkbox" value="${harness}" ${workspaceLiteRankingState.harnesses.includes(harness) ? "checked" : ""} data-kind="harness">
+      <span>${harness}</span>
+    </label>
+  `).join("");
+  modelContainer.innerHTML = models.map((model) => `
+    <label class="lite-ranking-check">
+      <input type="checkbox" value="${model}" ${workspaceLiteRankingState.models.includes(model) ? "checked" : ""} data-kind="model">
+      <span>${model}</span>
+    </label>
+  `).join("");
+
+  [...harnessContainer.querySelectorAll("input[data-kind='harness']")].forEach((input) => {
+    input.addEventListener("change", () => {
+      const checked = [...harnessContainer.querySelectorAll("input:checked")].map((item) => item.value);
+      workspaceLiteRankingState.harnesses = checked.length ? checked : harnesses.slice();
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+  });
+
+  [...modelContainer.querySelectorAll("input[data-kind='model']")].forEach((input) => {
+    input.addEventListener("change", () => {
+      const checked = [...modelContainer.querySelectorAll("input:checked")].map((item) => item.value);
+      workspaceLiteRankingState.models = checked.length ? checked : models.slice();
+      workspaceRenderLeaderboard().catch(console.error);
+    });
+  });
+}
+
+function workspaceFilterLiteRankingRows(rows) {
+  return rows.filter((row) =>
+    workspaceLiteRankingState.harnesses.includes(row.agent) &&
+    workspaceLiteRankingState.models.includes(row.model)
+  );
+}
+
 function workspaceRenderLiteRankingLabels(rows) {
   const rail = document.getElementById("liteRankingLabelRail");
   if (!rail) return;
   rail.innerHTML = rows.map((row) => `
     <div class="lite-ranking-label-item">
-      <img class="lite-ranking-agent-logo" src="./icons/${workspaceAgentIconName(row.agent)}.png" alt="${row.agent}" onerror="this.src='./workspace-bench.svg'">
-      <img class="lite-ranking-llm-logo" src="./icons/${workspaceModelIconName(row.model)}.png" alt="${row.model}" onerror="this.src='./workspace-bench.svg'">
+      <img class="lite-ranking-agent-logo" src="${workspaceLiteRankingIconUrl(workspaceAgentIconName(row.agent), `./icons/${workspaceAgentIconName(row.agent)}.png`)}" alt="${row.agent}" onerror="this.src='./icons/${workspaceAgentIconName(row.agent)}.png';this.onerror=()=>{this.src='./workspace-bench.svg';}">
+      <img class="lite-ranking-llm-logo" src="${workspaceLiteRankingIconUrl(workspaceModelIconName(row.model), `./icons/${workspaceModelIconName(row.model)}.png`)}" alt="${row.model}" onerror="this.src='./icons/${workspaceModelIconName(row.model)}.png';this.onerror=()=>{this.src='./workspace-bench.svg';}">
       <div class="lite-ranking-slanted-label"><span>${row.agent}</span><span>${row.model}</span></div>
     </div>
   `).join("");
@@ -333,13 +410,24 @@ function workspaceRenderLiteRankingChart(data) {
   if (typeof Chart === "undefined") return;
   const canvas = document.getElementById("liteRankingChart");
   if (!canvas) return;
-  const rows = workspaceGetLiteResults(data).map((r, i) => ({ ...r, displayRank: i + 1 }));
+  const allRows = workspaceGetLiteResults(data).map((r, i) => ({ ...r, displayRank: i + 1 }));
+  workspaceRenderLiteRankingFilters(allRows);
+  const rows = workspaceFilterLiteRankingRows(allRows);
   const canvasWrap = canvas.closest(".lite-ranking-canvas-wrap");
   const labelRail = document.getElementById("liteRankingLabelRail");
   if (liteRankingChart) liteRankingChart.destroy();
-  if (canvasWrap) canvasWrap.style.width = "100%";
-  if (labelRail) labelRail.style.width = "100%";
+  const contentWidth = Math.max(1320, rows.length * 54 + 140);
+  if (canvasWrap) canvasWrap.style.setProperty("--lite-ranking-content-width", `${contentWidth}px`);
+  if (labelRail) labelRail.style.setProperty("--lite-ranking-content-width", `${contentWidth}px`);
   workspaceRenderLiteRankingLabels(rows);
+
+  if (!rows.length) {
+    const rail = document.getElementById("liteRankingLabelRail");
+    if (rail) rail.innerHTML = `<div class="table-note" style="padding:18px 16px">No ranking rows match the selected harness/model filters.</div>`;
+    const ctx = canvas.getContext("2d");
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    return;
+  }
 
   const barColors = rows.map((_, index) => {
     if (index < 3) return "#111111";
@@ -404,7 +492,7 @@ function workspaceRenderLiteRankingChart(data) {
         padding: { top: 18, right: 14, bottom: 0, left: 10 }
       },
       datasets: {
-        bar: { categoryPercentage: 0.88, barPercentage: 0.86 }
+        bar: { categoryPercentage: 0.8, barPercentage: 0.82 }
       },
       animation: { duration: 0 }
     }

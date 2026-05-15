@@ -17,6 +17,12 @@ const requiredFiles = [
   'workspace-charts.js',
   'workspace-data.js',
   'workspace-bench.svg',
+  'icons/lobehub/claude.png',
+  'icons/lobehub/gemini.png',
+  'icons/lobehub/glm.png',
+  'icons/lobehub/minimax.png',
+  'icons/lobehub/qwen.png',
+  'icons/lobehub/seed.png',
   'assets/Distribution.png',
   'assets/rubrics_success.png',
   'assets/Framework.png',
@@ -51,7 +57,7 @@ const requiredText = {
     'arXiv paper',
     'Public leaderboard'
   ],
-  'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis'],
+  'leaderboard.html': ['Official Leaderboard', 'Public Lite Rankings', 'Framework x Model Matrix', 'Workspace-Bench Leaderboards', 'Threshold Views', 'Composition Analysis', 'Leaderboard Analysis', 'Ranking Chart Filters', 'Harness filter', 'Model filter'],
   'dataset.html': ['Dataset', 'Worker Profile Distribution', 'Collaboration Types', 'Rubric Evaluation Types', 'Task Browser', 'API Playground', 'Source: HuggingFace'],
   'methodology.html': ['Workspace Learning', 'Rubric-based Scoring', 'Reproducibility Requirements', 'Evaluation pipeline', 'Scoring Dimensions'],
   'examples.html': ['Representative Tasks', 'Task intelligence feed', 'Coming soon', 'Evidence path'],
@@ -66,7 +72,7 @@ function fail(message) {
 }
 
 const styleText = fs.readFileSync(path.join(root, 'styles/workspace.css'), 'utf8');
-for (const selector of ['analysis-shell', 'aa-metric-strip', 'leaderboard-insight-card', 'rank-bar', 'no-data-panel', 'analysis-list', 'compact-data-table', 'pipeline-step', 'aa-floating-nav', 'aa-brand-pill', 'aa-highlight-grid', 'aa-mini-leaderboard', 'aa-changelog', 'aa-page-title', 'aa-page-lead', 'aa-summary-tile', 'nav-actions', 'aa-icon-button', 'aa-table-search']) {
+for (const selector of ['analysis-shell', 'aa-metric-strip', 'leaderboard-insight-card', 'rank-bar', 'no-data-panel', 'analysis-list', 'compact-data-table', 'pipeline-step', 'aa-floating-nav', 'aa-brand-pill', 'aa-highlight-grid', 'aa-mini-leaderboard', 'aa-changelog', 'aa-page-title', 'aa-page-lead', 'aa-summary-tile', 'nav-actions', 'aa-icon-button', 'aa-table-search', 'lite-ranking-filter-bar', 'lite-ranking-checkbox-list']) {
   if (!styleText.includes(selector)) fail(`workspace.css missing Artificial Analysis style selector: ${selector}`);
 }
 
@@ -75,7 +81,7 @@ for (const token of ['--bg: #ffffff', '--surface-2: #f5f5f5', '--pill-dark: #111
 }
 
 const leaderboardScript = fs.readFileSync(path.join(root, 'workspace-leaderboard.js'), 'utf8');
-for (const marker of ['workspaceRenderFrameworkMatrix', 'workspaceRenderInsightCards', 'workspaceRenderThresholdViews', 'leaderboardSearch', 'workspaceRenderCompositionCharts']) {
+for (const marker of ['workspaceRenderFrameworkMatrix', 'workspaceRenderInsightCards', 'workspaceRenderThresholdViews', 'leaderboardSearch', 'workspaceRenderCompositionCharts', 'workspaceRenderLiteRankingFilters', 'workspaceFilterLiteRankingRows', 'workspaceLiteRankingIconUrl']) {
   if (!leaderboardScript.includes(marker)) fail(`workspace-leaderboard.js missing renderer: ${marker}`);
 }
 for (const marker of ['Search frameworks or models', 'All frameworks', 'All models']) {
